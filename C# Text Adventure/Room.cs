@@ -7,10 +7,6 @@
         {
             return Color.FORE_WHITE + _name + Color.RESET;
         }
-        set
-        {
-            _name = value;
-        }
     }
 
     private string Description { get; }
@@ -22,7 +18,7 @@
 
     public Room(string name, string description, bool isUnlocked, Room[] connectedRooms, string firstEnterMessage = null)
     {
-        Name = name;
+        _name = name;
         Description = description;
         IsUnlocked = isUnlocked;
         Inventory = new();
@@ -49,7 +45,7 @@
             return;
         }
 
-        Console.WriteLine("They found the following " + Color.FORE_BLUE + "items" + Color.RESET + ":");
+        Console.WriteLine("They found the following " + Color.FORE_CYAN + "items" + Color.RESET + ":");
         for (int i = 0; i < Inventory.Count; i++)
         {
             Console.WriteLine(Inventory[i].Name);

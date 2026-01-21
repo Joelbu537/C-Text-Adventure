@@ -2,9 +2,9 @@
 {
     public static Room StartingField = new Room(
         "Field",
-        "A empty field that stretches as far as you can see. The only thing that is not grass seems to be a tavern to your north",
+        "A empty field that stretches as far as you can see.\nThe only thing that is not grass seems to be a " + Color.FORE_WHITE + "tavern" + Color.RESET + " to your " + Color.FORE_WHITE + "north" + Color.RESET,
         true,
-        null
+        new Room[] { Tavern }
     );
 
     public static Room Tavern = new Room(

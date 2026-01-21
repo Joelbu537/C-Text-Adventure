@@ -9,7 +9,7 @@ public class Player
     {
         get
         {
-            return Color.FORE_LIGHT_GREEN + _name + Color.RESET;
+            return Color.FORE_LIGHT_CYAN + _name + Color.RESET;
         }
     }
 
@@ -32,14 +32,13 @@ public class Player
     }
     public Room CurrentRoom { get; set; }
     public InventoryList Inventory { get; set; }
-    public Player(string name, double maxHP, Room startRoom)
+    public Player(string name, double maxHP, double maxWeight, Room startRoom)
     {
         _name = name;
         _maxHP = maxHP;
         _hp = maxHP;
-        Inventory = new();
+        Inventory = new(maxWeight);
         CurrentRoom = startRoom;
-        CurrentRoom.Describe();
     }
     public void Status()
     {
@@ -49,25 +48,25 @@ public class Player
         {
             Console.WriteLine(Color.BACK_RED + "nearly dead");
         }
-        else if(percentage < 15)
+        else if(percentage < 0.15)
         {
             Console.WriteLine(Color.FORE_LIGHT_RED + "badly injured");
         }
-        else if(percentage < 30)
+        else if(percentage < 0.3)
         {
             Console.WriteLine(Color.FORE_YELLOW + "injured");
         }
-        else if(percentage < 70)
+        else if(percentage < 0.7)
         {
             Console.WriteLine(Color.FORE_LIGHT_YELLOW + "lightly injured");
         }
         else
         {
-            Console.WriteLine(Color.FORE_GREEN + "fine");
+            Console.WriteLine(Color.FORE_LIGHT_GREEN + "feeling fine");
         }
         Console.Write(Color.RESET);
 
-        Console.WriteLine($"Carrying {Color.FORE_WHITE}{Inventory.Count}{Color.RESET} itesm " +
-            $"with a total weight of {Color.BACK_WHITE}{Color.FORE_BLACK}{Inventory.InventoryWeight}/{Inventory.MaxInventoryWeight}{Color.RESET} kg");
+        Console.WriteLine($"Carrying {Color.FORE_WHITE}{Inventory.Count}{Color.FORE_CYAN} items " + Color.RESET +
+            $"with a total weight of {Color.BACK_WHITE}{Color.FORE_BLACK}{Math.Round(Inventory.InventoryWeight, 2)}/{Math.Round(Inventory.MaxInventoryWeight, 2)}{Color.RESET} kg");
     }
 }
