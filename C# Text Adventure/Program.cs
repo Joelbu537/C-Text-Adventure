@@ -94,12 +94,11 @@ public static class Program
                             if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == input[1].ToLower())
                             {
                                 Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
+                                Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
                                 Player.CurrentRoom.Inventory.RemoveAt(i);
-                                Console.WriteLine(Player.Name + " picked up " + Color.FORE_CYAN + input[1].ToLower() + Color.RESET);
                                 break;
                             }
                         }
-
                         break;
                     default:
                         throw new SyntaxErrorException();
