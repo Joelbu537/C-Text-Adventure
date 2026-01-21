@@ -95,15 +95,36 @@ public static class Program
                             if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == input[1].ToLower())
                             {
                                 Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
-                                Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
+                                Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name +
+                                                  Color.RESET);
                                 Player.CurrentRoom.Inventory.RemoveAt(i);
                                 break;
                             }
                         }
                         break;
+                    case "move":
+                    case "go":
+                    case "walk":
+                        bool state = Enum.TryParse(input[1], out RoomDirection direction);
+                        if (!state)
+                        {
+                            throw new SyntaxErrorException();
+                        }
+
+                        if (Player.CurrentRoom.ConnectedRooms[(int)direction] != null)
+                        {
+                            Player.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
+                            Player.CurrentRoom.Describe();
+                        }
+                        Console.WriteLine(Player.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
+                        break;
                     default:
                         throw new SyntaxErrorException();
                 }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new SyntaxErrorException();
             }
             catch (SyntaxErrorException ex)
             {

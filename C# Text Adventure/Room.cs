@@ -11,7 +11,7 @@
 
     private string Description { get; }
     public InventoryList Inventory { get; }
-    private Room[] ConnectedRooms { get; }
+    public Room?[] ConnectedRooms { get; private init; }
     public bool IsUnlocked { get; private set; }
     public string? FirstEnterMessage { get; }
     private bool hasBeenEntered = false;

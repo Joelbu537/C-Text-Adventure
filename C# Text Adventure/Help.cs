@@ -23,6 +23,12 @@ public static class Help
             new string[] { "pick", "pickup", "get" },
             new string[] { "Item" }
             ));
+        Commands.Add(new HelpCommand(
+            "move",
+            "Attempts to move the player in the given direction",
+            new string[] { "go", "walk" },
+            new string[] { "Direction" }
+            ));
 
         Commands.Sort();
     }
