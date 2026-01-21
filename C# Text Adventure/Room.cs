@@ -11,19 +11,17 @@
 
     private string Description { get; }
     public InventoryList Inventory { get; }
-    public Room?[] ConnectedRooms { get; private init; }
+    public Room?[] ConnectedRooms { get; set; }
     public bool IsUnlocked { get; private set; }
     public string? FirstEnterMessage { get; }
     private bool hasBeenEntered = false;
 
-    public Room(string name, string description, bool isUnlocked, Room[] connectedRooms, string firstEnterMessage = null)
+    public Room(string name, string description, bool isUnlocked, string firstEnterMessage = null)
     {
         _name = name;
         Description = description;
         IsUnlocked = isUnlocked;
         Inventory = new();
-        ConnectedRooms = new Room[4];
-        Array.Copy(connectedRooms, ConnectedRooms, connectedRooms.Length);
         FirstEnterMessage = firstEnterMessage;
     }
     public void Describe()
@@ -32,7 +30,7 @@
         Console.WriteLine(Description);
         if (!hasBeenEntered && FirstEnterMessage != null)
         {
-            Console.WriteLine(FirstEnterMessage);
+            Console.WriteLine(Color.FORE_WHITE + FirstEnterMessage + Color.RESET);
         }
         hasBeenEntered = true;
     }
@@ -59,8 +57,8 @@
 }
 public enum RoomDirection
 {
-    North,
-    South,
-    East,
-    West
+    north,
+    south,
+    east,
+    west
 }

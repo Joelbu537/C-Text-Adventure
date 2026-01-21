@@ -39,6 +39,8 @@ public static class Program
         Console.Clear();
 
         Player = new Player(playerName, 100, 20, RoomDefinitions.StartingField);
+        RoomDefinitions.InitRooms();
+        Player.CurrentRoom = RoomDefinitions.StartingField;
         Player.CurrentRoom.Describe();
 
         while (true)
@@ -105,16 +107,23 @@ public static class Program
                     case "move":
                     case "go":
                     case "walk":
-                        bool state = Enum.TryParse(input[1], out RoomDirection direction);
+                        bool state = Enum.TryParse(input[1].ToLower(), out RoomDirection direction);
                         if (!state)
                         {
                             throw new SyntaxErrorException();
                         }
 
-                        if (Player.CurrentRoom.ConnectedRooms[(int)direction] != null)
+                        Room targetRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
+                        if (targetRoom != null)
                         {
+                            if (!targetRoom.IsUnlocked)
+                            {
+                                Console.WriteLine("The way is blocked, and " + Program.Player.Name + "can't seem to find a different way going into that direction.");
+                                break;
+                            }
                             Player.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
                             Player.CurrentRoom.Describe();
+                            break;
                         }
                         Console.WriteLine(Player.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
                         break;

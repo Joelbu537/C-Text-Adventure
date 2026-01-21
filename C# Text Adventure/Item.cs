@@ -47,3 +47,12 @@ public class WeaponItem : Item
         Damage = damage;
     }
 }
+public class InfoItem : Item
+{
+    public string Message { get; private init; }
+    public InfoItem(string name, string description, double weight, double value, string message)
+        : base(name, description, weight, value)
+    {
+        Message = message;
+    }
+}

@@ -30,6 +30,16 @@ public class Player
             return _maxHP;
         }
     }
+    public int Money { get; set; }
+
+    public string MoneyText
+    {
+        get
+        {
+            return Color.FORE_WHITE + '$' + Color.FORE_GREEN + Money.ToString() + Color.RESET;
+        }
+    }
+
     public Room CurrentRoom { get; set; }
     public InventoryList Inventory { get; set; }
     public bool InCombat = false;

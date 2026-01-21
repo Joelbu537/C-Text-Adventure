@@ -1,23 +1,40 @@
 ﻿public static class RoomDefinitions
 {
-    public static Room StartingField = new Room(
-        "Field",
-        "A empty field that stretches as far as you can see.\nThe only thing that is not grass seems to be a " + Color.FORE_WHITE + "tavern" + Color.RESET + " to your " + Color.FORE_WHITE + "north" + Color.RESET,
-        true,
-        new Room[] { Tavern }
-    );
+    public static Room StartingField;
 
-    public static Room Tavern = new Room(
-        "Tavern",
-        "A crowded tavern with all kinds of people inside of it. It smells like beer and yeast.",
-        true,
-        new Room[] { null, null, StartingField },
-        "The host secretly slides a note towards you."
-    );
+    public static Room Tavern;
 
-    static RoomDefinitions()
+    public static Room TavernShed;
+
+    public static void InitRooms()
     {
+        StartingField = new Room(
+        "Field",
+        "A empty field that stretches as far as " + Program.Player.Name + " can see.\nThe only thing that is not grass seems to be a " + Color.FORE_WHITE + "tavern" + Color.RESET + " to your " + Color.FORE_WHITE + "north" + Color.RESET,
+        true
+        );
         StartingField.AddItem(ItemDefinitions.Corn);
         StartingField.AddItem(ItemDefinitions.Corn);
+
+        Tavern = new Room(
+            "Tavern",
+            "A crowded tavern with all kinds of people inside of it. It smells like beer and yeast.",
+            true,
+            "The host secretly slides a note towards " + Program.Player.Name + " and quickly leaves."
+        );
+        Tavern.AddItem(ItemDefinitions.TavernNote);
+
+        TavernShed = new Room(
+            "Shed",
+            "A small shed with some pigs inside, illuminated in a warm yellow light.\n" +
+            Program.Player.Name + " can still hear the noise coming from the tavern to their " + Color.FORE_WHITE + "west" + Color.RESET + " through the thinn wooden planks seperating the two buildings.",
+            true,
+            "A man dressed like a blacksmith who is standing at a table at the end of the shed is waving at " + Program.Player.Name + '.'
+        );
+
+
+        Tavern.ConnectedRooms = new Room[]{ null, StartingField, TavernShed, null };
+        StartingField.ConnectedRooms = new Room[] { Tavern, null, null, null };
+        TavernShed.ConnectedRooms = new Room[] { null, null, null, Tavern };
     }
 }
