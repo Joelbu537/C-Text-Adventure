@@ -4,6 +4,7 @@ using System.Text;
 
 public class InventoryList
 {
+
     private List<Item> _list = new();
     public double InventoryWeight { get; private set; }
     public double MaxInventoryWeight { get; set; }
@@ -14,7 +15,7 @@ public class InventoryList
     }
     public void Add(Item item)
     {
-        if (InventoryWeight + item.Weight > MaxInventoryWeight) throw new ItemTooHeavyException();
+        if (InventoryWeight + item.Weight > MaxInventoryWeight) throw new ItemTooHeavyException($"{item.Name} is {Color.BACK_LIGHT_RED} too heavy{Color.RESET}");
         InventoryWeight += item.Weight;
         _list.Add(item);
     }
@@ -40,5 +41,11 @@ public class InventoryList
 }
 
 public class ItemTooHeavyException : Exception{
+    public ItemTooHeavyException()
+    {
 
+    }
+    public ItemTooHeavyException(string message) : base(message)
+    {
+    }
 }

@@ -32,6 +32,7 @@ public class Player
     }
     public Room CurrentRoom { get; set; }
     public InventoryList Inventory { get; set; }
+    public bool InCombat = false;
     public Player(string name, double maxHP, double maxWeight, Room startRoom)
     {
         _name = name;
@@ -56,7 +57,7 @@ public class Player
         {
             Console.WriteLine(Color.FORE_YELLOW + "injured");
         }
-        else if(percentage < 0.7)
+        else if(percentage < 0.65)
         {
             Console.WriteLine(Color.FORE_LIGHT_YELLOW + "lightly injured");
         }

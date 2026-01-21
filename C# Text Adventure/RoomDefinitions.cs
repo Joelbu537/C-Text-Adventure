@@ -18,5 +18,6 @@
     static RoomDefinitions()
     {
         StartingField.AddItem(ItemDefinitions.Corn);
+        StartingField.AddItem(ItemDefinitions.Corn);
     }
 }

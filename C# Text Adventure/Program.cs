@@ -7,6 +7,7 @@ public static class Program
     public static Player Player;
     static void Main(string[] args)
     {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.Write(Color.RESET);
         Console.WriteLine($"Welcome to the {Color.FORE_LIGHT_GREEN}Text Adventure{Color.RESET}!");
         Console.Write("Please enter your name: " + Color.FORE_LIGHT_CYAN);
@@ -82,6 +83,24 @@ public static class Program
                     case "help":
                         Console.WriteLine("-*-*-*-*-*-*-*-*-*[ HELP PAGE ]-*-*-*-*-*-*-*-*-*");
                         break;
+                    case "search":
+                        Player.CurrentRoom.Search();
+                        break;
+                    case "pick":
+                    case "pickup":
+                    case "get":
+                        for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++)
+                        {
+                            if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == input[1].ToLower())
+                            {
+                                Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
+                                Player.CurrentRoom.Inventory.RemoveAt(i);
+                                Console.WriteLine(Player.Name + " picked up " + Color.FORE_CYAN + input[1].ToLower() + Color.RESET);
+                                break;
+                            }
+                        }
+
+                        break;
                     default:
                         throw new SyntaxErrorException();
                 }
@@ -92,6 +111,10 @@ public static class Program
                 Console.WriteLine("Syntax Error or missing parameters!");
                 Console.ResetColor();
                 Console.WriteLine("To see a list of all available commands, use \"help\"");
+            }
+            catch (ItemTooHeavyException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
