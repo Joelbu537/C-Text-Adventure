@@ -81,7 +81,7 @@ public static class Program
                         Player.Status();
                         break;
                     case "help":
-                        Console.WriteLine("-*-*-*-*-*-*-*-*-*[ HELP PAGE ]-*-*-*-*-*-*-*-*-*");
+                        Help.ListHelp();
                         break;
                     case "search":
                         Player.CurrentRoom.Search();
@@ -89,6 +89,7 @@ public static class Program
                     case "pick":
                     case "pickup":
                     case "get":
+                    case "take":
                         for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++)
                         {
                             if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == input[1].ToLower())
