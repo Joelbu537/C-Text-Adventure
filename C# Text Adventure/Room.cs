@@ -28,6 +28,10 @@
         }
         hasBeenEntered = true;
     }
+    public void Search()
+    {
+
+    }
 }
 public enum RoomDirection
 {
