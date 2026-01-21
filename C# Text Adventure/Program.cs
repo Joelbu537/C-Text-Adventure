@@ -31,9 +31,17 @@ public static class Program
                     playerName += key.KeyChar;
                     Console.Write(key.KeyChar);
                 }
-                Debug.WriteLine($"Current player name: {playerName}");
             }
         }
         Console.Write(Color.RESET);
+        Console.Clear();
+
+        Player = new Player(playerName, 100, RoomDefinitions.StartingField);
+        Player.CurrentRoom.Describe();
+
+        while (true)
+        {
+            Console.Write(" > ");
+        }
     }
 }
