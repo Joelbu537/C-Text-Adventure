@@ -17,6 +17,15 @@
                     return;
                 }
 
+                if (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.S)
+                {
+                    SelectedItem = Math.Max(SelectedItem + 1, Program.Player.Inventory.Count - 1);
+                }
+                if (key.Key is ConsoleKey.UpArrow or ConsoleKey.W) // Eeewwwww logical pattern wtf
+                {
+                    SelectedItem = Math.Max(SelectedItem + 1, Program.Player.Inventory.Count - 1);
+                }
+
                 DrawInventory();
             }
         }
@@ -27,17 +36,55 @@
         Console.Clear();
 
         int inventoryHeight = Console.WindowHeight - 2 - 5; // - Place for Title and free line - whatever space for command selection
+        int inventoryHalfBlockShit = (int)Math.Ceiling((double)(inventoryHeight / 2));
+        if (inventoryHeight % 2 == 0) inventoryHeight = Math.Max(0, inventoryHeight - 1);
 
         int inventoryTextSideWidth = GetMiddlePadding(InventoryText.Length);
         Console.ForegroundColor = ConsoleColor.Black;
         Console.WriteLine(String.Empty.PadRight(inventoryTextSideWidth) + Color.BACK_WHITE + InventoryText + Color.RESET + String.Empty.PadRight(inventoryTextSideWidth) + '\n');
 
-        if (SelectedItem > inventoryHeight)
+
+        // Draw scroll up indicator
+        if (SelectedItem - inventoryTextSideWidth + 1 > 0) 
         {
             int scrollSideWidth = GetMiddlePadding(1);
-            Console.BackgroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(String.Empty.PadRight(scrollSideWidth) + '⌃' + String.Empty.PadRight(scrollSideWidth) + '\n');
+            Console.WriteLine(String.Empty.PadRight(scrollSideWidth) + '⮝' + String.Empty.PadRight(scrollSideWidth) + '\n');
+            Console.ResetColor();
+        }
+        Console.ResetColor();
+
+        // Draw items
+        for (int i = 0; i < inventoryHeight; i++)
+        {
+            int targetItem = SelectedItem - 2 + i;
+            if (targetItem < 0 || targetItem > Program.Player.Inventory.Count - 1)
+            {
+                Console.WriteLine();
+                continue;
+            }
+
+            string itemSentence = Color.FORE_CYAN;
+            if (i == inventoryHalfBlockShit)
+            {
+                itemSentence += Color.BACK_WHITE;
+            }
+
+            int middlePadding = GetMiddlePadding(Program.Player.Inventory[targetItem].Name.Length);
+            itemSentence = itemSentence.PadRight(middlePadding);
+            itemSentence += Program.Player.Inventory[targetItem].Name;
+            itemSentence = itemSentence.PadRight(middlePadding);
+            Console.WriteLine(itemSentence);
+        }
+
+        // Draw scroll down indicator
+        if (SelectedItem + inventoryHalfBlockShit - 1 < Program.Player.Inventory.Count - 1) // Draw scroll up indicator
+        {
+            int scrollSideWidth = GetMiddlePadding(1);
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(String.Empty.PadRight(scrollSideWidth) + '⮟' + String.Empty.PadRight(scrollSideWidth) + '\n');
             Console.ResetColor();
         }
         Console.ResetColor();
