@@ -106,6 +106,7 @@ public static class Program
                                 break;
                             }
                         }
+                        Console.WriteLine(Player.Name + " could not find anything named \"" + Color.FORE_CYAN + input[1] + Color.RESET + "\"");
                         break;
                     case "move":
                     case "go":
@@ -116,15 +117,15 @@ public static class Program
                             throw new SyntaxErrorException();
                         }
 
-                        Room targetRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
+                        Room? targetRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
                         if (targetRoom != null)
                         {
                             if (!targetRoom.IsUnlocked)
                             {
-                                Console.WriteLine("The way is blocked, and " + Program.Player.Name + "can't seem to find a different way going into that direction.");
+                                Console.WriteLine("The path is blocked, and " + Player.Name + "can't seem to find a different way around.");
                                 break;
                             }
-                            Player.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
+                            Player.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
                             Player.CurrentRoom.Describe();
                             break;
                         }
