@@ -1,4 +1,6 @@
-﻿public static class InventoryDisplay
+﻿using System.Runtime.InteropServices.JavaScript;
+
+public static class InventoryDisplay
 {
     const string InventoryText = "[INVENTORY]";
     private static int SelectedItem { get; set; } = 0;
@@ -23,7 +25,7 @@
                 }
                 if (key.Key is ConsoleKey.UpArrow or ConsoleKey.W) // Eeewwwww logical pattern wtf
                 {
-                    SelectedItem = Math.Max(SelectedItem + 1, Program.Player.Inventory.Count - 1);
+                    SelectedItem = Math.Max(0, SelectedItem - 1);
                 }
 
                 DrawInventory();
@@ -72,9 +74,9 @@
             }
 
             int middlePadding = GetMiddlePadding(Program.Player.Inventory[targetItem].Name.Length);
-            itemSentence = itemSentence.PadRight(middlePadding);
+            itemSentence = itemSentence.Insert(0, new string(' ', middlePadding));
             itemSentence += Program.Player.Inventory[targetItem].Name;
-            itemSentence = itemSentence.PadRight(middlePadding);
+            itemSentence = itemSentence.Insert(itemSentence.Length - 1, new string(' ', middlePadding));
             Console.WriteLine(itemSentence);
         }
 

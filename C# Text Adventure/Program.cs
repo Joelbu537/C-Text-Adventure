@@ -83,6 +83,11 @@ public static class Program
                         Player.Status();
                         break;
                     case "inventory":
+                        if (Player.Inventory.Count == 0)
+                        {
+                            Console.WriteLine($"{Player.Name}'s {Color.FORE_WHITE}inventory{Color.RESET} is {Color.FORE_LIGHT_RED}empty{Color.RESET}!");
+                            break;
+                        }
                         InventoryDisplay.InventoryLoop();
                         break;
                     case "help":
@@ -95,18 +100,19 @@ public static class Program
                     case "pickup":
                     case "get":
                     case "take":
-                        for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++)
+                        bool found = false;
+                        for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++) // BUG IN HERE!!! Even if found, success message not shown
                         {
                             if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == input[1].ToLower())
                             {
                                 Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
-                                Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name +
-                                                  Color.RESET);
+                                Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
                                 Player.CurrentRoom.Inventory.RemoveAt(i);
+                                found = true;
                                 break;
                             }
                         }
-                        Console.WriteLine(Player.Name + " could not find anything named \"" + Color.FORE_CYAN + input[1] + Color.RESET + "\"");
+                        if(!found) Console.WriteLine(Player.Name + " could not find anything named \"" + Color.FORE_CYAN + input[1] + Color.RESET + "\"");
                         break;
                     case "move":
                     case "go":

@@ -24,7 +24,7 @@ public static class ItemDefinitions
         5,
         25
     );
-    public static WeaponItem Glock19 = new WeaponItem(
+    public static Item Glock19 = new WeaponItem(
         "Glock 19",
         "Its a Glock 19. From the future. Infinite ammo included.",
         0.8,
