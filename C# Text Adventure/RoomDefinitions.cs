@@ -20,7 +20,7 @@
             "Tavern",
             "A crowded tavern with all kinds of people inside of it. It smells like beer and yeast.",
             true,
-            "The host secretly slides a " + Color.FORE_CYAN + "note" + Color.RESET + " towards " + Program.Player.Name + " and quickly leaves."
+            "The host secretly slides a " + Color.FORE_CYAN + "note" + Color.FORE_WHITE + " towards " + Program.Player.Name + Color.FORE_WHITE + " and quickly leaves."
         );
         Tavern.AddItem(ItemDefinitions.TavernNote);
 
