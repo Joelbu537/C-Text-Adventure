@@ -36,7 +36,7 @@ public static class Help
     public static void ListHelp()
     {
         Debug.WriteLine(Console.WindowWidth);
-        int sideCount = Console.WindowWidth / Deco.Length / 2 - Title.Length;
+        int sideCount = (Console.WindowWidth - Title.Length) / 2 / Deco.Length;
         Console.ForegroundColor = ConsoleColor.White;
 
         for (int i = 0; i < sideCount; i++)

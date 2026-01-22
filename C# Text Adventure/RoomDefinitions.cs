@@ -33,8 +33,8 @@
         );
 
 
-        Tavern.ConnectedRooms = new Room[]{ null, StartingField, TavernShed, null };
-        StartingField.ConnectedRooms = new Room[] { Tavern, null, null, null };
-        TavernShed.ConnectedRooms = new Room[] { null, null, null, Tavern };
+        Tavern.ConnectedRooms = [null, StartingField, TavernShed, null];
+        StartingField.ConnectedRooms = [Tavern, null, null, null];
+        TavernShed.ConnectedRooms = [null, null, null, Tavern];
     }
 }

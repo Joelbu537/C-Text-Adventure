@@ -82,6 +82,9 @@ public static class Program
                     case "status":
                         Player.Status();
                         break;
+                    case "inventory":
+                        InventoryDisplay.InventoryLoop();
+                        break;
                     case "help":
                         Help.ListHelp();
                         break;
@@ -148,4 +151,6 @@ public static class Program
             }
         }
     }
+
+    
 }
