@@ -26,8 +26,8 @@ public static class Help
         Commands.Add(new HelpCommand(
             "move",
             "Attempts to move the player in the given direction",
-            new string[] { "go", "walk" },
-            new string[] { "Direction" }
+            ["go", "walk"],
+            ["Direction"]
             ));
         Commands.Add(new HelpCommand(
             "inventory",
@@ -35,6 +35,11 @@ public static class Help
             "Here, you can use, drop and inspect you items.",
             null
             ));
+        Commands.Add(new HelpCommand(
+            "describe",
+            "Describes the current room.",
+            ["look"]
+        ));
 
         Commands.Sort();
     }

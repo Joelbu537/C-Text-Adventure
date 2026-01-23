@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 public static class Program
@@ -45,6 +46,16 @@ public static class Program
 
         while (true)
         {
+            if (Player.HP <= 0)
+            {
+                string deathText = new string('\n', (Console.WindowHeight - 2) / 2).PadRight((Console.WindowWidth - Player.Name.Length + 15)) + Player.Name + Color.FORE_LIGHT_RED + " met their fate!";
+                Console.WriteLine();
+                Console.WriteLine("\nPress any key to exit ...");
+                Console.ReadKey();
+                return;
+            }
+
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("\n > ");
             Console.ForegroundColor = ConsoleColor.White;
@@ -59,12 +70,12 @@ public static class Program
                     {
                         break;
                     }
-                    else if (key.Key == ConsoleKey.Backspace && inputRaw.Length > 0)
+                    if (key.Key == ConsoleKey.Backspace && inputRaw.Length > 0)
                     {
                         inputRaw = inputRaw.Substring(0, inputRaw.Length - 1);
                         Console.Write("\b \b");
                     }
-                    else if (Char.IsAsciiLetterOrDigit(key.KeyChar) || key.KeyChar == ' ')
+                    if (Char.IsAsciiLetterOrDigit(key.KeyChar) || key.KeyChar == ' ')
                     {
                         inputRaw += key.KeyChar;
                         Console.Write(key.KeyChar);
@@ -101,10 +112,10 @@ public static class Program
                     case "pickup":
                     case "get":
                     case "take":
-                        bool found = false;
-                        for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++) // BUG IN HERE!!! Even if found, success message not shown
+                        var found = false;
+                        for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++)
                         {
-                            if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == input[1].ToLower())
+                            if (string.Equals(Player.CurrentRoom.Inventory[i].RawName.ToLower(), input[1].ToLower()))
                             {
                                 Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
                                 Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
@@ -118,7 +129,7 @@ public static class Program
                     case "move":
                     case "go":
                     case "walk":
-                        bool state = Enum.TryParse(input[1].ToLower(), out RoomDirection direction);
+                        var state = Enum.TryParse(input[1].ToLower(), out RoomDirection direction);
                         if (!state)
                         {
                             throw new SyntaxErrorException();
@@ -138,20 +149,24 @@ public static class Program
                         }
                         Console.WriteLine(Player.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
                         break;
+                    case "describe":
+                    case "look":
+                        Player.CurrentRoom.Describe();
+                        break;
+                    case "kys":
+                        Player.Damage(12);
+                        break;
                     default:
                         throw new SyntaxErrorException();
                 }
             }
-            catch (IndexOutOfRangeException)
+            catch (IndexOutOfRangeException ex)
             {
-                throw new SyntaxErrorException();
+                SyntaxError();
             }
             catch (SyntaxErrorException ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Syntax Error or missing parameters!");
-                Console.ResetColor();
-                Console.WriteLine("To see a list of all available commands, use \"help\"");
+                SyntaxError();
             }
             catch (ItemTooHeavyException ex)
             {
@@ -160,5 +175,11 @@ public static class Program
         }
     }
 
-    
+    private static void SyntaxError()
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Syntax Error or missing parameters!");
+        Console.ResetColor();
+        Console.WriteLine("To see a list of all available commands, use \"help\"");
+    }
 }
