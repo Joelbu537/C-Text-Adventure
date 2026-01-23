@@ -97,6 +97,7 @@ public static class Program
                         Player.CurrentRoom.Search();
                         break;
                     case "pick":
+                    case "grab":
                     case "pickup":
                     case "get":
                     case "take":
