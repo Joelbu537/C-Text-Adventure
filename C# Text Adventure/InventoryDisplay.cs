@@ -132,13 +132,15 @@ public static class InventoryDisplay
         if (Program.Player.Inventory[SelectedItem] is HealingItem healItem)
         {
             Program.Player.Heal(healItem.HealAmount);
+            InfoText = $"{Program.Player.Name} used {Program.Player.CurrentRoom.Inventory[SelectedItem]}!".ToString(); // Because it is referencing remove objects
             Program.Player.Inventory.RemoveAt(SelectedItem);
-            InfoText = $"{Program.Player.Name} used {Program.Player.CurrentRoom.Inventory[SelectedItem]}!";
+            return;
         }
 
         if (Program.Player.Inventory[SelectedItem] is InfoItem infoItem)
         {
             InfoText = infoItem.Message;
+            return;
         }
     }
 
