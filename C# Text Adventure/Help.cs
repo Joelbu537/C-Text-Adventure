@@ -22,15 +22,26 @@ public static class Help
         Commands.Add(new HelpCommand(
             "take",
             "Attempts to pick up the chosen item and add it to the inventory",
-            new string[] { "pick", "pickup", "get" },
+            new string[] { "pick", "pickup", "get", "grab" },
             new string[] { "Item" }
             ));
         Commands.Add(new HelpCommand(
             "move",
             "Attempts to move the player in the given direction",
-            new string[] { "go", "walk" },
-            new string[] { "Direction" }
+            ["go", "walk"],
+            ["Direction"]
             ));
+        Commands.Add(new HelpCommand(
+            "inventory",
+            "If not empty, opens the inventory.\n" +
+            "Here, you can use, drop and inspect you items.",
+            null
+            ));
+        Commands.Add(new HelpCommand(
+            "describe",
+            "Describes the current room.",
+            ["look"]
+        ));
 
         Commands.Sort();
     }
@@ -75,6 +86,12 @@ public static class Help
             Console.WriteLine(command.Description);
             Console.WriteLine();
         }
+        Console.WriteLine();
+        for (int i = 0; i < Console.WindowWidth / Deco.Length; i++)
+        {
+            Console.Write(Deco);
+        }
+        Console.WriteLine();
     }
 }
 

@@ -78,4 +78,14 @@ public class Player
         Console.WriteLine($"Carrying {Color.FORE_WHITE}{Inventory.Count}{Color.FORE_CYAN} items " + Color.RESET +
             $"with a total weight of {Color.BACK_WHITE}{Color.FORE_BLACK}{Math.Round(Inventory.InventoryWeight, 2)}/{Math.Round(Inventory.MaxInventoryWeight, 2)}{Color.RESET} kg");
     }
+
+    public void Heal(double ammount)
+    {
+        _hp = Math.Min(MaxHP, HP + ammount);
+    }
+
+    public void Damage(double ammount)
+    {
+        _hp = Math.Max(0, HP - ammount);
+    }
 }
