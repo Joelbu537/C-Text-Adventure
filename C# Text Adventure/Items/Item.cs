@@ -1,4 +1,5 @@
-﻿public class Item
+﻿namespace C__Text_Adventure.Items;
+public class Item
 {
     public string RawName { get; private init; }
     public string Name
@@ -21,7 +22,7 @@
         }
     }
 
-    public Item(string name, string description, double weight, double value)
+    internal Item(string name, string description, double weight, double value)
     {
         RawName = name;
         Description = description;
@@ -32,7 +33,7 @@
 public class HealingItem : Item
 {
     public int HealAmount { get; private init; }
-    public HealingItem(string name, string description, double weight, double value, int healAmount)
+    internal HealingItem(string name, string description, double weight, double value, int healAmount)
         : base(name, description, weight, value)
     {
         HealAmount = healAmount;
@@ -41,7 +42,7 @@ public class HealingItem : Item
 public class WeaponItem : Item
 {
     public int Damage { get; private init; }
-    public WeaponItem(string name, string description, double weight, double value, int damage)
+    internal WeaponItem(string name, string description, double weight, double value, int damage)
         : base(name, description, weight, value)
     {
         Damage = damage;
@@ -50,9 +51,18 @@ public class WeaponItem : Item
 public class InfoItem : Item
 {
     public string Message { get; private init; }
-    public InfoItem(string name, string description, double weight, double value, string message)
+    internal InfoItem(string name, string description, double weight, double value, string message)
         : base(name, description, weight, value)
     {
         Message = message;
+    }
+}
+public class ArmorItem : Item
+{
+    public int Defense { get; private init; }
+    internal ArmorItem(string name, string description, double weight, double value, int defense)
+        : base(name, description, weight, value)
+    {
+        Defense = defense;
     }
 }

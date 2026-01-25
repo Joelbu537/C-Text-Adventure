@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿namespace C__Text_Adventure;
+using C__Text_Adventure.Items;
 public class InventoryList
 {
 

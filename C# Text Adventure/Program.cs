@@ -1,7 +1,6 @@
-﻿using System.Data;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿namespace C__Text_Adventure;
 
+using System.Data;
 public static class Program
 {
     public static Player Player;

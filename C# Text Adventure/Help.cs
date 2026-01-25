@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace C__Text_Adventure;
+
+using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 

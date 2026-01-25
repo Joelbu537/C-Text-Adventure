@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-
+﻿namespace C__Text_Adventure;
 public static class InventoryDisplay
 {
     const string InventoryText = "[INVENTORY]";

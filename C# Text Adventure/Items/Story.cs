@@ -1,0 +1,10 @@
+﻿namespace C__Text_Adventure.Items;
+public static class Story
+{
+    public static Item TavernNote = new InfoItem(
+        "Note", "A piece of paper with something written on it",
+        0.01,
+        1,
+        "We need your help!\nMeet me in the shed on the " + Color.FORE_WHITE + "east" + Color.RESET + " side of the tavern!"
+    );
+}

@@ -1,4 +1,6 @@
-﻿public class Room
+﻿namespace C__Text_Adventure;
+using C__Text_Adventure.Items;
+public class Room
 {
     private string _name;
     public string Name

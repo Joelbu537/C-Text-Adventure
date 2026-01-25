@@ -1,4 +1,6 @@
-﻿public static class RoomDefinitions
+﻿namespace C__Text_Adventure;
+using C__Text_Adventure.Items;
+public static class RoomDefinitions
 {
     public static Room StartingField;
 
@@ -13,8 +15,8 @@
         "A empty field that stretches as far as " + Program.Player.Name + " can see.\nThe only thing that is not grass seems to be a " + Color.FORE_WHITE + "tavern" + Color.RESET + " to your " + Color.FORE_WHITE + "north" + Color.RESET,
         true
         );
-        StartingField.AddItem(ItemDefinitions.Corn);
-        StartingField.AddItem(ItemDefinitions.Corn);
+        StartingField.AddItem(Healing.Corn);
+        StartingField.AddItem(Healing.Corn);
 
         Tavern = new Room(
             "Tavern",
@@ -22,7 +24,7 @@
             true,
             "The host secretly slides a " + Color.FORE_CYAN + "note" + Color.FORE_WHITE + " towards " + Program.Player.Name + Color.FORE_WHITE + " and quickly leaves."
         );
-        Tavern.AddItem(ItemDefinitions.TavernNote);
+        Tavern.AddItem(Story.TavernNote);
 
         TavernShed = new Room(
             "Shed",
