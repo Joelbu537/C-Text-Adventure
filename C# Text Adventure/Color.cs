@@ -1,4 +1,5 @@
-﻿public static class Color
+﻿namespace C__Text_Adventure;
+public static class Color
 {
     public const string RESET = "\x1B[0m";
 
@@ -11,13 +12,15 @@
     public const string FORE_CYAN = "\x1B[38;5;006m";           // Items
     public const string FORE_LIGHT_GREY = "\x1B[38;5;007m";
     public const string FORE_GREY = "\x1B[38;5;008m";
-    public const string FORE_LIGHT_RED = "\x1B[38;5;009m";      // Hostile NPC
+    public const string FORE_LIGHT_RED = "\x1B[38;5;009m";      // Hostile NPC, Error, Death
     public const string FORE_LIGHT_GREEN = "\x1B[38;5;010m";    
     public const string FORE_LIGHT_YELLOW = "\x1B[38;5;011m";
     public const string FORE_LIGHT_BLUE = "\x1B[38;5;012m";
-    public const string FORE_LIGHT_PURPLE = "\x1B[38;5;013m";
+    public const string FORE_LIGHT_PURPLE = "\x1B[38;5;013m";   // Weapon
     public const string FORE_LIGHT_CYAN = "\x1B[38;5;014m";     // Player name
     public const string FORE_WHITE = "\x1B[38;5;015m";          // Points of interest
+    public const string FORE_ORANGE = "\x1B[38,5,202m";         // 
+    public const string FORE_LIGHT_ORANGE = "\x1B[38;5;208m";   // Armor
 
     public const string BACK_BLACK = "\x1B[48;5;000m";
     public const string BACK_RED = "\x1B[48;5;001m";

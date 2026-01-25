@@ -1,8 +1,10 @@
-﻿namespace C__Text_Adventure;
+﻿using C__Text_Adventure.Items;
+
+namespace C__Text_Adventure;
 
 public class Player
 {
-    private string _name = String.Empty;
+    private string? _name = String.Empty;
     public string Name
     {
         get
@@ -10,33 +12,13 @@ public class Player
             return Color.FORE_LIGHT_CYAN + _name + Color.RESET;
         }
     }
+    public double Hp { get; private set; }
+    public double MaxHp { get; private set; }
+    public int Money { get; set; } = 10;
+    public Item EquippedWeapon { get; set; } = Weapon.Glock19;
+    public Item EquippedArmor { get; set; } = Armor.LeatherArmor;
 
-    private double _hp = 0;
-    public double HP
-    {
-        get
-        {
-            return _hp;
-        }
-    }
-
-    private double _maxHP = 0;
-    public double MaxHP
-    {
-        get
-        {
-            return _maxHP;
-        }
-    }
-    public int Money { get; set; }
-
-    public string MoneyText
-    {
-        get
-        {
-            return Color.FORE_WHITE + '$' + Color.FORE_GREEN + Money.ToString() + Color.RESET;
-        }
-    }
+    public string MoneyText => Color.FORE_WHITE + '$' + Color.FORE_GREEN + Money.ToString() + Color.RESET;
 
     public Room CurrentRoom { get; set; }
     public InventoryList Inventory { get; set; }
@@ -44,16 +26,16 @@ public class Player
     public Player(string name, double maxHP, double maxWeight, Room startRoom)
     {
         _name = name;
-        _maxHP = maxHP;
-        _hp = maxHP;
+        MaxHp = maxHP;
+        Hp = maxHP;
         Inventory = new(maxWeight);
         CurrentRoom = startRoom;
     }
     public void Status()
     {
         Console.Write(Name + " is ");
-        double percentage = HP / MaxHP;
-        if(HP < 10)
+        double percentage = Hp / MaxHp;
+        if(Hp < 10)
         {
             Console.WriteLine(Color.BACK_RED + "nearly dead");
         }
@@ -81,11 +63,11 @@ public class Player
 
     public void Heal(double ammount)
     {
-        _hp = Math.Min(MaxHP, HP + ammount);
+        Hp = Math.Min(MaxHp, Hp + ammount);
     }
 
     public void Damage(double ammount)
     {
-        _hp = Math.Max(0, HP - ammount);
+        Hp = Math.Max(0, Hp - ammount);
     }
 }

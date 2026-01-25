@@ -1,4 +1,5 @@
 ﻿namespace C__Text_Adventure;
+using C__Text_Adventure.Items;
 public static class InventoryDisplay
 {
     const string InventoryText = "[INVENTORY]";
@@ -128,18 +129,33 @@ public static class InventoryDisplay
 
     private static void Use()
     {
-        if (Program.Player.Inventory[SelectedItem] is HealingItem healItem)
+        Item targetItem = Program.Player.Inventory[SelectedItem];
+
+        if (targetItem is HealingItem healItem)
         {
             Program.Player.Heal(healItem.HealAmount);
             InfoText = $"{Program.Player.Name} used {Program.Player.CurrentRoom.Inventory[SelectedItem]}!".ToString(); // Because it is referencing remove objects
             Program.Player.Inventory.RemoveAt(SelectedItem);
-            return;
         }
-
-        if (Program.Player.Inventory[SelectedItem] is InfoItem infoItem)
+        else if (targetItem is InfoItem infoItem)
         {
             InfoText = infoItem.Message;
-            return;
+        }
+        else if (targetItem is WeaponItem weaponItem)
+        {
+            Program.Player.Inventory.Add(Program.Player.EquippedWeapon);
+            Program.Player.EquippedWeapon = weaponItem;
+            Program.Player.Inventory.RemoveAt(SelectedItem);
+
+            InfoText = $"{Program.Player.Name} is now wielding {weaponItem.Name}!";
+        }
+        else if (targetItem is ArmorItem armorItem)
+        {
+            Program.Player.Inventory.Add(Program.Player.EquippedWeapon);
+            Program.Player.EquippedArmor = armorItem;
+            Program.Player.Inventory.RemoveAt(SelectedItem);
+
+            InfoText = $"{Program.Player.Name} is now wearing {armorItem.Name}!";
         }
     }
 

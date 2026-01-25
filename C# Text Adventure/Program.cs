@@ -44,7 +44,7 @@ public static class Program
 
         while (true)
         {
-            if (Player.HP <= 0)
+            if (Player.Hp <= 0)
             {
                 string deathText = new string('\n', (Console.WindowHeight - 2) / 2).PadRight((Console.WindowWidth - Player.Name.Length + 15)) + Player.Name + Color.FORE_LIGHT_RED + " met their fate!";
                 Console.WriteLine();

@@ -2,14 +2,7 @@
 public class Item
 {
     public string RawName { get; private init; }
-    public string Name
-    {
-        get
-        {
-            return Color.FORE_CYAN + RawName + Color.RESET;
-        }
-    }
-
+    public virtual string Name => Color.FORE_CYAN + RawName + Color.RESET;
     public string Description { get; private init; }
     public double Weight { get; private init; }
     public double Value { get; private init; }
@@ -41,6 +34,7 @@ public class HealingItem : Item
 }
 public class WeaponItem : Item
 {
+    public override string Name => Color.FORE_LIGHT_PURPLE + RawName + Color.RESET;
     public int Damage { get; private init; }
     internal WeaponItem(string name, string description, double weight, double value, int damage)
         : base(name, description, weight, value)
@@ -59,6 +53,7 @@ public class InfoItem : Item
 }
 public class ArmorItem : Item
 {
+    public override string Name => Color.FORE_ORANGE + RawName + Color.RESET;
     public int Defense { get; private init; }
     internal ArmorItem(string name, string description, double weight, double value, int defense)
         : base(name, description, weight, value)
