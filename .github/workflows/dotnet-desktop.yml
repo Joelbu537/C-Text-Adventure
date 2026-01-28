@@ -1,5 +1,8 @@
 name: .NET 10 Console Build
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [ "master" ]
