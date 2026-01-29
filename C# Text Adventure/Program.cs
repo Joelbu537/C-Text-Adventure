@@ -3,7 +3,7 @@
 using System.Data;
 public static class Program
 {
-    public static Player Player;
+    public static Player? Player;
     static void Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -46,8 +46,8 @@ public static class Program
         {
             if (Player.Hp <= 0)
             {
-                string deathText = new string('\n', (Console.WindowHeight - 2) / 2).PadRight((Console.WindowWidth - Player.Name.Length + 15)) + Player.Name + Color.FORE_LIGHT_RED + " met their fate!";
-                Console.WriteLine();
+                string deathText = new string('\n', (Console.WindowHeight - 2) / 2).PadRight(Console.WindowWidth - Player.Name.Length + 15) + Player.Name + Color.FORE_LIGHT_RED + " met their fate!";
+                Console.WriteLine(deathText);
                 Console.WriteLine("\nPress any key to exit ...");
                 Console.ReadKey();
                 return;
@@ -83,8 +83,16 @@ public static class Program
             Console.Write(Color.RESET);
             string[] input = inputRaw.Trim().ToLower().Split(' ');
 
+            InputHandling(input);
+
             Console.Clear();
-            try
+            
+        }
+    }
+
+    private static void InputHandling(string[] input)
+    {
+        try
             {
                 switch (input[0])
                 {
@@ -103,26 +111,24 @@ public static class Program
                         Help.ListHelp();
                         break;
                     case "search":
-                        Player.CurrentRoom.Search();
+                        Player?.CurrentRoom.Search();
                         break;
                     case "pick":
                     case "grab":
                     case "pickup":
                     case "get":
                     case "take":
-                        var found = false;
-                        for (int i = 0; i < Player.CurrentRoom.Inventory.Count; i++)
+                        for (int i = 0; i < Player?.CurrentRoom.Inventory.Count; i++)
                         {
-                            if (string.Equals(Player.CurrentRoom.Inventory[i].RawName.ToLower(), input[1].ToLower()))
+                            if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == String.Join(' ', input[1..]).ToLower())
                             {
                                 Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
                                 Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
                                 Player.CurrentRoom.Inventory.RemoveAt(i);
-                                found = true;
-                                break;
+                                return;
                             }
                         }
-                        if(!found) Console.WriteLine(Player.Name + " could not find anything named \"" + Color.FORE_CYAN + input[1] + Color.RESET + "\"");
+                        Console.WriteLine(Player?.Name + " could not find anything named \"" + Color.FORE_CYAN + String.Join(' ', input[1..]) + Color.RESET + "\"");
                         break;
                     case "move":
                     case "go":
@@ -133,36 +139,51 @@ public static class Program
                             throw new SyntaxErrorException();
                         }
 
-                        Room? targetRoom = Player.CurrentRoom.ConnectedRooms[(int)direction];
+                        Room? targetRoom = Player?.CurrentRoom.ConnectedRooms[(int)direction];
                         if (targetRoom != null)
                         {
                             if (!targetRoom.IsUnlocked)
                             {
-                                Console.WriteLine("The path is blocked, and " + Player.Name + "can't seem to find a different way around.");
+                                Console.WriteLine("The path is blocked, and " + Player?.Name + "can't seem to find a different way around.");
                                 break;
                             }
-                            Player.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
-                            Player.CurrentRoom.Describe();
+                            Player?.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
+                            Player?.CurrentRoom.Describe();
                             break;
                         }
-                        Console.WriteLine(Player.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
+                        Console.WriteLine(Player?.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
                         break;
                     case "describe":
                     case "look":
-                        Player.CurrentRoom.Describe();
+                        Player?.CurrentRoom.Describe();
                         break;
                     case "kys":
-                        Player.Damage(12);
+                        Player?.Damage(14);
+                        break;
+                    case "talk":
+                    case "speak":
+                    case "trade":
+                        foreach(NPC? npc in Player.CurrentRoom.NPCs)
+                        {
+                            if(npc is not FriendlyNPC) continue;
+                            if (npc.RawName.ToLower() == string.Join(' ', input[1..]).ToLower())
+                            {
+                                FriendlyNPC? trader = npc as FriendlyNPC;
+                                trader?.Trade();
+                                return;
+                            }
+                            
+                        }
                         break;
                     default:
                         throw new SyntaxErrorException();
                 }
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException)
             {
                 SyntaxError();
             }
-            catch (SyntaxErrorException ex)
+            catch (SyntaxErrorException)
             {
                 SyntaxError();
             }
@@ -170,9 +191,7 @@ public static class Program
             {
                 Console.WriteLine(ex.Message);
             }
-        }
     }
-
     private static void SyntaxError()
     {
         Console.ForegroundColor = ConsoleColor.Red;

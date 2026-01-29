@@ -8,6 +8,7 @@ namespace C__Text_Adventure
     public class NPC
     {
         public string Name { get; private init; }
+        public string RawName {get; private init; }
         public int Money { get; set; }
         public string Description { get; private init; }
 
@@ -30,6 +31,10 @@ namespace C__Text_Adventure
         public InventoryList Inventory { get; set; }
         public FriendlyNPC(string name, string description, int money) : base(name, description, money)
         {
+        }
+        public void Trade()
+        {
+            
         }
     }
     public class HostileNPC : NPC

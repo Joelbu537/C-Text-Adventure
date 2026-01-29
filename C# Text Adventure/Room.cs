@@ -13,12 +13,13 @@ public class Room
 
     private string Description { get; }
     public InventoryList Inventory { get; }
-    public Room?[] ConnectedRooms { get; set; }
+    public NPC?[] NPCs {get; init; }
+    public Room?[] ConnectedRooms { get; init; }
     public bool IsUnlocked { get; private set; }
     public string? FirstEnterMessage { get; }
     private bool hasBeenEntered = false;
 
-    public Room(string name, string description, bool isUnlocked, string firstEnterMessage = null)
+    public Room(string name, string description, bool isUnlocked, string? firstEnterMessage = null)
     {
         _name = name;
         Description = description;
@@ -28,8 +29,14 @@ public class Room
     }
     public void Describe()
     {
-        Console.WriteLine(Program.Player.Name + " is here: " + Name);
+        Console.WriteLine(Program.Player?.Name + " is here: " + Name);
         Console.WriteLine(Description);
+        Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
+        foreach(NPC? npc in NPCs)
+        {
+            Console.WriteLine($"{npc.Name} - {npc.Description}");
+        }
+        
         if (!hasBeenEntered && FirstEnterMessage != null)
         {
             Console.WriteLine(Color.FORE_WHITE + FirstEnterMessage + Color.RESET);
@@ -38,7 +45,7 @@ public class Room
     }
     public void Search()
     {
-        Console.WriteLine(Program.Player.Name + " is searching " + Name + "...");
+        Console.WriteLine(Program.Player?.Name + " is searching " + Name + "...");
         if (Inventory.Count == 0)
         {
             Console.WriteLine("They did not find anything of relevance.");
