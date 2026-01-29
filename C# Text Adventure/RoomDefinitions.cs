@@ -16,7 +16,7 @@ public static class RoomDefinitions
         true
         );
         StartingField.AddItem(Healing.Corn);
-        StartingField.AddItem(Healing.Corn);
+        StartingField.AddItem(Healing.FabricLump);
 
         Tavern = new Room(
             "Tavern",
@@ -25,6 +25,7 @@ public static class RoomDefinitions
             "The host secretly slides a " + Color.FORE_CYAN + "note" + Color.FORE_WHITE + " towards " + Program.Player.Name + Color.FORE_WHITE + " and quickly leaves."
         );
         Tavern.AddItem(Story.TavernNote);
+        Tavern.AddItem(Healing.Beer);
 
         TavernShed = new Room(
             "Shed",
@@ -33,6 +34,9 @@ public static class RoomDefinitions
             true,
             "A man dressed like a blacksmith who is standing at a table at the end of the shed is waving at " + Program.Player.Name + '.'
         );
+        TavernShed.AddItem(Weapon.WoodenClub);
+        TavernShed.AddItem(Healing.HealingHerbs);
+        TavernShed.AddItem(Armor.LeatherArmor);
 
 
         Tavern.ConnectedRooms = [null, StartingField, TavernShed, null];

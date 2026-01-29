@@ -8,4 +8,18 @@ public static class Weapon
         0,
         100
     );
+    public static Item WoodenClub = new WeaponItem(
+        "Wooden Club",
+        "A thick piece of wood. Perfect for bonking someine on the head with it.",
+        2,
+        4,
+        4
+    );
+    public static Item IronSword = new WeaponItem(
+        "Iron Sword",
+        "The sharpened blade looks like it could pierce through a stone wall.",
+        2.5,
+        50,
+        12
+    );
 }

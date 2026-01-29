@@ -23,4 +23,18 @@ public static class Healing
         5,
         25
     );
+    public static Item HealingHerbs = new HealingItem(
+        "Medical Herbs",
+        "\"For both body and mind\" it says on the bag.",
+        0.2,
+        20,
+        30
+    );
+    public static Item Beer = new HealingItem(
+        "Beer",
+        "A glass filled with beer.",
+        0.33,
+        4,
+        4
+    );
 }
