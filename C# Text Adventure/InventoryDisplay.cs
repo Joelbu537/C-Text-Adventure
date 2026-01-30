@@ -48,28 +48,33 @@ public static class InventoryDisplay
     {
         Console.Clear();
         /*
-         * Inventory
+         * Inventory LABEL
          * Empty
          * Scroll Up
-         * INVENTORY
+         * Inventory 1
+         * Inventory 2
+         * Inventory 3
+         * Inventory 4
+         * INVENTORY 5
+         * Inventory 6
+         * Inventory 7
+         * Inventory 8
+         * Inventory 9
          * Scroll Down
          * Empty
          * InfoText
-         * Empty
          * Keys
-         * Empty
          */
-        int inventoryHeight = Console.WindowHeight - 2 - 5; // - Place for Title and free line - whatever space for command selection
-        int inventoryHalfBlockShit = (int)Math.Ceiling((double)(inventoryHeight / 2));
-        if (inventoryHeight % 2 == 0) inventoryHeight = Math.Max(0, inventoryHeight - 1);
 
+
+        // Draw Inventory Label
         int inventoryTextSideWidth = GetMiddlePadding(InventoryText.Length);
         Console.ForegroundColor = ConsoleColor.Black;
         Console.WriteLine(String.Empty.PadRight(inventoryTextSideWidth) + Color.BACK_WHITE + InventoryText + Color.RESET + String.Empty.PadRight(inventoryTextSideWidth) + '\n');
 
 
         // Draw scroll up indicator
-        if (SelectedItem - inventoryTextSideWidth + 1 > 0) 
+        if (SelectedItem > 5) 
         {
             int scrollSideWidth = GetMiddlePadding(1);
             Console.BackgroundColor = ConsoleColor.Gray;
@@ -80,10 +85,10 @@ public static class InventoryDisplay
         Console.ResetColor();
 
         // Draw items
-        for (int i = 0; i < inventoryHeight; i++)
+        for (int i = 0; i < 9; i++)
         {
-            int targetItem = SelectedItem - 2 + i;
-            if (targetItem < 0 || targetItem > Program.Player.Inventory.Count - 1)
+            int targetItem = SelectedItem - 5 + i;
+            if (targetItem < 0 || targetItem >= Program.Player.Inventory.Count)
             {
                 Console.WriteLine();
                 continue;
@@ -92,10 +97,10 @@ public static class InventoryDisplay
             string itemSentence = Color.FORE_CYAN;
             if (i == inventoryHalfBlockShit)
             {
-                itemSentence += Color.BACK_WHITE;
+                Console.BackgroundColor = ConsoleColor.White;
             }
 
-            int middlePadding = GetMiddlePadding(Program.Player.Inventory[targetItem].Name.Length);
+            int middlePadding = GetMiddlePadding(Program.Player.Inventory[targetItem].RawName.Length);
             itemSentence = itemSentence.Insert(0, new string(' ', middlePadding));
             itemSentence += Program.Player.Inventory[targetItem].Name;
             itemSentence = itemSentence.Insert(itemSentence.Length - 1, new string(' ', middlePadding));
@@ -103,7 +108,7 @@ public static class InventoryDisplay
         }
 
         // Draw scroll down indicator
-        if (SelectedItem + inventoryHalfBlockShit - 1 < Program.Player.Inventory.Count - 1) // Draw scroll up indicator
+        if (Program.Player.Inventory.Count > SelectedItem + 5) // Draw scroll up indicator
         {
             int scrollSideWidth = GetMiddlePadding(1);
             Console.BackgroundColor = ConsoleColor.Gray;

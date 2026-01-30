@@ -118,13 +118,37 @@ public static class Program
                     case "pickup":
                     case "get":
                     case "take":
+                        if(input.Length == 2 && input[2].ToLower() == "all")
+                        {
+                            for (int i = Player?.CurrentRoom.Inventory.Count - 1 ?? 0; i >= 0; i--)
+                            {
+                                try
+                                {
+                                    Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
+                                    Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
+                                    Player.CurrentRoom.Inventory.RemoveAt(i);
+                                }
+                                catch (ItemTooHeavyException ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }       
+                            }
+                            return;
+                        }
                         for (int i = 0; i < Player?.CurrentRoom.Inventory.Count; i++)
                         {
                             if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == String.Join(' ', input[1..]).ToLower())
                             {
-                                Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
-                                Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
-                                Player.CurrentRoom.Inventory.RemoveAt(i);
+                                try
+                                {
+                                    Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
+                                    Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
+                                    Player.CurrentRoom.Inventory.RemoveAt(i);
+                                }
+                                catch(ItemTooHeavyException ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
                                 return;
                             }
                         }
