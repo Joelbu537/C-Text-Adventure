@@ -1,4 +1,13 @@
 ﻿namespace C__Text_Adventure.Items;
+public class HealingItem : Item
+{
+    public int HealAmount { get; private init; }
+    internal HealingItem(string name, string description, double weight, double value, int healAmount)
+        : base(name, description, weight, value)
+    {
+        HealAmount = healAmount;
+    }
+}
 public static class Healing
 {
     public static Item Corn = new HealingItem(

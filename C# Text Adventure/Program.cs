@@ -84,18 +84,21 @@ public static class Program
             string[] input = inputRaw.Trim().ToLower().Split(' ');
 
             InputHandling(input);
-
-            Console.Clear();
-            
         }
     }
 
     private static void InputHandling(string[] input)
     {
+        Console.Clear();
         try
             {
                 switch (input[0])
                 {
+                    case "clr":
+                    case "cls":
+                    case "clear":
+                        Console.Clear();
+                        break;
                     case "status":
                         Player.Status();
                         break;
@@ -118,7 +121,8 @@ public static class Program
                     case "pickup":
                     case "get":
                     case "take":
-                        if(input.Length == 2 && input[2].ToLower() == "all")
+                        if(input.Length < 2) throw new SyntaxErrorException();
+                        if(input.Length == 2 && input[1].ToLower() == "all")
                         {
                             for (int i = Player?.CurrentRoom.Inventory.Count - 1 ?? 0; i >= 0; i--)
                             {

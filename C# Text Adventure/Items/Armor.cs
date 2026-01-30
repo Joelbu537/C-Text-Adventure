@@ -1,4 +1,14 @@
 ﻿namespace C__Text_Adventure.Items;
+public class ArmorItem : Item
+{
+    public override string Name => Color.FORE_ORANGE + RawName + Color.RESET;
+    public int Defense { get; private init; }
+    internal ArmorItem(string name, string description, double weight, double value, int defense)
+        : base(name, description, weight, value)
+    {
+        Defense = defense;
+    }
+}
 public static class Armor
 {
     public static Item LeatherArmor = new ArmorItem(

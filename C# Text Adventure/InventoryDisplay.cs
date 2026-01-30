@@ -2,6 +2,7 @@
 using C__Text_Adventure.Items;
 public static class InventoryDisplay
 {
+    private static Player p = Program.Player;
     const string InventoryText = "[INVENTORY]";
     private static string InfoText = String.Empty;
     private static int SelectedItem { get; set; } = 0;
@@ -22,7 +23,7 @@ public static class InventoryDisplay
                         return;
                     case ConsoleKey.DownArrow:
                     case ConsoleKey.S:
-                        SelectedItem = Math.Max(SelectedItem + 1, Program.Player.Inventory.Count - 1);
+                        SelectedItem = Math.Max(SelectedItem + 1, p.Inventory.Count - 1);
                         break;
                     case ConsoleKey.UpArrow:
                     case ConsoleKey.W:
@@ -38,6 +39,8 @@ public static class InventoryDisplay
                         Describe();
                         break;
                 }
+
+                if(p.Inventory.Count == 0) return;
 
                 DrawInventory();
             }
@@ -87,28 +90,30 @@ public static class InventoryDisplay
         // Draw items
         for (int i = 0; i < 9; i++)
         {
+            Console.ResetColor();
+
             int targetItem = SelectedItem - 5 + i;
-            if (targetItem < 0 || targetItem >= Program.Player.Inventory.Count)
+            if (targetItem < 0 || targetItem >= p.Inventory.Count)
             {
                 Console.WriteLine();
                 continue;
             }
 
             string itemSentence = Color.FORE_CYAN;
-            if (i == inventoryHalfBlockShit)
+            if (i == 5)
             {
                 Console.BackgroundColor = ConsoleColor.White;
             }
 
-            int middlePadding = GetMiddlePadding(Program.Player.Inventory[targetItem].RawName.Length);
+            int middlePadding = GetMiddlePadding(p.Inventory[targetItem].RawName.Length);
             itemSentence = itemSentence.Insert(0, new string(' ', middlePadding));
-            itemSentence += Program.Player.Inventory[targetItem].Name;
+            itemSentence += p.Inventory[targetItem].RawName;
             itemSentence = itemSentence.Insert(itemSentence.Length - 1, new string(' ', middlePadding));
             Console.WriteLine(itemSentence);
         }
 
         // Draw scroll down indicator
-        if (Program.Player.Inventory.Count > SelectedItem + 5) // Draw scroll up indicator
+        if (p.Inventory.Count > SelectedItem + 5) // Draw scroll up indicator
         {
             int scrollSideWidth = GetMiddlePadding(1);
             Console.BackgroundColor = ConsoleColor.Gray;
@@ -134,13 +139,21 @@ public static class InventoryDisplay
 
     private static void Use()
     {
-        Item targetItem = Program.Player.Inventory[SelectedItem];
+        Item targetItem = p.Inventory[SelectedItem];
 
-        if (targetItem is HealingItem healItem)
+
+        if(targetItem is HealthingItem healthItem)
         {
-            Program.Player.Heal(healItem.HealAmount);
-            InfoText = $"{Program.Player.Name} used {Program.Player.CurrentRoom.Inventory[SelectedItem]}!".ToString(); // Because it is referencing remove objects
-            Program.Player.Inventory.RemoveAt(SelectedItem);
+            p.HealthUp(healthItem.HealthUpAmmount);
+            p.Heal(healthItem.HealAmount);
+            InfoText = $"";
+            p.Inventory.RemoveAt(SelectedItem);
+        }
+        else if (targetItem is HealingItem healItem)
+        {
+            p.Heal(healItem.HealAmount);
+            InfoText = $"{p.Name} used {p.CurrentRoom.Inventory[SelectedItem]}!".ToString(); // Because it is referencing remove objects
+            p.Inventory.RemoveAt(SelectedItem);
         }
         else if (targetItem is InfoItem infoItem)
         {
@@ -148,33 +161,33 @@ public static class InventoryDisplay
         }
         else if (targetItem is WeaponItem weaponItem)
         {
-            Program.Player.Inventory.Add(Program.Player.EquippedWeapon);
-            Program.Player.EquippedWeapon = weaponItem;
-            Program.Player.Inventory.RemoveAt(SelectedItem);
+            p.Inventory.Add(p.EquippedWeapon);
+            p.EquippedWeapon = weaponItem;
+            p.Inventory.RemoveAt(SelectedItem);
 
-            InfoText = $"{Program.Player.Name} is now wielding {weaponItem.Name}!";
+            InfoText = $"{p.Name} is now wielding {weaponItem.Name}!";
         }
         else if (targetItem is ArmorItem armorItem)
         {
-            Program.Player.Inventory.Add(Program.Player.EquippedWeapon);
-            Program.Player.EquippedArmor = armorItem;
-            Program.Player.Inventory.RemoveAt(SelectedItem);
+            p.Inventory.Add(p.EquippedWeapon);
+            p.EquippedArmor = armorItem;
+            p.Inventory.RemoveAt(SelectedItem);
 
-            InfoText = $"{Program.Player.Name} is now wearing {armorItem.Name}!";
+            InfoText = $"{p.Name} is now wearing {armorItem.Name}!";
         }
     }
 
     private static void Drop()
     {
-        Item targetItem = Program.Player.Inventory[SelectedItem];
-        Program.Player.CurrentRoom.Inventory.Add(targetItem);
-        Program.Player.Inventory.RemoveAt(SelectedItem);
-        InfoText = $"{Program.Player.Name} dropped {Program.Player.CurrentRoom.Inventory[SelectedItem]}!";
+        Item targetItem = p.Inventory[SelectedItem];
+        p.CurrentRoom.Inventory.Add(targetItem);
+        p.Inventory.RemoveAt(SelectedItem);
+        InfoText = $"{p.Name} dropped {p.CurrentRoom.Inventory[SelectedItem]}!";
     }
 
     private static void Describe()
     {
-        Item targetItem = Program.Player.Inventory[SelectedItem];
+        Item targetItem = p.Inventory[SelectedItem];
         InfoText = targetItem.Description;
     }
 }

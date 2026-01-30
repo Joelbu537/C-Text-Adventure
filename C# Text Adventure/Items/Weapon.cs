@@ -1,4 +1,14 @@
 ﻿namespace C__Text_Adventure.Items;
+public class WeaponItem : Item
+{
+    public override string Name => Color.FORE_LIGHT_PURPLE + RawName + Color.RESET;
+    public int Damage { get; private init; }
+    internal WeaponItem(string name, string description, double weight, double value, int damage)
+        : base(name, description, weight, value)
+    {
+        Damage = damage;
+    }
+}
 public static class Weapon
 {
     public static Item Glock19 = new WeaponItem(

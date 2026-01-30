@@ -13,8 +13,8 @@ public class Room
 
     private string Description { get; }
     public InventoryList Inventory { get; }
-    public NPC?[] NPCs {get; init; }
-    public Room?[] ConnectedRooms { get; init; }
+    public NPC?[] NPCs {get; set; }
+    public Room?[] ConnectedRooms { get; set; }
     public bool IsUnlocked { get; private set; }
     public string? FirstEnterMessage { get; }
     private bool hasBeenEntered = false;
@@ -26,6 +26,7 @@ public class Room
         IsUnlocked = isUnlocked;
         Inventory = new();
         FirstEnterMessage = firstEnterMessage;
+        NPCs = new NPC[0];
     }
     public void Describe()
     {

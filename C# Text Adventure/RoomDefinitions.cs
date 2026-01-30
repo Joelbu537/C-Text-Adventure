@@ -37,6 +37,7 @@ public static class RoomDefinitions
         TavernShed.AddItem(Weapon.WoodenClub);
         TavernShed.AddItem(Healing.HealingHerbs);
         TavernShed.AddItem(Armor.LeatherArmor);
+        TavernShed.AddItem(Healthing.LifePotion);
 
 
         Tavern.ConnectedRooms = [null, StartingField, TavernShed, null];

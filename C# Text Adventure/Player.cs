@@ -72,4 +72,8 @@ public class Player
     {
         Hp = Math.Max(0, Hp - ammount);
     }
+    public void HealthUp(int ammount)
+    {
+        MaxHp += ammount;
+    }
 }

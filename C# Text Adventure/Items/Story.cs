@@ -1,4 +1,13 @@
 ﻿namespace C__Text_Adventure.Items;
+public class InfoItem : Item
+{
+    public string Message { get; private init; }
+    internal InfoItem(string name, string description, double weight, double value, string message)
+        : base(name, description, weight, value)
+    {
+        Message = message;
+    }
+}
 public static class Story
 {
     public static Item TavernNote = new InfoItem(
