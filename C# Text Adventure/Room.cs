@@ -32,11 +32,16 @@ public class Room
     {
         Console.WriteLine(Program.Player?.Name + " is here: " + Name);
         Console.WriteLine(Description);
-        Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
-        foreach(NPC? npc in NPCs)
+
+        if(NPCs.Length != 0)
         {
-            Console.WriteLine($"{npc.Name} - {npc.Description}");
+            Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
+            foreach(NPC? npc in NPCs)
+            {
+                Console.WriteLine($"{npc.Name} - {npc.Description}");
+            }
         }
+
         
         if (!hasBeenEntered && FirstEnterMessage != null)
         {

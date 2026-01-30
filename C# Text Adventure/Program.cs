@@ -38,6 +38,7 @@ public static class Program
         Console.Clear();
 
         Player = new Player(playerName, 100, 20, RoomDefinitions.StartingField);
+        NPCDefinitions.InitNPCs();
         RoomDefinitions.InitRooms();
         Player.CurrentRoom = RoomDefinitions.StartingField;
         Player.CurrentRoom.Describe();

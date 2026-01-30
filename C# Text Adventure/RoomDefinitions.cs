@@ -43,5 +43,7 @@ public static class RoomDefinitions
         Tavern.ConnectedRooms = [null, StartingField, TavernShed, null];
         StartingField.ConnectedRooms = [Tavern, null, null, null];
         TavernShed.ConnectedRooms = [null, null, null, Tavern];
+
+        TavernShed.NPCs = [NPCDefinitions.Blacksmith];
     }
 }
