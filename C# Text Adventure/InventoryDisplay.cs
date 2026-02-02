@@ -62,7 +62,6 @@ public static class InventoryDisplay
             }
         }
     }
-
     private static void DrawInventory()
     {
         while (Console.WindowHeight < 16 || Console.WindowWidth < 40)
@@ -75,23 +74,23 @@ public static class InventoryDisplay
         int itemDisplayCount = Console.WindowHeight - 4; // Ammount of items that can be displayed without scrolling
 
         ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 2));  //
-        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); // Top Border
+        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Top Border
 
         for (int i = 0; i < itemDisplayCount; i++)
         {
             if (!(i < p.Inventory.Count))    // If there are no more items to display, fill with empty lines
             {
-                ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2));
+                ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4));
                 continue;
             }
             if (i == SelectedItem)        // Highlight the selected item
             {
                 ConsoleBuffer.Add(BACK_WHITE);
             }
-            ConsoleBuffer.Add(Boxing.WindowWall($"{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 2)); // Display the item
+            ConsoleBuffer.Add(Boxing.WindowWall($"{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item
         }
 
-        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); // Bottom Border
+        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Bottom Border
         ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 2));    //
 
 
