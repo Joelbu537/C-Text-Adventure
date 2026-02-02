@@ -1,8 +1,9 @@
 ﻿namespace C__Text_Adventure;
 using C__Text_Adventure.Items;
+using static Color;
 public static class InventoryDisplay
 {
-    private static Player p = Program.Player;
+    private static Player p = Program.Player!;
     private static string InfoText = string.Empty;
     private static int SelectedItem = 0;
     private static int SelectedInfo = 0;
@@ -64,7 +65,7 @@ public static class InventoryDisplay
 
     private static void DrawInventory()
     {
-        while(Console.WindowHeight < 14 || Console.WindowWidth < 40)
+        while (Console.WindowHeight < 16 || Console.WindowWidth < 40)
         {
             Console.Clear();
             Boxing.WindowTooSmall();
@@ -76,27 +77,51 @@ public static class InventoryDisplay
         ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 2));  //
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); // Top Border
 
-        for(int i = 0; i < itemDisplayCount; i++)
+        for (int i = 0; i < itemDisplayCount; i++)
         {
-            if(!(i < p.Inventory.Count))    // If there are no more items to display, fill with empty lines
+            if (!(i < p.Inventory.Count))    // If there are no more items to display, fill with empty lines
             {
                 ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2));
                 continue;
             }
-            if(i == SelectedItem)        // Highlight the selected item
+            if (i == SelectedItem)        // Highlight the selected item
             {
-                ConsoleBuffer.Add(C__Text_Adventure.Color.BACK_WHITE);
+                ConsoleBuffer.Add(BACK_WHITE);
             }
-            ConsoleBuffer.Add(Boxing.WindowWall($"{p.Inventory[i].Name}", Console.WindowWidth - 2)); // Display the item
+            ConsoleBuffer.Add(Boxing.WindowWall($"{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 2)); // Display the item
         }
 
-        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); //
-        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 2));    // Bottom Border
+        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); // Bottom Border
+        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 2));    //
+
+
+        if(InfoMode)    // Draw Info Window  // Size should scale depending on Description size.
+        {
+            int descriptionLines = Console.WindowHeight - 10 - 2; // Lines available for description, - 10 for interactions and roof, - 2 for floor.
+            int infoTotalWidth = (Console.WindowWidth - 4) / 2; // Total width of info box, should be half of main window minus the outer border.
+            int infoInnerWidth = infoTotalWidth - 4; // Inner width of info box, without walls and space.
+            int descriptionChars = descriptionLines * infoInnerWidth; // Total characters that can fit in description area.
+
+            // Info Box Drawing
+            int insertionIndex = Console.WindowWidth - infoTotalWidth - 2;
+
+            ConsoleBuffer[2] = ConsoleBuffer[2].OverwriteAt(Boxing.WindowCeiling(infoTotalWidth - 2), insertionIndex);                                      // Info Roof
+            ConsoleBuffer[3] = ConsoleBuffer[3].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty line
+            ConsoleBuffer[4] = ConsoleBuffer[4].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 0 ? BACK_GREEN : BACK_BLACK)}USE Item{RESET}",
+                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                          // Info USE Button
+            ConsoleBuffer[5] = ConsoleBuffer[5].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty Line
+            ConsoleBuffer[6] = ConsoleBuffer[6].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 1 ? BACK_LIGHT_RED : BACK_BLACK)}DROP Item{RESET}",
+                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                          // Info DROP line  
+            ConsoleBuffer[7] = ConsoleBuffer[7].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty Line
+            ConsoleBuffer[8] = ConsoleBuffer[8].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 2 ? BACK_LIGHT_YELLOW : BACK_BLACK)}SELL Item{RESET}",
+                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                          // Info SELL line  
+            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty Line
+        }
 
 
         // Draw the final buffer
         Console.Clear();
-        foreach(string line in ConsoleBuffer)
+        foreach (string line in ConsoleBuffer)
         {
             Console.WriteLine(line);
         }

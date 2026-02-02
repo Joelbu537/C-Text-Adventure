@@ -34,19 +34,27 @@ public static class Boxing
         }
         return content;
     }
-    public static void WriteCentered(string content)
+    public static string Center(string content)
     {
         int consoleWidth = Console.WindowWidth;
         int contentLength = content.Clean().Length;
         int leftPadding = (consoleWidth - contentLength) / 2;
-        Console.WriteLine(new string(' ', leftPadding) + content);
+        return new string(' ', leftPadding) + content;
+    }
+    public static string Center(string content, int width) // Cheap overload, does its job.
+    {
+        int consoleWidth = width;
+        int contentLength = content.Clean().Length;
+        int leftPadding = (consoleWidth - contentLength) / 2;
+        return new string(' ', leftPadding) + content;
+    }
+    public static void WriteCentered(string content)
+    {
+        Console.WriteLine(Center(content));
     }
     public static void WriteLineCentered(string content)
     {
-        int consoleWidth = Console.WindowWidth;
-        int contentLength = content.Clean().Length;
-        int leftPadding = (consoleWidth - contentLength) / 2;
-        Console.WriteLine(new string(' ', leftPadding) + content);
+        Console.WriteLine(Center(content));
     }
     public static void WindowTooSmall()
     {
@@ -56,5 +64,12 @@ public static class Boxing
         WriteLineCentered(WindowWall(warning));
         WriteLineCentered(WindowWall($"{Console.WindowWidth}x{Console.WindowHeight} detected!", warning.Clean().Length));
         WriteLineCentered(WindowFloor(warning.Clean().Length));
+    }
+    public static string OverwriteAt(this string original, string input, int startIndex)
+    {
+        if (startIndex < 0 || startIndex > original.Length) throw new ArgumentOutOfRangeException();
+        int endIndex = Math.Min(startIndex + input.Length, original.Length);
+
+        return original.Substring(0, startIndex) + input + original.Substring(endIndex);
     }
 }
