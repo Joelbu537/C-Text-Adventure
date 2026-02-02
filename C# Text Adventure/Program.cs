@@ -1,6 +1,8 @@
 ﻿namespace C__Text_Adventure;
 
 using System.Data;
+using System.Drawing;
+
 public static class Program
 {
     public static Player? Player;
@@ -47,9 +49,16 @@ public static class Program
         {
             if (Player.Hp <= 0)
             {
-                string deathText = new string('\n', (Console.WindowHeight - 2) / 2).PadRight(Console.WindowWidth - Player.Name.Length + 15) + Player.Name + Color.FORE_LIGHT_RED + " met their fate!";
-                Console.WriteLine(deathText);
-                Console.WriteLine("\nPress any key to exit ...");
+                Console.Clear();
+                Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
+                string deathMessage = $"{C__Text_Adventure.Color.FORE_LIGHT_RED}{Player.RawName} met their fate!";
+                int windowWidth = deathMessage.Clean().Length;
+
+                Console.WriteLine(WindowCeiling(windowWidth));
+                Console.WriteLine(WindowWall(deathMessage));
+                Console.WriteLine(WindowWall($"{C__Text_Adventure.Color.FORE_LIGHT_RED}Press any key...", windowWidth));
+                Console.WriteLine(WindowFloor(windowWidth));
+
                 Console.ReadKey();
                 return;
             }
@@ -187,6 +196,11 @@ public static class Program
                         Player?.CurrentRoom.Describe();
                         break;
                     case "kys":
+                        if(input.Length > 1 && input[1] == "now")
+                        {
+                            Player?.Damage(short.MaxValue);
+                            break;
+                        }
                         Player?.Damage(14);
                         break;
                     case "talk":
@@ -227,5 +241,38 @@ public static class Program
         Console.WriteLine("Syntax Error or missing parameters!");
         Console.ResetColor();
         Console.WriteLine("To see a list of all available commands, use \"help\"");
+    }
+    public static string WindowCeiling(int width)
+    {
+        return $"╔{new string('═', width + 2)}╗";
+    }
+    public static string WindowFloor(int width)
+    {
+        return $"╚{new string('═', width + 2)}╝";
+    }
+    public static string WindowWall(string content)
+    {
+        return content.Insert(0, "║ ") + C__Text_Adventure.Color.RESET + " ║";
+    }
+    public static string WindowWall(string content, int targetWidth)
+    {
+        int cleanLength = content.Clean().Length;
+        if (cleanLength < targetWidth)
+        {
+            return WindowWall(content + new string(' ', targetWidth - cleanLength));
+        }
+        else if (cleanLength > targetWidth)
+        {
+            return WindowWall(content.Substring(0, targetWidth));
+        }
+        return WindowWall(content);
+    }
+    public static string Clean(this string content)
+    {
+        foreach(string color in C__Text_Adventure.Color.COLOR_LIST)
+        {
+            if(content.Contains(color)) content = content.Replace(color, "");
+        }
+        return content;
     }
 }

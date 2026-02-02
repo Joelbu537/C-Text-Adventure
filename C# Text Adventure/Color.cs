@@ -38,4 +38,43 @@ public static class Color
     public const string BACK_LIGHT_PURPLE = "\x1B[48;5;013m";
     public const string BACK_LIGHT_CYAN = "\x1B[48;5;014m";
     public const string BACK_WHITE = "\x1B[48;5;015m";
+
+    public static readonly List<string> COLOR_LIST = new List<string>
+    {
+        RESET,
+        FORE_BLACK,
+        FORE_RED,
+        FORE_GREEN,
+        FORE_YELLOW,
+        FORE_BLUE,
+        FORE_PURPLE,
+        FORE_CYAN,
+        FORE_LIGHT_GREY,
+        FORE_GREY,
+        FORE_LIGHT_RED,
+        FORE_LIGHT_GREEN,
+        FORE_LIGHT_YELLOW,
+        FORE_LIGHT_BLUE,
+        FORE_LIGHT_PURPLE,
+        FORE_LIGHT_CYAN,
+        FORE_WHITE,
+        FORE_ORANGE,
+        FORE_LIGHT_ORANGE,  
+        BACK_BLACK,
+        BACK_RED,
+        BACK_GREEN,
+        BACK_YELLOW,
+        BACK_BLUE,
+        BACK_PURPLE,
+        BACK_CYAN,
+        BACK_LIGHT_GREY,
+        BACK_GREY,
+        BACK_LIGHT_RED,
+        BACK_LIGHT_GREEN,
+        BACK_LIGHT_YELLOW,
+        BACK_LIGHT_BLUE,
+        BACK_LIGHT_PURPLE,
+        BACK_LIGHT_CYAN,
+        BACK_WHITE
+    };
 }
