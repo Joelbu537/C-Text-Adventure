@@ -64,16 +64,16 @@ public static class InventoryDisplay
     }
     private static void DrawInventory()
     {
-        while (Console.WindowHeight < 16 || Console.WindowWidth < 40)
+        while (Console.WindowHeight < 16 || Console.WindowWidth < 35)
         {
             Console.Clear();
             Boxing.WindowTooSmall();
             Thread.Sleep(500);
         }
 
-        int itemDisplayCount = Console.WindowHeight - 4; // Ammount of items that can be displayed without scrolling
+        int itemDisplayCount = Console.WindowHeight - 5; // Ammount of items that can be displayed without scrolling, -2 for roof, -2 for floor, -1 for empty line (so the roof does not get pusehd out of the visible console).
 
-        ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 2));  //
+        ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 3));  //
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Top Border
 
         for (int i = 0; i < itemDisplayCount; i++)
@@ -83,15 +83,11 @@ public static class InventoryDisplay
                 ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4));
                 continue;
             }
-            if (i == SelectedItem)        // Highlight the selected item
-            {
-                ConsoleBuffer.Add(BACK_WHITE);
-            }
-            ConsoleBuffer.Add(Boxing.WindowWall($"{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item
+            ConsoleBuffer.Add(Boxing.WindowWall($"{(i == SelectedItem ? BACK_WHITE : "")}{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item, if it's selected, highlight it.
         }
 
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Bottom Border
-        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 2));    //
+        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 3));    //
 
 
         if(InfoMode)    // Draw Info Window  // Size should scale depending on Description size.
