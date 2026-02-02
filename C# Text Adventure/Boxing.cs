@@ -11,7 +11,7 @@ public static class Boxing
     }
     public static string WindowWall(string content)
     {
-        return content.Insert(0, "║ ") + C__Text_Adventure.Color.RESET + " ║";
+        return content.Insert(0, "║ ") + Color.RESET + " ║";
     }
     public static string WindowWall(string content, int targetWidth)
     {
@@ -28,7 +28,7 @@ public static class Boxing
     }
     public static string Clean(this string content)
     {
-        foreach(string color in C__Text_Adventure.Color.COLOR_LIST)
+        foreach(string color in Color.COLOR_LIST)
         {
             if(content.Contains(color)) content = content.Replace(color, "");
         }
@@ -65,7 +65,7 @@ public static class Boxing
         WriteLineCentered(WindowWall($"{Console.WindowWidth}x{Console.WindowHeight} detected!", warning.Clean().Length));
         WriteLineCentered(WindowFloor(warning.Clean().Length));
     }
-    public static string OverwriteAt(this string original, string input, int startIndex)
+    public static string OverwriteAt(this string original, string input, int startIndex) // !!THIS METHOD IS AI-GENERATED and modified by myself!!
     {
         if (startIndex < 0 || startIndex > original.Length) throw new ArgumentOutOfRangeException();
         int endIndex = Math.Min(startIndex + input.Length, original.Length);

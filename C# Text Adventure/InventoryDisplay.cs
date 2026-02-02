@@ -64,7 +64,7 @@ public static class InventoryDisplay
     }
     private static void DrawInventory()
     {
-        while (Console.WindowHeight < 16 || Console.WindowWidth < 35)
+        while (Console.WindowHeight < 19 || Console.WindowWidth < 35)
         {
             Console.Clear();
             Boxing.WindowTooSmall();
