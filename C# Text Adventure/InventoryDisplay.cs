@@ -21,7 +21,7 @@ public static class InventoryDisplay
                     case ConsoleKey.Escape:
                         Console.Clear();
                         return;
-                    case ConsoleKey.DownArrow:
+                    /*case ConsoleKey.DownArrow:
                     case ConsoleKey.S:
                         SelectedItem = Math.Max(SelectedItem + 1, p.Inventory.Count - 1);
                         break;
@@ -38,6 +38,7 @@ public static class InventoryDisplay
                     case ConsoleKey.I:
                         Describe();
                         break;
+                        */
                 }
 
                 if(p.Inventory.Count == 0) return;
@@ -49,87 +50,19 @@ public static class InventoryDisplay
 
     private static void DrawInventory()
     {
+        
+        
+        while(Console.WindowHeight < 14 || Console.WindowWidth < 40)
+        {
+            Console.Clear();
+            Boxing.WindowTooSmall();
+            Thread.Sleep(500);
+        }
+
         Console.Clear();
-        /*
-         * Inventory LABEL
-         * Empty
-         * Scroll Up
-         * Inventory 1
-         * Inventory 2
-         * Inventory 3
-         * Inventory 4
-         * INVENTORY 5
-         * Inventory 6
-         * Inventory 7
-         * Inventory 8
-         * Inventory 9
-         * Scroll Down
-         * Empty
-         * InfoText
-         * Keys
-         */
 
-
-        // Draw Inventory Label
-        int inventoryTextSideWidth = GetMiddlePadding(InventoryText.Length);
-        Console.ForegroundColor = ConsoleColor.Black;
-        Console.WriteLine(String.Empty.PadRight(inventoryTextSideWidth) + Color.BACK_WHITE + InventoryText + Color.RESET + String.Empty.PadRight(inventoryTextSideWidth) + '\n');
-
-
-        // Draw scroll up indicator
-        if (SelectedItem > 5) 
-        {
-            int scrollSideWidth = GetMiddlePadding(1);
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(String.Empty.PadRight(scrollSideWidth) + '⮝' + String.Empty.PadRight(scrollSideWidth) + '\n');
-            Console.ResetColor();
-        }
-        Console.ResetColor();
-
-        // Draw items
-        for (int i = 0; i < 9; i++)
-        {
-            Console.ResetColor();
-
-            int targetItem = SelectedItem - 5 + i;
-            if (targetItem < 0 || targetItem >= p.Inventory.Count)
-            {
-                Console.WriteLine();
-                continue;
-            }
-
-            string itemSentence = Color.FORE_CYAN;
-            if (i == 5)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-            }
-
-            int middlePadding = GetMiddlePadding(p.Inventory[targetItem].RawName.Length);
-            itemSentence = itemSentence.Insert(0, new string(' ', middlePadding));
-            itemSentence += p.Inventory[targetItem].RawName;
-            itemSentence = itemSentence.Insert(itemSentence.Length - 1, new string(' ', middlePadding));
-            Console.WriteLine(itemSentence);
-        }
-
-        // Draw scroll down indicator
-        if (p.Inventory.Count > SelectedItem + 5) // Draw scroll up indicator
-        {
-            int scrollSideWidth = GetMiddlePadding(1);
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(String.Empty.PadRight(scrollSideWidth) + '⮟' + String.Empty.PadRight(scrollSideWidth) + '\n');
-            Console.ResetColor();
-        }
-        Console.ResetColor();
-
-        Console.WriteLine();
-        Console.WriteLine(InfoText);
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.Black;
-        Console.WriteLine($"{Color.BACK_WHITE}[ENTER]{Color.BACK_LIGHT_GREY} Use Item {Color.BACK_BLACK}    " +
-                          $"{Color.BACK_WHITE}[I]{Color.BACK_LIGHT_GREY} Inspect Item {Color.BACK_BLACK}    " +
-                          $"{Color.BACK_WHITE}[R]{Color.BACK_LIGHT_GREY} Drop Item {Color.BACK_BLACK}");
+        Console.WriteLine(Boxing.WindowCeiling(Console.WindowWidth - 2));
+        Console.WriteLine(Boxing.WindowWall("", Console.WindowWidth - 2));
     }
 
     private static int GetMiddlePadding(int length)
