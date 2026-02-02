@@ -12,35 +12,35 @@ public static class Help
     static Help()
     {
         Commands.Add(new HelpCommand(
-            "status",
-            "Prints a status message displaying the state your character is in"
+            commandName: "status",
+            description: "Prints a status message displaying the state your character is in"
             ));
         Commands.Add(new HelpCommand(
-            "search",
-            "Searches the current room/area for items"
+            commandName: "search",
+            description: "Searches the current room/area for items"
             ));
         Commands.Add(new HelpCommand(
-            "take",
-            "Attempts to pick up the chosen item and add it to the inventory",
-            new string[] { "pick", "pickup", "get", "grab" },
-            new string[] { "Item" }
+            commandName: "take",
+            description: "Attempts to pick up the chosen item and add it to the inventory",
+            commandAlias: new string[] { "pick", "pickup", "get", "grab" },
+            parameters: new string[] { "Item", "all" }
             ));
         Commands.Add(new HelpCommand(
-            "move",
-            "Attempts to move the player in the given direction",
-            ["go", "walk"],
-            ["Direction"]
+            commandName: "move",
+            description: "Attempts to move the player in the given direction",
+            commandAlias: new string[] { "go", "walk" },
+            parameters: new string[] { "Direction" }
             ));
         Commands.Add(new HelpCommand(
-            "inventory",
-            "If not empty, opens the inventory.\n" +
+            commandName: "inventory",
+            description: "If not empty, opens the inventory.\n" +
             "Here, you can use, drop and inspect you items.",
             null
             ));
         Commands.Add(new HelpCommand(
-            "describe",
-            "Describes the current room.",
-            ["look"]
+            commandName: "describe",
+            description: "Describes the current room.",
+            commandAlias: new string[] { "look" }
         ));
 
         Commands.Sort();
@@ -78,7 +78,7 @@ public static class Help
             if(command.Parameters != null)
             {
                 Console.Write($"    <");
-                Console.Write(string.Join(" ", command.Parameters));
+                Console.Write(string.Join(" / ", command.Parameters));
                 Console.Write(">");
             }
             Console.ResetColor();

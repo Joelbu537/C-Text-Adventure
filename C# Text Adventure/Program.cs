@@ -132,7 +132,7 @@ public static class Program
                     case "get":
                     case "take":
                         if(input.Length < 2) throw new SyntaxErrorException();
-                        if(input.Length == 2 && input[1].ToLower() == "all")
+                        if(input.Length > 1 && input[1].ToLower() == "all")
                         {
                             for (int i = Player?.CurrentRoom.Inventory.Count - 1 ?? 0; i >= 0; i--)
                             {

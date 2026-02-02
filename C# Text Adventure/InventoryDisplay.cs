@@ -3,9 +3,11 @@ using C__Text_Adventure.Items;
 public static class InventoryDisplay
 {
     private static Player p = Program.Player;
-    const string InventoryText = "[INVENTORY]";
-    private static string InfoText = String.Empty;
-    private static int SelectedItem { get; set; } = 0;
+    private static string InfoText = string.Empty;
+    private static int SelectedItem = 0;
+    private static int SelectedInfo = 0;
+    private static bool InfoMode { get; set; } = false;
+    private static List<string> ConsoleBuffer = new();
     public static void InventoryLoop()
     {
         DrawInventory();
@@ -19,39 +21,49 @@ public static class InventoryDisplay
                 switch (key.Key)
                 {
                     case ConsoleKey.Escape:
+                        if (InfoMode)
+                        {
+                            InfoMode = false;
+                            SelectedInfo = 0;
+                            break;
+                        }
                         Console.Clear();
                         return;
-                    /*case ConsoleKey.DownArrow:
+                    case ConsoleKey.DownArrow:
                     case ConsoleKey.S:
-                        SelectedItem = Math.Max(SelectedItem + 1, p.Inventory.Count - 1);
+                        if (InfoMode)
+                        {
+                            SelectedInfo++;
+                            break;
+                        }
+                        SelectedItem = Math.Clamp(SelectedItem + 1, 0, p.Inventory.Count - 1);
                         break;
                     case ConsoleKey.UpArrow:
                     case ConsoleKey.W:
-                        SelectedItem = Math.Max(0, SelectedItem - 1);
+                        if (InfoMode)
+                        {
+                            SelectedInfo--;
+                            break;
+                        }
+                        SelectedItem = Math.Clamp(SelectedItem - 1, 0, p.Inventory.Count - 1);
                         break;
                     case ConsoleKey.Enter:
-                        Use();
+                        if (InfoMode)
+                        {
+                            break;
+                        }
+                        InfoMode = true;
                         break;
-                    case ConsoleKey.R:
-                        Drop();
-                        break;
-                    case ConsoleKey.I:
-                        Describe();
-                        break;
-                        */
                 }
 
                 if(p.Inventory.Count == 0) return;
-
-                DrawInventory();
             }
+            DrawInventory();
         }
     }
 
     private static void DrawInventory()
     {
-        
-        
         while(Console.WindowHeight < 14 || Console.WindowWidth < 40)
         {
             Console.Clear();
@@ -59,10 +71,35 @@ public static class InventoryDisplay
             Thread.Sleep(500);
         }
 
-        Console.Clear();
+        int itemDisplayCount = Console.WindowHeight - 4; // Ammount of items that can be displayed without scrolling
 
-        Console.WriteLine(Boxing.WindowCeiling(Console.WindowWidth - 2));
-        Console.WriteLine(Boxing.WindowWall("", Console.WindowWidth - 2));
+        ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 2));  //
+        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); // Top Border
+
+        for(int i = 0; i < itemDisplayCount; i++)
+        {
+            if(!(i < p.Inventory.Count))    // If there are no more items to display, fill with empty lines
+            {
+                ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2));
+                continue;
+            }
+            if(i == SelectedItem)        // Highlight the selected item
+            {
+                ConsoleBuffer.Add(C__Text_Adventure.Color.BACK_WHITE);
+            }
+            ConsoleBuffer.Add(Boxing.WindowWall($"{p.Inventory[i].Name}", Console.WindowWidth - 2)); // Display the item
+        }
+
+        ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 2)); //
+        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 2));    // Bottom Border
+
+
+        // Draw the final buffer
+        Console.Clear();
+        foreach(string line in ConsoleBuffer)
+        {
+            Console.WriteLine(line);
+        }
     }
 
     private static int GetMiddlePadding(int length)
