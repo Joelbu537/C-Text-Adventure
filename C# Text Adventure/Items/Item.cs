@@ -1,4 +1,4 @@
-﻿namespace C__Text_Adventure.Items;
+﻿namespace TextAdventure.Items;
 public abstract class Item
 {
     public string RawName { get; private init; }

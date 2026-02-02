@@ -1,4 +1,4 @@
-﻿namespace C__Text_Adventure.Items;
+﻿namespace TextAdventure.Items;
 public class HealingItem : Item
 {
     public int HealAmount { get; private init; }

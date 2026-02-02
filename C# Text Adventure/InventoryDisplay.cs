@@ -1,5 +1,5 @@
-﻿namespace C__Text_Adventure;
-using C__Text_Adventure.Items;
+﻿namespace TextAdventure;
+using TextAdventure.Items;
 using static Color;
 public static class InventoryDisplay
 {
@@ -71,9 +71,11 @@ public static class InventoryDisplay
             Thread.Sleep(500);
         }
 
+        ConsoleBuffer.Clear();
+
         int itemDisplayCount = Console.WindowHeight - 5; // Ammount of items that can be displayed without scrolling, -2 for roof, -2 for floor, -1 for empty line (so the roof does not get pusehd out of the visible console).
 
-        ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 3));  //
+        ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 4));  //
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Top Border
 
         for (int i = 0; i < itemDisplayCount; i++)
@@ -83,14 +85,14 @@ public static class InventoryDisplay
                 ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4));
                 continue;
             }
-            ConsoleBuffer.Add(Boxing.WindowWall($"{(i == SelectedItem ? BACK_WHITE : "")}{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item, if it's selected, highlight it.
+            ConsoleBuffer.Add(Boxing.WindowWall($"{(i == SelectedItem ? BACK_GREY : "")}{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item, if it's selected, highlight it.
         }
 
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Bottom Border
-        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 3));    //
+        ConsoleBuffer.Add(Boxing.WindowFloor(Console.WindowWidth - 4));                //
 
 
-        if(InfoMode)    // Draw Info Window  // Size should scale depending on Description size.
+        if(InfoMode)    // Draw Info Window  // Size should scale depending on Description size. But it does not. Because I am lazy.
         {
             int descriptionLines = Console.WindowHeight - 10 - 2; // Lines available for description, - 10 for interactions and roof, - 2 for floor.
             int infoTotalWidth = (Console.WindowWidth - 4) / 2; // Total width of info box, should be half of main window minus the outer border.
@@ -100,17 +102,17 @@ public static class InventoryDisplay
             // Info Box Drawing
             int insertionIndex = Console.WindowWidth - infoTotalWidth - 2;
 
-            ConsoleBuffer[2] = ConsoleBuffer[2].OverwriteAt(Boxing.WindowCeiling(infoTotalWidth - 2), insertionIndex);                                      // Info Roof
-            ConsoleBuffer[3] = ConsoleBuffer[3].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty line
+            ConsoleBuffer[2] = ConsoleBuffer[2].OverwriteAt(Boxing.WindowCeiling(infoTotalWidth - 2), insertionIndex);                                                        // Info Roof
+            ConsoleBuffer[3] = ConsoleBuffer[3].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                                         // Empty line
             ConsoleBuffer[4] = ConsoleBuffer[4].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 0 ? BACK_GREEN : BACK_BLACK)}USE Item{RESET}",
-                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                          // Info USE Button
-            ConsoleBuffer[5] = ConsoleBuffer[5].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty Line
+                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                                                      // Info USE Button
+            ConsoleBuffer[5] = ConsoleBuffer[5].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                                        // Empty Line
             ConsoleBuffer[6] = ConsoleBuffer[6].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 1 ? BACK_LIGHT_RED : BACK_BLACK)}DROP Item{RESET}",
-                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                          // Info DROP line  
-            ConsoleBuffer[7] = ConsoleBuffer[7].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty Line
-            ConsoleBuffer[8] = ConsoleBuffer[8].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 2 ? BACK_LIGHT_YELLOW : BACK_BLACK)}SELL Item{RESET}",
-                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                          // Info SELL line  
-            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                         // Empty Line
+                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                                                      // Info DROP line  
+            ConsoleBuffer[7] = ConsoleBuffer[7].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                                        // Empty Line
+            ConsoleBuffer[8] = ConsoleBuffer[8].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 2 ? BACK_YELLOW : BACK_BLACK)}SELL Item{RESET}",
+                infoInnerWidth), infoInnerWidth), insertionIndex);                                                                                                                     // Info SELL line  
+            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall("", infoInnerWidth), insertionIndex);                                                       // Empty Line
         }
 
 
@@ -121,12 +123,6 @@ public static class InventoryDisplay
             Console.WriteLine(line);
         }
     }
-
-    private static int GetMiddlePadding(int length)
-    {
-        return (Console.WindowWidth - length) / 2;
-    }
-
     private static void Use()
     {
         Item targetItem = p.Inventory[SelectedItem];

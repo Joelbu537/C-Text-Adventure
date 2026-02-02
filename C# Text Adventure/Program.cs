@@ -1,7 +1,6 @@
-﻿namespace C__Text_Adventure;
+﻿namespace TextAdventure;
 
 using System.Data;
-using System.Drawing;
 
 public static class Program
 {
@@ -9,6 +8,7 @@ public static class Program
     static void Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.CursorVisible = false;
         Console.Write(Color.RESET);
         Console.WriteLine($"Welcome to the {Color.FORE_LIGHT_GREEN}Text Adventure{Color.RESET}!");
         Console.Write("Please enter your name: " + Color.FORE_LIGHT_CYAN);
@@ -51,12 +51,12 @@ public static class Program
             {
                 Console.Clear();
                 Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
-                string deathMessage = $"{C__Text_Adventure.Color.FORE_LIGHT_RED}{Player.RawName} met their fate!";
+                string deathMessage = $"{TextAdventure.Color.FORE_LIGHT_RED}{Player.RawName} met their fate!";
                 int windowWidth = deathMessage.Clean().Length;
 
                 Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth));
                 Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
-                Boxing.WriteLineCentered(Boxing.WindowWall($"{C__Text_Adventure.Color.FORE_LIGHT_RED}Press any key...", windowWidth));
+                Boxing.WriteLineCentered(Boxing.WindowWall($"{TextAdventure.Color.FORE_LIGHT_RED}Press any key...", windowWidth));
                 Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth));
 
                 Console.ReadKey();
@@ -101,7 +101,7 @@ public static class Program
     {
         Console.Clear();
         try
-            {
+        {
                 switch (input[0])
                 {
                     case "clr":
@@ -221,19 +221,19 @@ public static class Program
                     default:
                         throw new SyntaxErrorException();
                 }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                SyntaxError();
-            }
-            catch (SyntaxErrorException)
-            {
-                SyntaxError();
-            }
-            catch (ItemTooHeavyException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+        }
+        catch (IndexOutOfRangeException)
+        {
+            SyntaxError();
+        }
+        catch (SyntaxErrorException)
+        {
+            SyntaxError();
+        }
+        catch (ItemTooHeavyException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
     private static void SyntaxError()
     {

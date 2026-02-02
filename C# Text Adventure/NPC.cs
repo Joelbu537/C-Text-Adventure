@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Text;
 
-namespace C__Text_Adventure
+namespace TextAdventure
 {
     public class NPC
     {

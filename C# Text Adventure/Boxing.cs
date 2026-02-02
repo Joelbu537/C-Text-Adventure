@@ -1,4 +1,4 @@
-namespace C__Text_Adventure;
+namespace TextAdventure;
 public static class Boxing
 {
     public static string WindowCeiling(int width)
@@ -67,8 +67,8 @@ public static class Boxing
     }
     public static string OverwriteAt(this string original, string input, int startIndex) // !!THIS METHOD IS AI-GENERATED and modified by myself!!
     {
-        if (startIndex < 0 || startIndex > original.Length) throw new ArgumentOutOfRangeException();
-        int endIndex = Math.Min(startIndex + input.Length, original.Length);
+        if (startIndex < 0 || startIndex > original.Clean().Length) throw new ArgumentOutOfRangeException();
+        int endIndex = Math.Min(startIndex + input.Clean().Length, original.Clean().Length);
 
         return original.Substring(0, startIndex) + input + original.Substring(endIndex);
     }

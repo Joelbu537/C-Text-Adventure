@@ -1,4 +1,4 @@
-﻿namespace C__Text_Adventure.Items;
+﻿namespace TextAdventure.Items;
 public class WeaponItem : Item
 {
     public override string Name => Color.FORE_LIGHT_PURPLE + RawName + Color.RESET;

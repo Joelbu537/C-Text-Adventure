@@ -1,4 +1,4 @@
-﻿namespace C__Text_Adventure.Items;
+﻿namespace TextAdventure.Items;
 public class InfoItem : Item
 {
     public string Message { get; private init; }

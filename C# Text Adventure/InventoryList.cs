@@ -1,5 +1,5 @@
-﻿namespace C__Text_Adventure;
-using C__Text_Adventure.Items;
+﻿namespace TextAdventure;
+using TextAdventure.Items;
 public class InventoryList
 {
 

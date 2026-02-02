@@ -1,6 +1,6 @@
-﻿using C__Text_Adventure.Items;
+﻿using TextAdventure.Items;
 
-namespace C__Text_Adventure;
+namespace TextAdventure;
 
 public class Player
 {

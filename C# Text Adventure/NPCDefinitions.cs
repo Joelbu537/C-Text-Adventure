@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace C__Text_Adventure
+namespace TextAdventure
 {
     public static class NPCDefinitions
     {

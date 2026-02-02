@@ -1,4 +1,4 @@
-﻿namespace C__Text_Adventure;
+﻿namespace TextAdventure;
 
 using System;
 using System.ComponentModel.Design;

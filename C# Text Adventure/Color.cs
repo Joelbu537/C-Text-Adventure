@@ -1,4 +1,4 @@
-﻿namespace C__Text_Adventure;
+﻿namespace TextAdventure;
 public static class Color
 {
     public const string RESET = "\x1B[0m";
