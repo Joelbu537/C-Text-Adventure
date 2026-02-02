@@ -58,8 +58,8 @@ public static class InventoryDisplay
                 }
 
                 if(p.Inventory.Count == 0) return;
+                DrawInventory();
             }
-            DrawInventory();
         }
     }
 
