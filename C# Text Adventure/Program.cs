@@ -206,7 +206,7 @@ public static class Program
                     case "talk":
                     case "speak":
                     case "trade":
-                        foreach(NPC? npc in Player!.CurrentRoom.NPCs)
+                        foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
                         {
                             if(npc is not FriendlyNPC) continue;
                             if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..]).ToLower())

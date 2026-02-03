@@ -13,18 +13,7 @@ public class Room
 
     private string Description { get; }
     public InventoryList Inventory { get; }
-    private NPC?[]? npcs;
-    public NPC?[] NPCs
-    {
-        get
-        {
-            return npcs!;
-        }
-        set
-        {
-            npcs = value;
-        }
-    }
+    public NPC?[]? NPCs;
     private Room?[]? connectedRooms;
     public Room?[] ConnectedRooms 
     { 
@@ -54,7 +43,7 @@ public class Room
         Console.WriteLine(Program.Player!.Name + " is here: " + Name);
         Console.WriteLine(Description);
 
-        if(NPCs.Length != 0)
+        if(NPCs != null && NPCs.Length != 0)
         {
             Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
             foreach(NPC? npc in NPCs)
