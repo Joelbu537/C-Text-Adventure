@@ -2,17 +2,29 @@
 using TextAdventure.Items;
 public static class RoomDefinitions
 {
-    public static Room StartingField;
+    private static Room? startingField;
+    public static Room StartingField { 
+        get => startingField!; 
+        private set => startingField = value; 
+    }
 
-    public static Room Tavern;
+    private static Room? tavern;
+    public static Room Tavern { 
+        get => tavern!; 
+        private set => tavern = value; 
+    }
 
-    public static Room TavernShed;
+    private static Room? tavernShed;
+    public static Room TavernShed { 
+        get => tavernShed!; 
+        private set => tavernShed = value; 
+    }
 
     public static void InitRooms()
     {
         StartingField = new Room(
         "Field",
-        "A empty field that stretches as far as " + Program.Player.Name + " can see.\nThe only thing that is not grass seems to be a " + Color.FORE_WHITE + "tavern" + Color.RESET + " to your " + Color.FORE_WHITE + "north" + Color.RESET,
+        "A empty field that stretches as far as " + Program.Player!.Name + " can see.\nThe only thing that is not grass seems to be a " + Color.FORE_WHITE + "tavern" + Color.RESET + " to your " + Color.FORE_WHITE + "north" + Color.RESET,
         true
         );
         StartingField.AddItem(Healing.Corn);

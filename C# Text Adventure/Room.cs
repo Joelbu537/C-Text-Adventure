@@ -13,8 +13,30 @@ public class Room
 
     private string Description { get; }
     public InventoryList Inventory { get; }
-    public NPC?[] NPCs {get; set; }
-    public Room?[] ConnectedRooms { get; set; }
+    private NPC?[]? npcs;
+    public NPC?[] NPCs
+    {
+        get
+        {
+            return npcs!;
+        }
+        set
+        {
+            npcs = value;
+        }
+    }
+    private Room?[]? connectedRooms;
+    public Room?[] ConnectedRooms 
+    { 
+        get
+        {
+            return connectedRooms!;
+        }
+        set
+        {
+            connectedRooms = value;
+        } 
+    }
     public bool IsUnlocked { get; private set; }
     public string? FirstEnterMessage { get; }
     private bool hasBeenEntered = false;
@@ -26,11 +48,10 @@ public class Room
         IsUnlocked = isUnlocked;
         Inventory = new();
         FirstEnterMessage = firstEnterMessage;
-        NPCs = new NPC[0];
     }
     public void Describe()
     {
-        Console.WriteLine(Program.Player?.Name + " is here: " + Name);
+        Console.WriteLine(Program.Player!.Name + " is here: " + Name);
         Console.WriteLine(Description);
 
         if(NPCs.Length != 0)
@@ -38,7 +59,7 @@ public class Room
             Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
             foreach(NPC? npc in NPCs)
             {
-                Console.WriteLine($"{npc.Name} - {npc.Description}");
+                Console.WriteLine($"{npc!.Name} - {npc.Description}");
             }
         }
 

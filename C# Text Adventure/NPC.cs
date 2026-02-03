@@ -8,7 +8,6 @@ namespace TextAdventure
     public class NPC
     {
         public string Name { get; private init; }
-        public string RawName {get; private init; }
         public int Money { get; set; }
         public string Description { get; private init; }
 
@@ -28,7 +27,18 @@ namespace TextAdventure
     }
     public class FriendlyNPC : NPC
     {
-        public InventoryList Inventory { get; set; }
+        private InventoryList? _inventory;
+        public InventoryList Inventory
+        {
+            get
+            {
+                return _inventory!;
+            }
+            set
+            {
+                _inventory = value;
+            }
+        }
         public FriendlyNPC(string name, string description, int money) : base(name, description, money)
         {
         }

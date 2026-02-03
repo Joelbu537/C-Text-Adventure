@@ -4,7 +4,7 @@ namespace TextAdventure;
 
 public class Player
 {
-    private string? _name = String.Empty;
+    private string? _name = string.Empty;
     public string Name
     {
         get
@@ -12,7 +12,6 @@ public class Player
             return Color.FORE_LIGHT_CYAN + _name + Color.RESET;
         }
     }
-    public string RawName => _name;
     public double Hp { get; private set; }
     public double MaxHp { get; private set; }
     public int Money { get; set; } = 10;

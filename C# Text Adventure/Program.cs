@@ -51,12 +51,12 @@ public static class Program
             {
                 Console.Clear();
                 Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
-                string deathMessage = $"{TextAdventure.Color.FORE_LIGHT_RED}{Player.RawName} met their fate!";
+                string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their fate!";
                 int windowWidth = deathMessage.Clean().Length;
 
                 Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth));
                 Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
-                Boxing.WriteLineCentered(Boxing.WindowWall($"{TextAdventure.Color.FORE_LIGHT_RED}Press any key...", windowWidth));
+                Boxing.WriteLineCentered(Boxing.WindowWall($"{Color.FORE_LIGHT_RED}Press any key...", windowWidth));
                 Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth));
 
                 Console.ReadKey();
@@ -110,12 +110,12 @@ public static class Program
                         Console.Clear();
                         break;
                     case "status":
-                        Player.Status();
+                        Player!.Status();
                         break;
                     case "inventory":
-                        if (Player.Inventory.Count == 0)
+                        if (Player!.Inventory.Count == 0)
                         {
-                            Console.WriteLine($"{Player.Name}'s {Color.FORE_WHITE}inventory{Color.RESET} is {Color.FORE_LIGHT_RED}empty{Color.RESET}!");
+                            Console.WriteLine($"{Player!.Name}'s {Color.FORE_WHITE}inventory{Color.RESET} is {Color.FORE_LIGHT_RED}empty{Color.RESET}!");
                             break;
                         }
                         InventoryDisplay.InventoryLoop();
@@ -138,9 +138,9 @@ public static class Program
                             {
                                 try
                                 {
-                                    Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
-                                    Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
-                                    Player.CurrentRoom.Inventory.RemoveAt(i);
+                                    Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
+                                    Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name + Color.RESET);
+                                    Player!.CurrentRoom.Inventory.RemoveAt(i);
                                 }
                                 catch (ItemTooHeavyException ex)
                                 {
@@ -149,15 +149,15 @@ public static class Program
                             }
                             return;
                         }
-                        for (int i = 0; i < Player?.CurrentRoom.Inventory.Count; i++)
+                        for (int i = 0; i < Player!.CurrentRoom.Inventory.Count; i++)
                         {
-                            if (Player.CurrentRoom.Inventory[i].RawName.ToLower() == String.Join(' ', input[1..]).ToLower())
+                            if (Player!.CurrentRoom.Inventory[i].Name.Clean().ToLower() == String.Join(' ', input[1..]).ToLower())
                             {
                                 try
                                 {
-                                    Player.Inventory.Add(Player.CurrentRoom.Inventory[i]);
-                                    Console.WriteLine(Player.Name + " picked up " + Player.CurrentRoom.Inventory[i].Name + Color.RESET);
-                                    Player.CurrentRoom.Inventory.RemoveAt(i);
+                                    Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
+                                    Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name + Color.RESET);
+                                    Player!.CurrentRoom.Inventory.RemoveAt(i);
                                 }
                                 catch(ItemTooHeavyException ex)
                                 {
@@ -166,7 +166,7 @@ public static class Program
                                 return;
                             }
                         }
-                        Console.WriteLine(Player?.Name + " could not find anything named \"" + Color.FORE_CYAN + String.Join(' ', input[1..]) + Color.RESET + "\"");
+                        Console.WriteLine(Player!.Name + " could not find anything named \"" + Color.FORE_CYAN + String.Join(' ', input[1..]) + Color.RESET + "\"");
                         break;
                     case "move":
                     case "go":
@@ -206,10 +206,10 @@ public static class Program
                     case "talk":
                     case "speak":
                     case "trade":
-                        foreach(NPC? npc in Player.CurrentRoom.NPCs)
+                        foreach(NPC? npc in Player!.CurrentRoom.NPCs)
                         {
                             if(npc is not FriendlyNPC) continue;
-                            if (npc.RawName.ToLower() == string.Join(' ', input[1..]).ToLower())
+                            if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..]).ToLower())
                             {
                                 FriendlyNPC? trader = npc as FriendlyNPC;
                                 trader?.Trade();
