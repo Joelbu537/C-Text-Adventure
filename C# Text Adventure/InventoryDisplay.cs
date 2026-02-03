@@ -17,49 +17,69 @@ public static class InventoryDisplay
             if (Console.KeyAvailable)
             {
                 var key = Console.ReadKey(true);
-
+                InfoText = string.Empty;
 
                 switch (key.Key)
                 {
-                    case ConsoleKey.Escape:
-                        if (InfoMode)
-                        {
-                            InfoMode = false;
-                            SelectedInfo = 0;
-                            break;
-                        }
-                        Console.Clear();
-                        return;
-                    case ConsoleKey.DownArrow:
-                    case ConsoleKey.S:
-                        if (InfoMode)
-                        {
-                            SelectedInfo++;
-                            break;
-                        }
-                        SelectedItem = Math.Clamp(SelectedItem + 1, 0, p.Inventory.Count - 1);
+                case ConsoleKey.Escape:
+                    if (InfoMode)
+                    {
+                        InfoMode = false;
+                        SelectedInfo = 0;
                         break;
-                    case ConsoleKey.UpArrow:
-                    case ConsoleKey.W:
-                        if (InfoMode)
-                        {
-                            SelectedInfo--;
-                            break;
-                        }
-                        SelectedItem = Math.Clamp(SelectedItem - 1, 0, p.Inventory.Count - 1);
+                    }
+                    Console.Clear();
+                    return;
+                case ConsoleKey.DownArrow:
+                case ConsoleKey.S:
+                    if (InfoMode)
+                    {
+                        SelectedInfo++;
                         break;
-                    case ConsoleKey.Enter:
-                        if (InfoMode)
+                    }
+                    SelectedItem = Math.Clamp(SelectedItem + 1, 0, p.Inventory.Count - 1);
+                    break;
+                case ConsoleKey.UpArrow:
+                case ConsoleKey.W:
+                    if (InfoMode)
+                    {
+                        SelectedInfo--;
+                        break;
+                    }
+                    SelectedItem = Math.Clamp(SelectedItem - 1, 0, p.Inventory.Count - 1);
+                    break;
+                case ConsoleKey.Enter:
+                    if (InfoMode)
+                    {
+                        switch(SelectedInfo)
                         {
-                            break;
+                            case 0:
+                                Use();
+                                break;
+                            case 1:
+                                Drop();
+                                break;
+                            case 2:
+                                //Sell();
+                                break;
                         }
+                        SelectedItem--;
+                        InfoMode = false;
+                    }
+                    else
+                    {
                         InfoMode = true;
-                        break;
+                    }
+                    break;
                 }
 
-                if(p.Inventory.Count == 0) return;
-                SelectedInfo = Math.Clamp(SelectedInfo, 0, 2);
+                if(p.Inventory.Count == 0)
+                {
+                    Console.Clear();
+                    return;
+                } 
 
+                SelectedInfo = Math.Clamp(SelectedInfo, 0, 2);
                 DrawInventory();
             }
         }
@@ -81,14 +101,14 @@ public static class InventoryDisplay
         ConsoleBuffer.Add(Boxing.WindowCeiling(Console.WindowWidth - 4));  //
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Top Border
 
-        for (int i = 0; i < itemDisplayCount; i++)
+        for (int i = 0; i < itemDisplayCount; i++) // If the Player has more items than can be displayed, a scenario known as a "Skill Issue" occurs.
         {
-            if (!(i < p.Inventory.Count))    // If there are no more items to display, fill with empty lines
+            if (!(i < p.Inventory.Count))    // If there are no more items to display, fill with empty lines.
             {
                 ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4));
                 continue;
             }
-            ConsoleBuffer.Add(Boxing.WindowWall($"{(i == SelectedItem ? BACK_GREY : "")}{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item, if it's selected, highlight it.
+            ConsoleBuffer.Add(Boxing.WindowWall($"{(i == SelectedItem ? BACK_GREY : "")}{p.Inventory[i].Name}{RESET}", Console.WindowWidth - 4)); // Display the item, if it's selected, highlight it. The highlighting color sucks.
         }
 
         ConsoleBuffer.Add(Boxing.WindowWall("", Console.WindowWidth - 4)); // Bottom Border
@@ -115,10 +135,10 @@ public static class InventoryDisplay
             ConsoleBuffer[7] = ConsoleBuffer[7].OverwriteAt(Boxing.WindowWall("", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                        // Empty Line
             ConsoleBuffer[8] = ConsoleBuffer[8].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 2 ? BACK_YELLOW : BACK_BLACK)} SELL Item {RESET}",
                 infoInnerWidth), infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                                                                                     // Info SELL line  
-            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall("", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                       // Empty Line
-            ConsoleBuffer[10] = ConsoleBuffer[10].OverwriteAt(Boxing.WindowWall("", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);
+            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall((SelectedInfo == 2) ? Boxing.Center($"{FORE_LIGHT_GREEN} {p.Inventory[SelectedItem].ValueText} {RESET}", infoInnerWidth) : "", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                       // Empty Line
+            ConsoleBuffer[10] = ConsoleBuffer[10].OverwriteAt(Boxing.WindowWall("", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex); // Empty line
 
-            string[] descriptionArray = Boxing.WrapText(Program.Player!.Inventory[SelectedItem].Description, infoInnerWidth - 2); // Turn the description into an array of lines that fit the infobox.
+            string[] descriptionArray = Boxing.WrapText(p.Inventory[SelectedItem].Description, infoInnerWidth - 2); // Turn the description into an array of lines that fit the infobox.
 
             for(int i = 11; i < Console.WindowHeight - 6; i++) // Loop through said array 
             {
@@ -155,13 +175,13 @@ public static class InventoryDisplay
         {
             p.HealthUp(healthItem.HealthUpAmmount);
             p.Heal(healthItem.HealAmount);
-            InfoText = $"";
+            InfoText = $"{p.Name} used {p.Inventory[SelectedItem]}!\nTheir {FORE_RED}Max HP{RESET} increased by {FORE_GREEN}{healthItem.HealthUpAmmount}{RESET}.";
             p.Inventory.RemoveAt(SelectedItem);
         }
         else if (targetItem is HealingItem healItem)
         {
             p.Heal(healItem.HealAmount);
-            InfoText = $"{p.Name} used {p.CurrentRoom.Inventory[SelectedItem]}!".ToString(); // Because it is referencing remove objects
+            InfoText = $"{p.Name} used {p.Inventory[SelectedItem]}!\nThey recovered {FORE_GREEN}{healItem.HealAmount} {FORE_RED}HP{RESET}.";
             p.Inventory.RemoveAt(SelectedItem);
         }
         else if (targetItem is InfoItem infoItem)
@@ -191,12 +211,6 @@ public static class InventoryDisplay
         Item targetItem = p.Inventory[SelectedItem];
         p.CurrentRoom.Inventory.Add(targetItem);
         p.Inventory.RemoveAt(SelectedItem);
-        InfoText = $"{p.Name} dropped {p.CurrentRoom.Inventory[SelectedItem]}!";
-    }
-
-    private static void Describe()
-    {
-        Item targetItem = p.Inventory[SelectedItem];
-        InfoText = targetItem.Description;
+        InfoText = $"{p.Name} dropped {targetItem}!";
     }
 }

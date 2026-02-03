@@ -1,7 +1,7 @@
 ﻿namespace TextAdventure;
 
 using System.Data;
-
+using System.Diagnostics;
 public static class Program
 {
     public static Player? Player;
@@ -29,7 +29,7 @@ public static class Program
                     playerName = playerName.Substring(0, playerName.Length - 1);
                     Console.Write("\b \b");
                 }
-                else if(Char.IsLetter(key.KeyChar))
+                else if(char.IsLetter(key.KeyChar))
                 {
                     playerName += key.KeyChar;
                     Console.Write(key.KeyChar);
@@ -51,14 +51,18 @@ public static class Program
             {
                 Console.Clear();
                 Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
-                string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their fate!";
+                string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their final fate!";
                 int windowWidth = deathMessage.Clean().Length;
 
                 Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth));
                 Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
-                Boxing.WriteLineCentered(Boxing.WindowWall($"{Color.FORE_LIGHT_RED}Press any key...", windowWidth));
+                System.Diagnostics.Debug.WriteLine($"Death Message Length: {deathMessage.Clean().Length}, Window Width: {windowWidth}");
+                StreamWriter writer = File.CreateText("deathlog.txt");
+                writer.WriteLine($"Death Message Length: {deathMessage.Clean().Length}|{deathMessage.Length}, Window Width: {windowWidth}");
+                writer.Close();
+                Boxing.WriteLineCentered(Boxing.WindowWall(Boxing.Center((deathMessage.Clean().Length < 27) 
+                ? $"{Color.FORE_LIGHT_RED}Press any key..." : "{Color.FORE_LIGHT_RED}Press any key to continue...", windowWidth), windowWidth));
                 Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth));
-
                 Console.ReadKey();
                 return;
             }
