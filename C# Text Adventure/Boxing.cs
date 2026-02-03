@@ -70,6 +70,9 @@ public static class Boxing
     {
         int consoleWidth = width;
         int contentLength = content.Clean().Length;
+
+        if(contentLength >= consoleWidth) return content;
+
         int leftPadding = (consoleWidth - contentLength) / 2;
         return new string(' ', leftPadding) + content;
     }

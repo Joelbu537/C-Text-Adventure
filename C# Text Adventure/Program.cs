@@ -47,25 +47,25 @@ public static class Program
 
         while (true)
         {
-            if (Player.Hp <= 0)
-            {
-                Console.Clear();
-                Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
-                string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their final fate!";
-                int windowWidth = deathMessage.Clean().Length;
+                if (Player.Hp <= 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
+                    string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their final fate!";
+                    int windowWidth = deathMessage.Clean().Length;
 
-                Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth));
-                Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
-                System.Diagnostics.Debug.WriteLine($"Death Message Length: {deathMessage.Clean().Length}, Window Width: {windowWidth}");
-                StreamWriter writer = File.CreateText("deathlog.txt");
-                writer.WriteLine($"Death Message Length: {deathMessage.Clean().Length}|{deathMessage.Length}, Window Width: {windowWidth}");
-                writer.Close();
-                Boxing.WriteLineCentered(Boxing.WindowWall(Boxing.Center((deathMessage.Clean().Length < 27) 
-                ? $"{Color.FORE_LIGHT_RED}Press any key..." : "{Color.FORE_LIGHT_RED}Press any key to continue...", windowWidth), windowWidth));
-                Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth));
-                Console.ReadKey();
-                return;
-            }
+                    Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth, Color.FORE_LIGHT_RED));
+                    Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
+                    System.Diagnostics.Debug.WriteLine($"Death Message Length: {deathMessage.Clean().Length}, Window Width: {windowWidth}");
+                    StreamWriter writer = File.CreateText("deathlog.txt");
+                    writer.WriteLine($"Death Message Length: {deathMessage.Clean().Length}|{deathMessage.Length}, Window Width: {windowWidth}");
+                    writer.Close();
+                    Boxing.WriteLineCentered(Boxing.WindowWall(Boxing.Center((deathMessage.Clean().Length < 27) 
+                    ? $"{Color.FORE_LIGHT_RED}Press any key..." : $"{Color.FORE_LIGHT_RED}Press any key to continue...", windowWidth), windowWidth));
+                    Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth, Color.FORE_LIGHT_RED));
+                    Console.ReadKey();
+                    return;
+                }
 
 
             Console.ForegroundColor = ConsoleColor.Cyan;
