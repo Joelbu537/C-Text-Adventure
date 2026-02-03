@@ -5,9 +5,17 @@ public static class Boxing
     {
         return $"╔{new string('═', width + 2)}╗";
     }
+    public static string WindowCeiling(int width, string color)
+    {
+        return color + WindowCeiling(width) + Color.RESET;
+    }
     public static string WindowFloor(int width)
     {
         return $"╚{new string('═', width + 2)}╝";
+    }
+    public static string WindowFloor(int width, string color)
+    {
+        return color + WindowFloor(width) + Color.RESET;
     }
     public static string WindowWall(string content)
     {
@@ -25,6 +33,23 @@ public static class Boxing
             return WindowWall(content.Substring(0, targetWidth));
         }
         return WindowWall(content);
+    }
+    public static string WindowWall(string content, string color)
+    {
+        return content.Insert(0, $"{color}║{TextAdventure.Color.RESET} ") + $" {color}║{TextAdventure.Color.RESET}";
+    }
+    public static string WindowWall(string content, int targetWidth, string color)
+    {
+        int cleanLength = content.Clean().Length;
+        if (cleanLength < targetWidth)
+        {
+            return WindowWall(content + new string(' ', targetWidth - cleanLength), color);
+        }
+        else if (cleanLength > targetWidth)
+        {
+            return WindowWall(content.Substring(0, targetWidth), color);
+        }
+        return WindowWall(content, color);
     }
     public static string Clean(this string content)
     {
@@ -67,36 +92,44 @@ public static class Boxing
     }
     public static string OverwriteAt(this string original, string input, int startIndex) // !!THIS METHOD IS AI-GENERATED but highly modified by myself!!
     {
-        if (startIndex < 0 || startIndex > original.Clean().Length) throw new ArgumentOutOfRangeException();
-        int endIndex = Math.Min(startIndex + input.Clean().Length, original.Clean().Length);
+        int originalCleanLength = original.Clean().Length;
+        int inputCleanLength = input.Clean().Length;
 
-        return original.Substring(0, startIndex) + input + original.Substring(endIndex);
+        if (startIndex < 0 || startIndex > originalCleanLength) throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+        int endCleanIndex = Math.Min(
+            startIndex + inputCleanLength,
+            originalCleanLength
+        );
+
+        int rawStart = original.CleanIndexToRawIndex(startIndex);
+        int rawEnd = original.CleanIndexToRawIndex(endCleanIndex);
+
+        return original[..rawStart] + input + original[rawEnd..];
     }
-    public static string[] WrapText(string text, int maxCharsPerLine) // !!THIS METHOD IS AI-GENERATED!!
+    public static string[] WrapText(string text, int maxCharsPerLine) // !!THIS METHOD IS AI-GENERATED because I am lazy!!
     {
         if (string.IsNullOrWhiteSpace(text))
             return Array.Empty<string>();
-    
+
         List<string> lines = new();
-    
-        // 1️⃣ Harte Zeilenumbrüche beachten
+
         string[] rawLines = text.Split('\n');
-    
+
         foreach (string rawLine in rawLines)
         {
-            // Leere Zeile erzwingen
+
             if (string.IsNullOrWhiteSpace(rawLine))
             {
                 lines.Add(string.Empty);
                 continue;
             }
-    
+
             string[] words = rawLine.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             string currentLine = "";
-    
+
             foreach (string word in words)
             {
-                // Wort ist länger als eine ganze Zeile → hart splitten
                 if (word.Clean().Length > maxCharsPerLine)
                 {
                     if (currentLine.Clean().Length > 0)
@@ -104,7 +137,7 @@ public static class Boxing
                         lines.Add(currentLine);
                         currentLine = "";
                     }
-    
+
                     for (int i = 0; i < word.Clean().Length; i += maxCharsPerLine)
                     {
                         int len = Math.Min(maxCharsPerLine, word.Clean().Length - i);
@@ -112,7 +145,7 @@ public static class Boxing
                     }
                     continue;
                 }
-    
+
                 if (currentLine.Clean().Length == 0)
                 {
                     currentLine = word;
@@ -127,12 +160,32 @@ public static class Boxing
                     currentLine = word;
                 }
             }
-    
+
             if (currentLine.Clean().Length > 0)
                 lines.Add(currentLine);
         }
-    
+
         return lines.ToArray();
     }
-    
+    public static int CleanIndexToRawIndex(this string s, int cleanIndex)
+    {
+        int raw = 0;
+        int clean = 0;
+
+        while (raw < s.Length && clean < cleanIndex)
+        {
+            if (s[raw] == '\x1b') // Find ANSI
+            {
+                while (raw < s.Length && s[raw] != 'm') // And skip it
+                    raw++;
+
+                raw++;
+                continue;
+            }
+            raw++;
+            clean++;
+        }
+
+        return raw;
+    }
 }
