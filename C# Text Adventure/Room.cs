@@ -12,6 +12,7 @@ public class Room
     }
 
     private string Description { get; }
+    public bool Searched { get; set; } = false;
     public InventoryList Inventory { get; }
     public NPC?[]? NPCs;
     private Room?[]? connectedRooms;
@@ -71,8 +72,11 @@ public class Room
         Console.WriteLine("They found the following " + Color.FORE_CYAN + "items" + Color.RESET + ":");
         for (int i = 0; i < Inventory.Count; i++)
         {
+            if(!Searched) Thread.Sleep(1500);
             Console.WriteLine(Inventory[i].Name);
         }
+
+        Searched = true;
     }
 
     public void AddItem(Item item)

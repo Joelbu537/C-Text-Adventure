@@ -4,7 +4,7 @@ using System.Data;
 using System.Diagnostics;
 public static class Program
 {
-    public static Player? Player;
+    public static Player Player;
     static void Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -39,7 +39,7 @@ public static class Program
         Console.Write(Color.RESET);
         Console.Clear();
 
-        Player = new Player(playerName, 100, 20, RoomDefinitions.StartingField);
+        Player = new Player(playerName, 100, 10, RoomDefinitions.StartingField);
         NPCDefinitions.InitNPCs();
         RoomDefinitions.InitRooms();
         Player.CurrentRoom = RoomDefinitions.StartingField;
@@ -47,26 +47,22 @@ public static class Program
 
         while (true)
         {
-                if (Player.Hp <= 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
-                    string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their final fate!";
-                    int windowWidth = deathMessage.Clean().Length;
+            if (Player.Hp <= 0)
+            {
+                Console.Clear();
+                Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
+                string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their final fate!";
+                int windowWidth = deathMessage.Clean().Length;
 
-                    Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth, Color.FORE_LIGHT_RED));
-                    Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
-                    System.Diagnostics.Debug.WriteLine($"Death Message Length: {deathMessage.Clean().Length}, Window Width: {windowWidth}");
-                    StreamWriter writer = File.CreateText("deathlog.txt");
-                    writer.WriteLine($"Death Message Length: {deathMessage.Clean().Length}|{deathMessage.Length}, Window Width: {windowWidth}");
-                    writer.Close();
-                    Boxing.WriteLineCentered(Boxing.WindowWall(Boxing.Center((deathMessage.Clean().Length < 27) 
-                    ? $"{Color.FORE_LIGHT_RED}Press any key..." : $"{Color.FORE_LIGHT_RED}Press any key to continue...", windowWidth), windowWidth));
-                    Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth, Color.FORE_LIGHT_RED));
-                    Console.ReadKey();
-                    return;
-                }
+                Boxing.WriteLineCentered(Boxing.WindowCeiling(windowWidth, Color.FORE_LIGHT_RED));
+                Boxing.WriteLineCentered(Boxing.WindowWall(deathMessage));
+                Boxing.WriteLineCentered(Boxing.WindowWall(Boxing.Center((deathMessage.Clean().Length < 27) 
+                ? $"{Color.FORE_LIGHT_RED}Press any key..." : $"{Color.FORE_LIGHT_RED}Press any key to continue...", windowWidth), windowWidth));
+                Boxing.WriteLineCentered(Boxing.WindowFloor(windowWidth, Color.FORE_LIGHT_RED));
 
+                Console.ReadKey();
+                return;
+            }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("\n > ");
@@ -136,10 +132,22 @@ public static class Program
                     case "get":
                     case "take":
                         if(input.Length < 2) throw new SyntaxErrorException();
+                        if (!Player.CurrentRoom.Searched)
+                        {
+                            Console.WriteLine($"{Player.Name} is not aware of their surroundings!");
+                            break;
+                        }
                         if(input.Length > 1 && input[1].ToLower() == "all")
                         {
+                            if(Player?.CurrentRoom.Inventory.Count == 0)
+                            {
+                                Console.WriteLine($"{Player!.Name} found nothing to pick up.");
+                                return;
+                            }
+                            
                             for (int i = Player?.CurrentRoom.Inventory.Count - 1 ?? 0; i >= 0; i--)
                             {
+                                Thread.Sleep(800);
                                 try
                                 {
                                     Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
@@ -159,6 +167,8 @@ public static class Program
                             {
                                 try
                                 {
+                                    Thread.Sleep(800);
+                                    
                                     Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
                                     Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name + Color.RESET);
                                     Player!.CurrentRoom.Inventory.RemoveAt(i);
@@ -209,6 +219,18 @@ public static class Program
                         break;
                     case "talk":
                     case "speak":
+                        foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
+                        {
+                            if(npc is not FriendlyNPC) continue;
+                            if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..]).ToLower())
+                            {
+                                FriendlyNPC? trader = npc as FriendlyNPC;
+                                trader?.TradeDialogue();
+                                break;
+                            }
+                        }
+                        Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_CYAN}{string.Join(' ', input[1..])}{Color.RESET}\" to talk to.");
+                        break;
                     case "trade":
                         foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
                         {
@@ -216,11 +238,12 @@ public static class Program
                             if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..]).ToLower())
                             {
                                 FriendlyNPC? trader = npc as FriendlyNPC;
-                                trader?.Trade();
-                                return;
+                                //trader?.Trade();
+                                break;
                             }
                             
                         }
+                        Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_CYAN}{string.Join(' ', input[1..])}{Color.RESET}\" to trade with.");
                         break;
                     default:
                         throw new SyntaxErrorException();
