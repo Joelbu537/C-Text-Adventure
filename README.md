@@ -30,8 +30,8 @@ I don't update the released versions with each commit, so building from source m
 If you want to make sure that you get what you see, you can simply **clone the repository and build it yourself**.\
 Use `dotnet build --configuration Release` to build.
 > [!NOTE]
-> You need to have **.NET 10** installed to build this project.
-> 
+> You need to have **.NET 10** installed to **build** this project.\
+> The prebuilt releases already come with it.
 <h2 align="center">
   <span>Gameplay</span>
 </h2>
