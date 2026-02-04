@@ -24,6 +24,7 @@
 ### Downloading a precompiled version
 If you just want to get the program running, head over to the [releases tab](https://github.com/Joelbu537/C-Text-Adventure/releases) and **download the newest release**.\
 Make sure to choose the right operating system!\
+Extract the files from the .zip and launch the executable.\
 I don't update the released versions with each commit, so building from source might give you access to features you wouldn't get otherwise.
 ### Building from source code
 If you want to make sure that you get what you see, you can simply **clone the repository and build it yourself**.\
@@ -34,3 +35,6 @@ Use `dotnet build --configuration Release` to build.
 <h2 align="center">
   <span>Gameplay</span>
 </h2>
+
+Creating a good story for the game is not my top priority, instead, I want to focus on the functionality. So be aware of that.\
+Playing the game is pretty simple. Just write what you want to do. Like `go north` or `take note`. To get a better understanding of the commands, you can always go to the help page by typing `help`, where all commands, parameters and variations are listed.\
