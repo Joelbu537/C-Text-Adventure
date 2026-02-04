@@ -231,6 +231,8 @@ public static class Program
                         Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_CYAN}{string.Join(' ', input[1..])}{Color.RESET}\" to talk to.");
                         break;
                     case "trade":
+                    case "buy":
+                    case "deal":
                         foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
                         {
                             bool isLastNumeric = double.TryParse(input[^1], out _);
@@ -248,6 +250,9 @@ public static class Program
                             }
                         }
                         Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_CYAN}{string.Join(' ', input[1..])}{Color.RESET}\" to trade with.");
+                        break;
+                    case "use":
+                        Console.WriteLine("\"Use\" via the inventory :3");
                         break;
                     default:
                         throw new SyntaxErrorException();

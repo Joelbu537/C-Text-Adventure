@@ -22,14 +22,14 @@ public static class Help
         Commands.Add(new HelpCommand(
             commandName: "take",
             description: "Attempts to pick up the chosen item and add it to the inventory",
-            commandAlias: new string[] { "pick", "pickup", "get", "grab" },
-            parameters: new string[] { "Item", "all" }
+            commandAlias: ["pick", "pickup", "get", "grab"],
+            parameters: ["Item", "all"]
             ));
         Commands.Add(new HelpCommand(
             commandName: "move",
             description: "Attempts to move the player in the given direction",
-            commandAlias: new string[] { "go", "walk" },
-            parameters: new string[] { "Direction" }
+            commandAlias: ["go", "walk"],
+            parameters: ["Direction"]
             ));
         Commands.Add(new HelpCommand(
             commandName: "inventory",
@@ -40,7 +40,29 @@ public static class Help
         Commands.Add(new HelpCommand(
             commandName: "describe",
             description: "Describes the current room.",
-            commandAlias: new string[] { "look" }
+            commandAlias: ["look"]
+        ));
+        Commands.Add(new HelpCommand(
+            commandName: "talk",
+            description: "Talks to a specified NPC in the current room.",
+            commandAlias: ["speak"],
+            parameters: ["NPC Name"]
+        ));
+        Commands.Add(new HelpCommand(
+            commandName: "clear",
+            description: "Clears the console. Why would you do that though?",
+            commandAlias: ["clr", "cls"]
+        ));
+        Commands.Add(new HelpCommand(
+            commandName: "kys",
+            description: "Either injures you or kills you instantly, depending on if you pass the \"now\" parameter.",
+            parameters: ["nothing / now"]
+        ));
+        Commands.Add(new HelpCommand(
+            commandName: "trade",
+            commandAlias: ["buy", "deal"],
+            description: "Attempts to buy the chosen item.",
+            parameters: ["Item Number"]
         ));
 
         Commands.Sort();
