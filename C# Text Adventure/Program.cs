@@ -4,7 +4,7 @@ using System.Data;
 using System.Diagnostics;
 public static class Program
 {
-    public static Player Player;
+    public static Player Player = new Player("InternalError", 0, 0, null!);
     static void Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -40,7 +40,6 @@ public static class Program
         Console.Clear();
 
         Player = new Player(playerName, 100, 10, RoomDefinitions.StartingField);
-        NPCDefinitions.InitNPCs();
         RoomDefinitions.InitRooms();
         Player.CurrentRoom = RoomDefinitions.StartingField;
         Player.CurrentRoom.Describe();
@@ -234,14 +233,19 @@ public static class Program
                     case "trade":
                         foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
                         {
+                            bool isLastNumeric = double.TryParse(input[^1], out _);
+                            if (!isLastNumeric)
+                            {
+                                Console.WriteLine("Please specify the item number to trade for.");
+                                break;
+                            }
                             if(npc is not FriendlyNPC) continue;
                             if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..]).ToLower())
                             {
                                 FriendlyNPC? trader = npc as FriendlyNPC;
-                                //trader?.Trade();
+                                //trader?.Trade(input[^1]);
                                 break;
                             }
-                            
                         }
                         Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_CYAN}{string.Join(' ', input[1..])}{Color.RESET}\" to trade with.");
                         break;
