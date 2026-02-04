@@ -1,4 +1,4 @@
-<h1 text-align=center>C# Text Adventure</h1>
+<h1 style="text-align=center;">C# Text Adventure</h1>
 ## Installation
 ### Downloading a precompiled version
 If you just want to get the program running, head over to the [releases tab](https://github.com/Joelbu537/C-Text-Adventure/releases) and **download the newest release**.\
