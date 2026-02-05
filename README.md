@@ -29,3 +29,7 @@ Use `dotnet build --configuration Release` to build.
 Creating a good story for the game is not my top priority, instead, I want to focus on the functionality. So be aware of that.\
 Playing the game is pretty simple. Just write what you want to do. Like `go north` or `take note`.\
 To get a better understanding of the commands, you can always go to the help page by typing `help`, where all commands, parameters and variations are listed.
+
+<h2 align="center">
+  <span>Gallery</span>
+</h2>
