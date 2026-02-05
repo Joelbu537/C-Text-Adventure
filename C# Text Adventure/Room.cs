@@ -14,7 +14,7 @@ public class Room
     private string Description { get; }
     public bool Searched { get; set; } = false;
     public InventoryList Inventory { get; }
-    public NPC?[]? NPCs;
+    public NPC[]? NPCs;
     private Room?[]? connectedRooms;
     public Room?[] ConnectedRooms 
     { 

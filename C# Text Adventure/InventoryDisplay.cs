@@ -135,7 +135,7 @@ public static class InventoryDisplay
             ConsoleBuffer[7] = ConsoleBuffer[7].OverwriteAt(Boxing.WindowWall("", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                        // Empty Line
             ConsoleBuffer[8] = ConsoleBuffer[8].OverwriteAt(Boxing.WindowWall(Boxing.Center($"{(SelectedInfo == 2 ? BACK_YELLOW : BACK_BLACK)} SELL Item {RESET}",
                 infoInnerWidth), infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                                                                                     // Info SELL line  
-            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall((SelectedInfo == 2) ? Boxing.Center($"{FORE_LIGHT_GREEN} {p.Inventory[SelectedItem].ValueText} {RESET}", infoInnerWidth) : "", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                       // Empty Line
+            ConsoleBuffer[9] = ConsoleBuffer[9].OverwriteAt(Boxing.WindowWall((SelectedInfo == 2) ? Boxing.Center($"{FORE_LIGHT_GREEN} {p.Inventory[SelectedItem].SellValueText} {RESET}", infoInnerWidth) : "", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex);                                                       // Empty Line
             ConsoleBuffer[10] = ConsoleBuffer[10].OverwriteAt(Boxing.WindowWall("", infoInnerWidth, FORE_LIGHT_YELLOW), insertionIndex); // Empty line
 
             string[] descriptionArray = Boxing.WrapText(p.Inventory[SelectedItem].Description, infoInnerWidth - 2); // Turn the description into an array of lines that fit the infobox.
@@ -215,6 +215,28 @@ public static class InventoryDisplay
     }
     private static void Sell()
     {
-        
+        if(p.CurrentRoom.NPCs == null)
+        {
+            InfoText = $"There is no one in this {FORE_WHITE}room{RESET}";
+            return;
+        }
+
+        foreach(NPC npc in p.CurrentRoom.NPCs)
+        {
+            if(npc is not FriendlyNPC)
+            {
+                continue;
+            }
+
+            FriendlyNPC? trader = npc as FriendlyNPC;
+            Item targetItem = p.Inventory[SelectedItem];
+            trader!.Inventory.Add(targetItem);
+            p.Money += targetItem.SellValue;
+            p.Inventory.Remove(targetItem);
+
+            InfoText = $"{p.Name} sold {targetItem.Name} to {trader.Name} for {targetItem.SellValueText}";
+            return;
+        }
+        InfoText = $"There is no one present who might buy {p.Inventory[SelectedItem].Name}";
     }
 }
