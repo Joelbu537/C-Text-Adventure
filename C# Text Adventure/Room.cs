@@ -49,7 +49,7 @@ public class Room
             Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
             foreach(NPC? npc in NPCs)
             {
-                Console.WriteLine($"{npc!.Name} - {npc.Description}");
+                Console.WriteLine($"{Color.FORE_GREEN}{npc!.Name}{Color.RESET} - {npc.Description}");
             }
         }
 

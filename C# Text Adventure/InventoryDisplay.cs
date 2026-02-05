@@ -60,7 +60,7 @@ public static class InventoryDisplay
                                 Drop();
                                 break;
                             case 2:
-                                //Sell();
+                                Sell();
                                 break;
                         }
                         SelectedItem--;
@@ -212,5 +212,9 @@ public static class InventoryDisplay
         p.CurrentRoom.Inventory.Add(targetItem);
         p.Inventory.RemoveAt(SelectedItem);
         InfoText = $"{p.Name} dropped {targetItem}!";
+    }
+    private static void Sell()
+    {
+        
     }
 }

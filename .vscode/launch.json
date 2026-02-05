@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C# Debugging Uhh",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/C# Text Adventure/bin/Debug/net10.0/C# Text Adventure.dll",
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "integratedTerminal"
+    }
+  ]
+}

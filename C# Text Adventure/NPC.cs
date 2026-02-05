@@ -48,11 +48,39 @@ namespace TextAdventure
                 Console.WriteLine($"\"I have nothing to trade.\"");
                 return;
             }
-            Console.WriteLine($"\"I have something to trade. Look over here.\"");
+            Console.WriteLine($"\"I have something to trade. Look over here.\"\n");
             for(int i = 0; i < Inventory.Count; i++)
             {
                 Item item = Inventory[i];
                 Console.WriteLine($"{i + 1}. {item.Name} - {item.ValueText}");
+            }
+            Console.WriteLine($"\n\"Just tell me {Color.FORE_WHITE}which number{Color.RESET} you want!\"");
+            Console.WriteLine($"You have {Program.Player.MoneyText}.");
+        }
+        public void Trade(int itemIndex)
+        {
+            if(itemIndex < 1 || itemIndex > Inventory.Count)
+            {
+                Console.WriteLine($"\"I don't have that item.\"");
+                return;
+            }
+            Item item = Inventory[itemIndex - 1];
+            if(Program.Player.Money < item.Value)
+            {
+                Console.WriteLine($"\"You don't have enough {Color.FORE_LIGHT_GREEN}money{Color.RESET} to purchase that {Color.FORE_CYAN}item{Color.RESET}.\"");
+                return;
+            }
+            try
+            {
+                Program.Player.Inventory.Add(item);
+                Inventory.RemoveAt(itemIndex - 1);
+                Program.Player.Money -= item.Value;
+                Money += item.Value;
+                Console.WriteLine($"{Program.Player.Name} bought {item.Name} for {item.ValueText} from {Name}.");
+            }
+            catch(ItemTooHeavyException)
+            {
+                Console.WriteLine($"{Program.Player.Name} cannot think of a way to stuff {item.Name} into his inventory.\nIt is {Color.FORE_WHITE}too heavy{Color.RESET}.");
             }
         }
     }
@@ -61,7 +89,7 @@ namespace TextAdventure
         public int Damage { get; private init; }
         public int Health { get; set; }
         public string? UnlockRoom {get; init;}
-        public HostileNPC(string name, string description ,int money, int damage, int health, string dialogue = "They stare at you.", string? unlockRoom = null) : base(name, description, money, dialogue)
+        public HostileNPC(string name, string description ,int money, int damage, int health, string dialogue = "They simply stare at you.", string? unlockRoom = null) : base(name, description, money, dialogue)
         {
             Damage = damage;
             Health = health;

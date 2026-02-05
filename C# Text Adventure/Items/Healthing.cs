@@ -2,7 +2,7 @@ namespace TextAdventure.Items;
 public class HealthingItem : HealingItem
 {
     public int HealthUpAmmount {get; private init;}
-    internal HealthingItem(string name, string description, double weight, double value, int healAmount, int healthUpAmmount)
+    internal HealthingItem(string name, string description, double weight, int value, int healAmount, int healthUpAmmount)
         : base(name, description, weight, value, healAmount)
     {
         HealthUpAmmount = healthUpAmmount;

@@ -28,7 +28,7 @@ public static class Help
         Commands.Add(new HelpCommand(
             commandName: "move",
             description: "Attempts to move the player in the given direction",
-            commandAlias: ["go", "walk"],
+            commandAlias: ["go", "goto", "walk"],
             parameters: ["Direction"]
             ));
         Commands.Add(new HelpCommand(

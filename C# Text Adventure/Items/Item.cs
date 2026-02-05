@@ -5,7 +5,7 @@ public abstract class Item
     public virtual string Name => Color.FORE_CYAN + RawName + Color.RESET;
     public string Description { get; private init; }
     public double Weight { get; private init; }
-    public double Value { get; private init; }
+    public int Value { get; private init; }
 
     public string ValueText
     {
@@ -15,7 +15,7 @@ public abstract class Item
         }
     }
 
-    internal Item(string name, string description, double weight, double value)
+    internal Item(string name, string description, double weight, int value)
     {
         RawName = name;
         Description = description;
