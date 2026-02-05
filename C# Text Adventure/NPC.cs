@@ -59,7 +59,7 @@ namespace TextAdventure
                 Item item = Inventory[i];
                 Console.WriteLine($"{i + 1}. {item.Name}{new string(' ', maxLength - item.Name.Clean().Length)} - {item.ValueText}");
             }
-            Console.WriteLine($"\n\"Just tell me {Color.FORE_WHITE}which number{Color.RESET} you want!\"");
+            Console.WriteLine($"\n\"Just tell me {Color.FORE_WHITE}which number{Color.RESET} you want!\"\n");
             Console.WriteLine($"You have {Program.Player.MoneyText}.");
         }
         public void Trade(int itemIndex)
