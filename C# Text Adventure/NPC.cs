@@ -49,10 +49,15 @@ namespace TextAdventure
                 return;
             }
             Console.WriteLine($"\"I have something to trade. Look over here.\"\n");
+            int maxLength = 0;
+            for(int i = 0; i < Inventory.Count; i++)
+            {
+                maxLength = Math.Max(maxLength, Inventory[i].Name.Clean().Length);
+            } 
             for(int i = 0; i < Inventory.Count; i++)
             {
                 Item item = Inventory[i];
-                Console.WriteLine($"{i + 1}. {item.Name} - {item.ValueText}");
+                Console.WriteLine($"{i + 1}. {item.Name}{new string(' ', maxLength - item.Name.Clean().Length)} - {item.ValueText}");
             }
             Console.WriteLine($"\n\"Just tell me {Color.FORE_WHITE}which number{Color.RESET} you want!\"");
             Console.WriteLine($"You have {Program.Player.MoneyText}.");

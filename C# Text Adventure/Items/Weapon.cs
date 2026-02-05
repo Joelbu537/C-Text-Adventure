@@ -1,11 +1,11 @@
 ﻿namespace TextAdventure.Items;
 public class WeaponItem : Item
 {
-    public override string Name => Color.FORE_LIGHT_PURPLE + RawName + Color.RESET;
     public int Damage { get; private init; }
     internal WeaponItem(string name, string description, double weight, int value, int damage)
         : base(name, description, weight, value)
     {
+        Name = Color.FORE_LIGHT_PURPLE + name + Color.RESET;
         Damage = damage;
     }
 }

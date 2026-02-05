@@ -1,8 +1,7 @@
 ﻿namespace TextAdventure.Items;
 public abstract class Item
 {
-    public string RawName { get; private init; }
-    public virtual string Name => Color.FORE_CYAN + RawName + Color.RESET;
+    public string Name { get; set; }
     public string Description { get; private init; }
     public double Weight { get; private init; }
     public int Value { get; private init; }
@@ -13,7 +12,7 @@ public abstract class Item
 
     internal Item(string name, string description, double weight, int value)
     {
-        RawName = name;
+        Name =  Color.FORE_CYAN + name + Color.RESET;;
         Description = description;
         Weight = weight;
         Value = value;
