@@ -49,7 +49,7 @@ public class FriendlyNPC : NPC
         Item item = Inventory[itemIndex - 1];
         if(Program.Player.Money < item.Value)
         {
-            Console.WriteLine($"\"You don't have enough {Color.FORE_LIGHT_GREEN}money{Color.RESET} to purchase that {Color.FORE_CYAN}item{Color.RESET}.\"");
+            Console.WriteLine($"\"Sorry, but you don't have enough {Color.FORE_LIGHT_GREEN}money{Color.RESET} to purchase that {Color.FORE_CYAN}item{Color.RESET}...\"");
             return;
         }
         try

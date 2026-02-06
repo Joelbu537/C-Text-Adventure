@@ -30,24 +30,25 @@ public class Player
         Hp = maxHP;
         Inventory = new(maxWeight);
         CurrentRoom = startRoom;
+        EquippedWeapon = (Weapon.Glock19 is WeaponItem) ? Weapon.Glock19 as WeaponItem : null!;
     }
     public void Status()
     {
         Console.Write(Name + " is ");
         double percentage = Hp / MaxHp;
-        if(Hp < 10)
+        if(Hp < 15)
         {
             Console.WriteLine(Color.BACK_RED + "nearly dead");
         }
-        else if(percentage < 0.15)
+        else if(percentage < 0.3)
         {
             Console.WriteLine(Color.FORE_LIGHT_RED + "badly injured");
         }
-        else if(percentage < 0.3)
+        else if(percentage < 0.5)
         {
             Console.WriteLine(Color.FORE_ORANGE + "injured");
         }
-        else if(percentage < 0.65)
+        else if(percentage < 0.75)
         {
             Console.WriteLine(Color.FORE_LIGHT_YELLOW + "lightly injured");
         }

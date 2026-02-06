@@ -7,7 +7,7 @@ public static class FriendlyNPCDefinitions
     {
         Blacksmith = new FriendlyNPC(
             "Blacksmith",
-            "A tall man with an incredibly hairy beard. Wears nothing but Pants and a leather apron",
+            "A tall man with an incredibly hairy beard. Wears nothing but pants and a leather apron",
             40,
             "Greetings traveler! Care to look at my wares?"
         );

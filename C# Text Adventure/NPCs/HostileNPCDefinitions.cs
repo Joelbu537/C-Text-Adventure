@@ -2,6 +2,8 @@ namespace TextAdventure.NPCs;
 public static class HostileNPCDefinitions
 {
     public static NPC Skeleton;
+    public static NPC Spiderman;
+    public static NPC Sahur;
 
     static HostileNPCDefinitions()
     {
@@ -13,6 +15,22 @@ public static class HostileNPCDefinitions
             health: 25,
             dialogue: "Rrrraaaaaahhhhhhhh!!! *Bang Bang Bang Bang*",
             unlockRoom: "Basement"
+        );
+        Skeleton = new HostileNPC(
+            name: "Spider Man",
+            description: "A man in a red suit with a spider painted on it.",
+            money: 40,
+            damage: 14,
+            health: 50,
+            dialogue: "It's the guy from Fortnite..."
+        );
+        Sahur = new HostileNPC(
+            name: "Tung Tung Tung Tung Tung Tung Tung Sahur",
+            description: "A baseball bat with human features holding a baseball bat without human features.",
+            money: 25,
+            damage: 6,
+            health: 30,
+            dialogue: "Tung Tung Tung Tung Tung Tung Tung Sahur"
         );
     }
 }

@@ -66,7 +66,7 @@ public static class RoomDefinitions
             name: "Shed",
             description: "A small shed with some pigs inside, illuminated in a warm yellow light.\n" +
                 Program.Player.Name + " can still hear the noise coming from the tavern to their " + Color.FORE_WHITE + "west" + Color.RESET + 
-                    "through the thinn wooden planks seperating the two buildings.",
+                    " through the thinn wooden planks seperating the two buildings.",
             isUnlocked: true,
             firstEnterMessage: "A man dressed like a blacksmith who is standing at a table at the end of the shed is waving at " + Program.Player.Name + '.'
         );
@@ -97,6 +97,6 @@ public static class RoomDefinitions
         Basement.ConnectedRooms = [null, null, BasementStairs, null];
 
         TavernShed.NPCs = [FriendlyNPCDefinitions.Blacksmith];
-        BasementStairs.NPCs = [HostileNPCDefinitions.Skeleton];
+        BasementStairs.NPCs = [HostileNPCDefinitions.Skeleton.Clone() as HostileNPC];
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace TextAdventure.NPCs;
-public class NPC
+public class NPC : ICloneable
 {
     public string Name { get; private init; }
     public int Money { get; set; }
@@ -18,5 +18,9 @@ public class NPC
         Description = description;
         Money = money;
         Dialogue = dialogue;
+    }
+    public object Clone()
+    {
+        return this.MemberwiseClone();
     }
 }
