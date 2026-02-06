@@ -1,5 +1,6 @@
 ﻿namespace TextAdventure;
 using TextAdventure.Items;
+using TextAdventure.NPCs;
 using static Color;
 public static class InventoryDisplay
 {

@@ -1,10 +1,9 @@
 ﻿using TextAdventure.Items;
-
-namespace TextAdventure;
-public static class NPCDefinitions
+namespace TextAdventure.NPCs;
+public static class FriendlyNPCDefinitions
 {
     public static FriendlyNPC Blacksmith;
-    static NPCDefinitions()
+    static FriendlyNPCDefinitions()
     {
         Blacksmith = new FriendlyNPC(
             "Blacksmith",

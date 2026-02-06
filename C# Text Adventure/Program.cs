@@ -1,6 +1,7 @@
 ﻿namespace TextAdventure;
 using System.Data;
 using System.Diagnostics;
+using TextAdventure.NPCs;
 public static class Program
 {
     public static Player Player = new Player("InternalError", 0, 0, null!);
@@ -98,6 +99,16 @@ public static class Program
             string[] input = inputRaw.Trim().ToLower().Split(' ');
 
             InputHandling(input);
+
+            if(Player.CurrentRoom.NPCs != null)
+            {
+                Console.WriteLine();
+                foreach(NPC npc in Player.CurrentRoom.NPCs)
+                {
+                    if(npc is HostileNPC enemy)
+                        Console.WriteLine($"{Color.FORE_RED}{enemy.Name}{Color.RESET} attacked {Player.Name}...    -{Color.FORE_LIGHT_RED}{Player.Damage(enemy.Damage)}{Color.RESET}HP");
+                }
+            }
         }
     }
 
@@ -202,7 +213,7 @@ public static class Program
                 {
                     if (!targetRoom.IsUnlocked)
                     {
-                        Console.WriteLine("The path is blocked, and " + Player?.Name + "can't seem to find a different way around.");
+                        Console.WriteLine("The path is blocked, and " + Player?.Name + " can't seem to find a different way around.");
                         break;
                     }
                     Player?.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
