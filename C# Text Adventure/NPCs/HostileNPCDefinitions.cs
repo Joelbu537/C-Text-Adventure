@@ -1,7 +1,7 @@
 namespace TextAdventure.NPCs;
 public static class HostileNPCDefinitions
 {
-    public static HostileNPC Skeleton;
+    public static NPC Skeleton;
 
     static HostileNPCDefinitions()
     {
