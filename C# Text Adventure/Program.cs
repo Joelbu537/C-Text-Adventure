@@ -55,7 +55,7 @@ public static class Program
             if (Player.Hp <= 0)
             {
                 Console.Clear();
-                Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 2));
+                Console.WriteLine(new string('\n', Console.WindowHeight / 2 - 4));
                 string deathMessage = $"{Color.FORE_LIGHT_RED}{Player!.Name.Clean()} met their final fate!";
                 int windowWidth = deathMessage.Clean().Length;
 
