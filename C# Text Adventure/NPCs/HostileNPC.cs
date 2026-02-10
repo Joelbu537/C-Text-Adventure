@@ -1,13 +1,30 @@
 namespace TextAdventure.NPCs;
 public class HostileNPC : NPC
 {
-    public int Damage { get; private init; }
+    public override string Name => Color.FORE_RED + base.Name + Color.RESET;
+    public int AttackDamage { get; private init; }
     public int Health { get; set; }
-    public string? UnlockRoom {get; init;}
-    public HostileNPC(string name, string description ,int money, int damage, int health, string dialogue = "They simply stare at you.", string? unlockRoom = null) : base(name, description, money, dialogue)
+    public event Program.Action OnDeath;
+    public HostileNPC(string name, string description ,int money, int damage, int health, string dialogue = "They simply stare at you.", Program.Action? onDeath = null) : base(name, description, money, dialogue)
     {
-        Damage = damage;
+        AttackDamage = damage;
         Health = health;
-        UnlockRoom = unlockRoom;
+        if (onDeath != null)
+        {
+            OnDeath += onDeath;
+        }
+    }
+
+    public void Damage(int amount)
+    {
+        Health = Math.Max(0, Health - amount);
+
+        if (Health != 0)
+        {
+            return;
+        }
+        Console.WriteLine($"{Name} perished!");
+        OnDeath();
+        Program.Player.CurrentRoom.NPCs.Remove(this);
     }
 }

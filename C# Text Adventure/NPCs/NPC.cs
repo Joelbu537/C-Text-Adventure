@@ -1,7 +1,7 @@
 ﻿namespace TextAdventure.NPCs;
 public class NPC : ICloneable
 {
-    public string Name { get; private init; }
+    public virtual string Name { get; private init; }
     public int Money { get; set; }
     public string Description { get; private init; }
     public string Dialogue { get; set; }

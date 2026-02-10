@@ -15,7 +15,7 @@ public class Room
     private string Description { get; }
     public bool Searched { get; set; } = false;
     public InventoryList Inventory { get; }
-    public NPC[]? NPCs;
+    public List<NPC> NPCs = new();
     private Room?[]? connectedRooms;
     public Room?[] ConnectedRooms 
     { 
@@ -28,18 +28,17 @@ public class Room
             connectedRooms = value;
         } 
     }
-    public bool IsUnlocked { get; private set; }
+    public bool IsUnlocked { get; set; }
     private bool hasBeenEntered = false;
-    public delegate void OnFirstEntryEventHandler();
-    public event OnFirstEntryEventHandler OnFirstEntry;
+    public event Program.Action? OnFirstEntry;
 
-    public Room(string name, string description, bool isUnlocked, OnFirstEntryEventHandler? onFirstEntry = null)
+    public Room(string name, string description, bool isUnlocked, Program.Action? onFirstEntry = null)
     {
         _name = name;
         Description = description;
         IsUnlocked = isUnlocked;
         Inventory = new();
-        if (OnFirstEntry != null)
+        if (onFirstEntry != null)
         {
             OnFirstEntry += onFirstEntry;
         }
@@ -49,18 +48,18 @@ public class Room
         Console.WriteLine(Program.Player!.Name + " is here: " + Name);
         Console.WriteLine(Description);
 
-                if (!hasBeenEntered && FirstEnterMessage != null)
+        if (!hasBeenEntered && OnFirstEntry != null)
         {
-            Console.WriteLine(Color.FORE_WHITE + FirstEnterMessage + Color.RESET);
+            OnFirstEntry();
         }
         hasBeenEntered = true;
 
-        if(NPCs != null && NPCs.Length != 0)
+        if(NPCs != null && NPCs.Count != 0)
         {
             Console.WriteLine($"\n{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:\n");
-            foreach(NPC? npc in NPCs)
+            foreach(NPC npc in NPCs)
             {
-                Console.WriteLine($"{(npc is FriendlyNPC ? Color.FORE_GREEN : Color.FORE_RED)}{npc!.Name}{Color.RESET} - {npc.Description}");
+                Console.WriteLine($"{npc.Name} - {npc.Description}");
             }
         }
 

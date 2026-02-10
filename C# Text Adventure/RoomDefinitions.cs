@@ -66,7 +66,7 @@ public static class RoomDefinitions
         TavernShed = new Room(
             name: "Shed",
             description: "A small shed with some pigs inside, illuminated in a warm yellow light.\n" +
-                Program.Player.Name + " can still hear the noise coming from the tavern to their " + Color.FORE_WHITE + "west" + Color.RESET + " through the thinn wooden planks seperating the two buildings.",
+                Program.Player.Name + " can still hear the noise coming from the tavern to their " + Color.FORE_WHITE + "west" + Color.RESET + " through the thin wooden planks separating the two buildings.",
             isUnlocked: true,
             onFirstEntry: () => { Console.WriteLine(Color.FORE_WHITE + "A man dressed like a blacksmith who is standing at a table at the end of the shed is waving at " + Program.Player.Name + '.' + Color.RESET); }
         );
@@ -79,12 +79,12 @@ public static class RoomDefinitions
             name: "Staircase leading to Basement",
             description: $"A staircase made from cobblestone, leading directly into the ground. It leads to a {Color.FORE_WHITE}room{Color.RESET} in the {Color.FORE_WHITE}west{Color.RESET}. It smells damp. ",
             isUnlocked: true,
-            firstEnterMessage: "A skeleton walks arround a corner and looks at you. Then, it starts screaminga nd smashing its sword against its shield."
+            onFirstEntry: () => { Console.WriteLine(Color.FORE_WHITE + "A skeleton walks around a corner and looks at you. Then, it starts screaming and smashing its sword against its shield." + Color.RESET); }
         );
 
         Basement = new Room(
             name: "Basement below the Tavern",
-            description: $"A dark room with walls made out of stone. {Program.Player.Name} can glimpse the outline of a few {Color.FORE_CYAN}items{Color.RESET} lying arround.\n" +
+            description: $"A dark room with walls made out of stone. {Program.Player.Name} can glimpse the outline of a few {Color.FORE_CYAN}items{Color.RESET} lying around.\n" +
                 $"A set of {Color.FORE_WHITE}stairs{Color.RESET} to the {Color.FORE_WHITE}eastern{Color.RESET} side leads up.",
             isUnlocked: false
         );
@@ -96,7 +96,7 @@ public static class RoomDefinitions
         BasementStairs.ConnectedRooms = [TavernShed, null, null, Basement];
         Basement.ConnectedRooms = [null, null, BasementStairs, null];
 
-        TavernShed.NPCs = [FriendlyNPCDefinitions.Blacksmith];
-        BasementStairs.NPCs = [HostileNPCDefinitions.Skeleton.Clone() as HostileNPC];
+        TavernShed.NPCs.Add(FriendlyNPCDefinitions.Blacksmith);
+        BasementStairs.NPCs.Add((HostileNPCDefinitions.Skeleton.Clone() as HostileNPC)!);
     }
 }

@@ -64,11 +64,22 @@ public static class Help
             description: "Attempts to buy the chosen item.",
             parameters: ["Item Number"]
         ));
+        Commands.Add(new HelpCommand(
+            commandName: "attack",
+            commandAlias: ["fight"],
+            description: "Attacks the specified hostile NPC.",
+            parameters: ["Target"]
+        ));
+        Commands.Add(new HelpCommand(
+            commandName: "help",
+            description: "Views the specified help page.",
+            parameters: ["Target page"]
+        ));
 
         Commands.Sort();
     }
 
-    public static void ListHelp()
+    public static void ListHelp(int page = 0)
     {
         Debug.WriteLine(Console.WindowWidth);
         int sideCount = (Console.WindowWidth - Title.Length) / 2 / Deco.Length;

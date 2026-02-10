@@ -2,6 +2,7 @@ namespace TextAdventure.NPCs;
 using TextAdventure.Items;
 public class FriendlyNPC : NPC
 {
+    public override string Name => Color.FORE_GREEN + base.Name + Color.RESET;
     private InventoryList? _inventory;
     public InventoryList Inventory
     {

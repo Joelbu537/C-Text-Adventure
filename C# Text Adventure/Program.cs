@@ -4,6 +4,8 @@ using System.Diagnostics;
 using TextAdventure.NPCs;
 public static class Program
 {
+    public delegate void Action();
+
     public static Player Player = new Player("InternalError", 0, 0, null!);
     static void Main(string[] args)
     {
@@ -106,7 +108,7 @@ public static class Program
                 foreach(NPC npc in Player.CurrentRoom.NPCs)
                 {
                     if(npc is HostileNPC enemy)
-                        Console.WriteLine($"{Color.FORE_RED}{enemy.Name}{Color.RESET} attacked {Player.Name}...    -{Color.FORE_LIGHT_RED}{Player.Damage(enemy.Damage)}{Color.RESET}HP");
+                        Console.WriteLine($"{Color.FORE_RED}{enemy.Name}{Color.RESET} attacked {Player.Name}...    -{Color.FORE_LIGHT_RED}{Player.Damage(enemy.AttackDamage)}{Color.RESET}HP");
                 }
             }
         }
@@ -137,6 +139,7 @@ public static class Program
                 InventoryDisplay.InventoryLoop();
                 break;
             case "help":
+                if(input.Length >= 2 && int.TryParse(input[1], out _)) Help.ListHelp(int.Parse(input[1]));
                 Help.ListHelp();
                 break;
             case "search":
@@ -243,13 +246,23 @@ public static class Program
                 }
                 foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
                 {
-                    if(npc is not FriendlyNPC) continue;
-                    if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..]).ToLower())
+                    if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower())
                     {
-                        FriendlyNPC? trader = npc as FriendlyNPC;
-                        trader?.TradeDialogue();
-                        return;
+                        continue;
                     }
+
+                    if (npc is FriendlyNPC)
+                    {
+                        FriendlyNPC trader = npc as FriendlyNPC;
+                        trader?.TradeDialogue();
+                    }
+                    else if (npc is HostileNPC)
+                    {
+                        HostileNPC enemy = npc as HostileNPC;
+                        Console.WriteLine(enemy!.Dialogue);
+                    }
+
+                    return;
                 }
                 Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_GREEN}{string.Join(' ', input[1..])}{Color.RESET}\" to talk to.");
                 break;
@@ -278,6 +291,26 @@ public static class Program
                 break;
             case "use":
                 Console.WriteLine("\"Use\" via the inventory :3");
+                break;
+            case "attack":
+            case "fight":
+                if (input.Length < 2)
+                {
+                    Console.WriteLine($"Please specify the {Color.FORE_WHITE}person{Color.FORE_WHITE} you want to {Color.FORE_RED}attack{Color.RESET}.");
+                    return;
+                }
+                foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
+                {
+                    if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower() || npc is not HostileNPC)
+                    {
+                        continue;
+                    }
+
+                    HostileNPC enemy = npc as HostileNPC;
+                    enemy.Damage(Player.EquippedWeapon.Damage);
+
+                    return;
+                }
                 break;
             default:
                 throw new SyntaxErrorException();

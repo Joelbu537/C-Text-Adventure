@@ -14,9 +14,9 @@ public static class HostileNPCDefinitions
             damage: 4,
             health: 25,
             dialogue: "Rrrraaaaaahhhhhhhh!!! *Bang Bang Bang Bang*",
-            unlockRoom: "Basement"
+            onDeath: () => { RoomDefinitions.Basement.IsUnlocked = true; }
         );
-        Skeleton = new HostileNPC(
+        Spiderman = new HostileNPC(
             name: "Spider Man",
             description: "A man in a red suit with a spider painted on it.",
             money: 40,

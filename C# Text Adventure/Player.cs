@@ -61,7 +61,7 @@ public class Player
         Console.WriteLine($"Carrying {Color.FORE_WHITE}{Inventory.Count}{Color.FORE_CYAN} items " + Color.RESET + "and " + MoneyText + ' ' +
             $"with a total weight of {Color.BACK_WHITE}{Color.FORE_BLACK}{Math.Round(Inventory.InventoryWeight, 2)}/{Math.Round(Inventory.MaxInventoryWeight, 2)}{Color.RESET} kg");
         
-        Console.WriteLine($"Wielding {EquippedWeapon.Name} and wearing {EquippedArmor.Name}!");
+        Console.WriteLine($"Wielding {EquippedWeapon.Name}({Color.FORE_WHITE}{EquippedWeapon.Damage} {Color.FORE_RED}ATK{Color.RESET}) and wearing {EquippedArmor.Name}({Color.FORE_WHITE}{EquippedArmor.Defense} {Color.FORE_BLUE}DEF{Color.RESET})!");
     }
 
     public void Heal(double ammount)
