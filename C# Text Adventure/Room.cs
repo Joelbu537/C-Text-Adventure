@@ -29,16 +29,20 @@ public class Room
         } 
     }
     public bool IsUnlocked { get; private set; }
-    public string? FirstEnterMessage { get; }
     private bool hasBeenEntered = false;
+    public delegate void OnFirstEntryEventHandler();
+    public event OnFirstEntryEventHandler OnFirstEntry;
 
-    public Room(string name, string description, bool isUnlocked, string? firstEnterMessage = null)
+    public Room(string name, string description, bool isUnlocked, OnFirstEntryEventHandler? onFirstEntry = null)
     {
         _name = name;
         Description = description;
         IsUnlocked = isUnlocked;
         Inventory = new();
-        FirstEnterMessage = firstEnterMessage;
+        if (OnFirstEntry != null)
+        {
+            OnFirstEntry += onFirstEntry;
+        }
     }
     public void Describe()
     {
@@ -61,7 +65,11 @@ public class Room
         }
 
         
-
+        if (!hasBeenEntered)
+        {
+            OnFirstEntry();
+        }
+        hasBeenEntered = true;
     }
     public void Search()
     {

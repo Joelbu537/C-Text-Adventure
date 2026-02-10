@@ -57,7 +57,8 @@ public static class RoomDefinitions
             name: "Tavern",
             description: "A crowded tavern with all kinds of people inside of it. It smells like beer and yeast.",
             isUnlocked: true,
-            firstEnterMessage: "The host secretly slides a " + Color.FORE_CYAN + "note" + Color.FORE_WHITE + " towards " + Program.Player.Name + Color.FORE_WHITE + " and quickly leaves."
+            onFirstEntry: () => { Console.WriteLine(Color.FORE_WHITE + "The host secretly slides a " + Color.FORE_CYAN + "note" + Color.FORE_WHITE + " towards " + Program.Player.Name + Color.FORE_WHITE + " and quickly leaves." + Color.RESET); }
+            
         );
         Tavern.AddItem(Story.TavernNote);
         Tavern.AddItem(Healing.Beer);
@@ -65,10 +66,9 @@ public static class RoomDefinitions
         TavernShed = new Room(
             name: "Shed",
             description: "A small shed with some pigs inside, illuminated in a warm yellow light.\n" +
-                Program.Player.Name + " can still hear the noise coming from the tavern to their " + Color.FORE_WHITE + "west" + Color.RESET + 
-                    " through the thinn wooden planks seperating the two buildings.",
+                Program.Player.Name + " can still hear the noise coming from the tavern to their " + Color.FORE_WHITE + "west" + Color.RESET + " through the thinn wooden planks seperating the two buildings.",
             isUnlocked: true,
-            firstEnterMessage: "A man dressed like a blacksmith who is standing at a table at the end of the shed is waving at " + Program.Player.Name + '.'
+            onFirstEntry: () => { Console.WriteLine(Color.FORE_WHITE + "A man dressed like a blacksmith who is standing at a table at the end of the shed is waving at " + Program.Player.Name + '.' + Color.RESET); }
         );
         TavernShed.AddItem(Weapon.WoodenClub);
         TavernShed.AddItem(Healing.HealingHerbs);
