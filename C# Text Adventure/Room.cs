@@ -1,5 +1,6 @@
 ﻿namespace TextAdventure;
 using TextAdventure.Items;
+using TextAdventure.NPCs;
 public class Room
 {
     private string _name;
@@ -48,12 +49,18 @@ public class Room
         Console.WriteLine(Program.Player!.Name + " is here: " + Name);
         Console.WriteLine(Description);
 
+                if (!hasBeenEntered && FirstEnterMessage != null)
+        {
+            Console.WriteLine(Color.FORE_WHITE + FirstEnterMessage + Color.RESET);
+        }
+        hasBeenEntered = true;
+
         if(NPCs != null && NPCs.Length != 0)
         {
-            Console.WriteLine($"{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:");
+            Console.WriteLine($"\n{Color.FORE_WHITE}Persons{Color.RESET} that seem to be not completely irrelevant:\n");
             foreach(NPC? npc in NPCs)
             {
-                Console.WriteLine($"{Color.FORE_GREEN}{npc!.Name}{Color.RESET} - {npc.Description}");
+                Console.WriteLine($"{(npc is FriendlyNPC ? Color.FORE_GREEN : Color.FORE_RED)}{npc!.Name}{Color.RESET} - {npc.Description}");
             }
         }
 

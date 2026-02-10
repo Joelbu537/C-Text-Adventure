@@ -1,14 +1,13 @@
 ﻿using TextAdventure.Items;
-
-namespace TextAdventure;
-public static class NPCDefinitions
+namespace TextAdventure.NPCs;
+public static class FriendlyNPCDefinitions
 {
     public static FriendlyNPC Blacksmith;
-    static NPCDefinitions()
+    static FriendlyNPCDefinitions()
     {
         Blacksmith = new FriendlyNPC(
             "Blacksmith",
-            "A tall man with an incredibly hairy beard. Wears nothing but Pants and a leather apron",
+            "A tall man with an incredibly hairy beard. Wears nothing but pants and a leather apron",
             40,
             "Greetings traveler! Care to look at my wares?"
         );

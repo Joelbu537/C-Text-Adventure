@@ -15,8 +15,8 @@ public class Player
     public double Hp { get; private set; }
     public double MaxHp { get; private set; }
     public int Money { get; set; } = 10;
-    public Item EquippedWeapon { get; set; } = Weapon.Glock19;
-    public Item EquippedArmor { get; set; } = Armor.LeatherArmor;
+    public WeaponItem EquippedWeapon { get; set; } = Weapon.Glock19 as WeaponItem;
+    public ArmorItem EquippedArmor { get; set; } = Armor.NothingArmor as ArmorItem;
 
     public string MoneyText => Color.FORE_WHITE + '$' + Color.FORE_GREEN + Money.ToString() + Color.RESET;
 
@@ -30,24 +30,25 @@ public class Player
         Hp = maxHP;
         Inventory = new(maxWeight);
         CurrentRoom = startRoom;
+        EquippedWeapon = (Weapon.Glock19 is WeaponItem) ? Weapon.Glock19 as WeaponItem : null!;
     }
     public void Status()
     {
         Console.Write(Name + " is ");
         double percentage = Hp / MaxHp;
-        if(Hp < 10)
+        if(Hp < 15)
         {
             Console.WriteLine(Color.BACK_RED + "nearly dead");
         }
-        else if(percentage < 0.15)
+        else if(percentage < 0.3)
         {
             Console.WriteLine(Color.FORE_LIGHT_RED + "badly injured");
         }
-        else if(percentage < 0.3)
+        else if(percentage < 0.5)
         {
-            Console.WriteLine(Color.FORE_YELLOW + "injured");
+            Console.WriteLine(Color.FORE_ORANGE + "injured");
         }
-        else if(percentage < 0.65)
+        else if(percentage < 0.75)
         {
             Console.WriteLine(Color.FORE_LIGHT_YELLOW + "lightly injured");
         }
@@ -68,9 +69,11 @@ public class Player
         Hp = Math.Min(MaxHp, Hp + ammount);
     }
 
-    public void Damage(double ammount)
+    public double Damage(double ammount)
     {
-        Hp = Math.Max(0, Hp - ammount);
+        double actualDamage = Math.Max(1, ammount - EquippedArmor.Defense);
+        Hp = Math.Max(0, Hp - actualDamage);
+        return actualDamage;
     }
     public void HealthUp(int ammount)
     {

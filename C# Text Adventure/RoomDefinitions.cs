@@ -1,5 +1,6 @@
 ﻿namespace TextAdventure;
 using TextAdventure.Items;
+using TextAdventure.NPCs;
 public static class RoomDefinitions
 {
     private static Room? startingField;
@@ -19,6 +20,28 @@ public static class RoomDefinitions
         get => tavernShed!; 
         private set => tavernShed = value; 
     }
+
+    private static Room? basementStairs;
+    public static Room BasementStairs
+    {
+        get => basementStairs!;
+        private set => basementStairs = value;
+    }
+
+    private static Room? basement;
+    public static Room Basement
+    {
+        get => basement!;
+        private set => basement = value;
+    }
+    public static readonly List<Room> Rooms = new List<Room>
+    {
+        StartingField,
+        Tavern,
+        TavernShed,
+        BasementStairs,
+        Basement
+    };
 
     public static void InitRooms()
     {
@@ -52,11 +75,28 @@ public static class RoomDefinitions
         TavernShed.AddItem(Armor.LeatherArmor);
         TavernShed.AddItem(Healthing.LifePotion);
 
+        BasementStairs = new Room(
+            name: "Staircase leading to Basement",
+            description: $"A staircase made from cobblestone, leading directly into the ground. It leads to a {Color.FORE_WHITE}room{Color.RESET} in the {Color.FORE_WHITE}west{Color.RESET}. It smells damp. ",
+            isUnlocked: true,
+            firstEnterMessage: "A skeleton walks arround a corner and looks at you. Then, it starts screaminga nd smashing its sword against its shield."
+        );
 
-        Tavern.ConnectedRooms = [null, StartingField, TavernShed, null];
+        Basement = new Room(
+            name: "Basement below the Tavern",
+            description: $"A dark room with walls made out of stone. {Program.Player.Name} can glimpse the outline of a few {Color.FORE_CYAN}items{Color.RESET} lying arround.\n" +
+                $"A set of {Color.FORE_WHITE}stairs{Color.RESET} to the {Color.FORE_WHITE}eastern{Color.RESET} side leads up.",
+            isUnlocked: false
+        );
+
+
         StartingField.ConnectedRooms = [Tavern, null, null, null];
-        TavernShed.ConnectedRooms = [null, null, null, Tavern];
+        Tavern.ConnectedRooms = [null, StartingField, TavernShed, null];
+        TavernShed.ConnectedRooms = [null, BasementStairs, null, Tavern];
+        BasementStairs.ConnectedRooms = [TavernShed, null, null, Basement];
+        Basement.ConnectedRooms = [null, null, BasementStairs, null];
 
-        TavernShed.NPCs = [NPCDefinitions.Blacksmith];
+        TavernShed.NPCs = [FriendlyNPCDefinitions.Blacksmith];
+        BasementStairs.NPCs = [HostileNPCDefinitions.Skeleton.Clone() as HostileNPC];
     }
 }
