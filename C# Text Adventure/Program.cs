@@ -122,203 +122,229 @@ public static class Program
         {
             switch (input[0])
             {
-            case "clr":
-            case "cls":
-            case "clear":
-                Console.Clear();
-                break;
-            case "status":
-                Player!.Status();
-                break;
-            case "inventory":
-                if (Player!.Inventory.Count == 0)
-                {
-                    Console.WriteLine($"{Player!.Name}'s {Color.FORE_WHITE}inventory{Color.RESET} is {Color.FORE_LIGHT_RED}empty{Color.RESET}!");
+                case "clr":
+                case "cls":
+                case "clear":
+                    Console.Clear();
                     break;
-                }
-                InventoryDisplay.InventoryLoop();
-                break;
-            case "help":
-                if(input.Length >= 2 && int.TryParse(input[1], out _)) Help.ListHelp(int.Parse(input[1]));
-                Help.ListHelp();
-                break;
-            case "search":
-                Player?.CurrentRoom.Search();
-                break;
-            case "pick":
-            case "grab":
-            case "pickup":
-            case "get":
-            case "take":
-                if(input.Length < 2) throw new SyntaxErrorException();
-                if (!Player.CurrentRoom.Searched)
-                {
-                    Console.WriteLine($"{Player.Name} is not aware of their surroundings!");
+                case "status":
+                    Player!.Status();
                     break;
-                }
-                if(input.Length > 1 && input[1].ToLower() == "all")
-                {
-                    if(Player?.CurrentRoom.Inventory.Count == 0)
+                case "inventory":
+                    if (Player!.Inventory.Count == 0)
                     {
-                        Console.WriteLine($"{Player!.Name} found nothing to pick up.");
-                        return;
-                    }
-                    
-                    for (int i = Player?.CurrentRoom.Inventory.Count - 1 ?? 0; i >= 0; i--)
-                    {
-                        Thread.Sleep(800);
-                        try
-                        {
-                            Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
-                            Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name + Color.RESET);
-                            Player!.CurrentRoom.Inventory.RemoveAt(i);
-                        }
-                        catch (ItemTooHeavyException ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }       
-                    }
-                    return;
-                }
-                for (int i = 0; i < Player!.CurrentRoom.Inventory.Count; i++)
-                {
-                    if (Player!.CurrentRoom.Inventory[i].Name.Clean().ToLower() == String.Join(' ', input[1..]).ToLower())
-                    {
-                        try
-                        {
-                            Thread.Sleep(800);
-                            
-                            Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
-                            Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name + Color.RESET);
-                            Player!.CurrentRoom.Inventory.RemoveAt(i);
-                        }
-                        catch(ItemTooHeavyException ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                        return;
-                    }
-                }
-                Console.WriteLine(Player!.Name + " could not find anything named \"" + Color.FORE_CYAN + String.Join(' ', input[1..]) + Color.RESET + "\"");
-                break;
-            case "move":
-            case "go":
-            case "goto":
-            case "walk":
-                if(input.Length < 2) Console.WriteLine($"Please specify the {Color.FORE_WHITE}direction{Color.FORE_WHITE} in which you want to move.");
-                var state = Enum.TryParse(input[1].ToLower(), out RoomDirection direction);
-                if (!state)
-                {
-                    throw new SyntaxErrorException();
-                }
-                Room? targetRoom = Player?.CurrentRoom.ConnectedRooms[(int)direction];
-                if (targetRoom != null)
-                {
-                    if (!targetRoom.IsUnlocked)
-                    {
-                        Console.WriteLine("The path is blocked, and " + Player?.Name + " can't seem to find a different way around.");
+                        Console.WriteLine(
+                            $"{Player!.Name}'s {Color.FORE_WHITE}inventory{Color.RESET} is {Color.FORE_LIGHT_RED}empty{Color.RESET}!");
                         break;
                     }
-                    Player?.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
+
+                    InventoryDisplay.InventoryLoop();
+                    break;
+                case "help":
+                    if (input.Length >= 2 && int.TryParse(input[1], out _)) Help.ListHelp(int.Parse(input[1]));
+                    Help.ListHelp();
+                    break;
+                case "search":
+                    Player?.CurrentRoom.Search();
+                    break;
+                case "pick":
+                case "grab":
+                case "pickup":
+                case "get":
+                case "take":
+                    if (input.Length < 2) throw new SyntaxErrorException();
+                    if (!Player.CurrentRoom.Searched)
+                    {
+                        Console.WriteLine($"{Player.Name} is not aware of their surroundings!");
+                        break;
+                    }
+
+                    if (input.Length > 1 && input[1].ToLower() == "all")
+                    {
+                        if (Player?.CurrentRoom.Inventory.Count == 0)
+                        {
+                            Console.WriteLine($"{Player!.Name} found nothing to pick up.");
+                            return;
+                        }
+
+                        for (int i = Player?.CurrentRoom.Inventory.Count - 1 ?? 0; i >= 0; i--)
+                        {
+                            Thread.Sleep(800);
+                            try
+                            {
+                                Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
+                                Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name +
+                                                  Color.RESET);
+                                Player!.CurrentRoom.Inventory.RemoveAt(i);
+                            }
+                            catch (ItemTooHeavyException ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+
+                        return;
+                    }
+
+                    for (int i = 0; i < Player!.CurrentRoom.Inventory.Count; i++)
+                    {
+                        if (Player!.CurrentRoom.Inventory[i].Name.Clean().ToLower() ==
+                            String.Join(' ', input[1..]).ToLower())
+                        {
+                            try
+                            {
+                                Thread.Sleep(800);
+
+                                Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
+                                Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name +
+                                                  Color.RESET);
+                                Player!.CurrentRoom.Inventory.RemoveAt(i);
+                            }
+                            catch (ItemTooHeavyException ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+
+                            return;
+                        }
+                    }
+
+                    Console.WriteLine(Player!.Name + " could not find anything named \"" + Color.FORE_CYAN +
+                                      String.Join(' ', input[1..]) + Color.RESET + "\"");
+                    break;
+                case "move":
+                case "go":
+                case "goto":
+                case "walk":
+                    if (input.Length < 2)
+                        Console.WriteLine(
+                            $"Please specify the {Color.FORE_WHITE}direction{Color.FORE_WHITE} in which you want to move.");
+                    var state = Enum.TryParse(input[1].ToLower(), out RoomDirection direction);
+                    if (!state)
+                    {
+                        throw new SyntaxErrorException();
+                    }
+
+                    Room? targetRoom = Player?.CurrentRoom.ConnectedRooms[(int)direction];
+                    if (targetRoom != null)
+                    {
+                        if (!targetRoom.IsUnlocked)
+                        {
+                            Console.WriteLine("The path is blocked, and " + Player?.Name +
+                                              " can't seem to find a different way around.");
+                            break;
+                        }
+
+                        Player?.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
+                        Player?.CurrentRoom.Describe();
+                        break;
+                    }
+
+                    Console.WriteLine(Player?.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
+                    break;
+                case "describe":
+                case "look":
                     Player?.CurrentRoom.Describe();
                     break;
-                }
-                Console.WriteLine(Player?.Name + Color.FORE_LIGHT_RED + " cannot go into that direction!");
-                break;
-            case "describe":
-            case "look":
-                Player?.CurrentRoom.Describe();
-                break;
-            case "kys":
-                if(input.Length > 1 && input[1] == "now")
-                {
-                    Player?.Damage(short.MaxValue);
+                case "kys":
+                    if (input.Length > 1 && input[1] == "now")
+                    {
+                        Player?.Damage(short.MaxValue);
+                        break;
+                    }
+
+                    Player?.Damage(14);
                     break;
-                }
-                Player?.Damage(14);
-                break;
-            case "talk":
-            case "speak":
-                if(input.Length < 2)
-                {
-                    Console.WriteLine($"Please specify the {Color.FORE_WHITE}person{Color.FORE_WHITE} you want to talk to.");
-                    return;
-                }
-                foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
-                {
-                    if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower())
+                case "talk":
+                case "speak":
+                    if (input.Length < 2)
                     {
-                        continue;
+                        Console.WriteLine(
+                            $"Please specify the {Color.FORE_WHITE}person{Color.FORE_WHITE} you want to talk to.");
+                        return;
                     }
 
-                    if (npc is FriendlyNPC)
+                    foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
                     {
-                        FriendlyNPC trader = npc as FriendlyNPC;
-                        trader?.TradeDialogue();
+                        if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower())
+                        {
+                            continue;
+                        }
+
+                        if (npc is FriendlyNPC)
+                        {
+                            FriendlyNPC trader = npc as FriendlyNPC;
+                            trader?.TradeDialogue();
+                        }
+                        else if (npc is HostileNPC)
+                        {
+                            HostileNPC enemy = npc as HostileNPC;
+                            Console.WriteLine(enemy!.Dialogue);
+                        }
+
+                        return;
                     }
-                    else if (npc is HostileNPC)
+
+                    Console.WriteLine(
+                        $"{Player.Name} could not find anyone named \"{Color.FORE_GREEN}{string.Join(' ', input[1..])}{Color.RESET}\" to talk to.");
+                    break;
+                case "trade":
+                case "buy":
+                case "deal":
+                    foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
                     {
+                        Debug.WriteLine(input[^1]);
+                        bool isLastNumeric = int.TryParse(input[^1], out _);
+                        if (!isLastNumeric)
+                        {
+                            Console.WriteLine(
+                                $"Please specify the {Color.FORE_WHITE}item number{Color.RESET} to trade for.");
+                            return;
+                        }
+
+                        if (npc is not FriendlyNPC) continue;
+                        Debug.WriteLine(string.Join(' ', input[1..^1]));
+                        if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..^1]).ToLower())
+                        {
+                            FriendlyNPC? trader = npc as FriendlyNPC;
+                            trader?.Trade(int.Parse(input[^1]));
+                            return;
+                        }
+                    }
+
+                    Console.WriteLine(
+                        $"{Player.Name} could not find anyone named \"{Color.FORE_GREEN}{string.Join(' ', input[1..^1])}{Color.RESET}\" to trade with.");
+                    break;
+                case "use":
+                    Console.WriteLine("\"Use\" via the inventory :3");
+                    break;
+                case "attack":
+                case "fight":
+                    if (input.Length < 2)
+                    {
+                        Console.WriteLine(
+                            $"Please specify the {Color.FORE_WHITE}person{Color.FORE_WHITE} you want to {Color.FORE_RED}attack{Color.RESET}.");
+                        return;
+                    }
+
+                    foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
+                    {
+                        if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower() ||
+                            npc is not HostileNPC)
+                        {
+                            continue;
+                        }
+
                         HostileNPC enemy = npc as HostileNPC;
-                        Console.WriteLine(enemy!.Dialogue);
-                    }
+                        enemy.Damage(Player.EquippedWeapon.Damage);
 
-                    return;
-                }
-                Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_GREEN}{string.Join(' ', input[1..])}{Color.RESET}\" to talk to.");
-                break;
-            case "trade":
-            case "buy":
-            case "deal":
-                foreach(NPC? npc in Player!.CurrentRoom.NPCs!)
-                {
-                    Debug.WriteLine(input[^1]);
-                    bool isLastNumeric = int.TryParse(input[^1], out _);
-                    if (!isLastNumeric)
-                    {
-                        Console.WriteLine($"Please specify the {Color.FORE_WHITE}item number{Color.RESET} to trade for.");
                         return;
                     }
-                    if(npc is not FriendlyNPC) continue;
-                    Debug.WriteLine(string.Join(' ', input[1..^1]));
-                    if (npc.Name.Clean().ToLower() == string.Join(' ', input[1..^1]).ToLower())
-                    {
-                        FriendlyNPC? trader = npc as FriendlyNPC;
-                        trader?.Trade(int.Parse(input[^1]));
-                        return;
-                    }
-                }
-                Console.WriteLine($"{Player.Name} could not find anyone named \"{Color.FORE_GREEN}{string.Join(' ', input[1..^1])}{Color.RESET}\" to trade with.");
-                break;
-            case "use":
-                Console.WriteLine("\"Use\" via the inventory :3");
-                break;
-            case "attack":
-            case "fight":
-                if (input.Length < 2)
-                {
-                    Console.WriteLine($"Please specify the {Color.FORE_WHITE}person{Color.FORE_WHITE} you want to {Color.FORE_RED}attack{Color.RESET}.");
-                    return;
-                }
-                foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
-                {
-                    if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower() || npc is not HostileNPC)
-                    {
-                        continue;
-                    }
 
-                    HostileNPC enemy = npc as HostileNPC;
-                    enemy.Damage(Player.EquippedWeapon.Damage);
-
-                    return;
-                }
-                break;
-            default:
-                throw new SyntaxErrorException();
+                    break;
+                default:
+                    throw new SyntaxErrorException();
             }
-        }
-        catch (IndexOutOfRangeException)
-        {
-            InternalError();
         }
         catch (SyntaxErrorException)
         {
@@ -327,6 +353,10 @@ public static class Program
         catch (ItemTooHeavyException ex)
         {
             Console.WriteLine(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            InternalError(ex);
         }
     }
     private static void SyntaxError()
@@ -337,11 +367,27 @@ public static class Program
         Console.WriteLine("To see a list of all available commands, use \"help\"");
     }
 
-    private static void InternalError()
+    private static void InternalError(Exception ex)
     {
         Console.WriteLine("\x1b[1;38;5;001mInternal Error!\x1b[0m");
-        Console.ResetColor();
+        Console.WriteLine("The game may or may not be playable anymore, you might encounter game-breaking bugs from now on.");
         Console.WriteLine("Please report a way to reproduce this error to:");
         Console.WriteLine("\x1b[1;4;38;5;015mhttps://github.com/ShitHub-Dev-Team/Text-Adventure/issues/new\x1b[0m");
+        Console.WriteLine("and provide the following output:\n");
+
+        Boxing.WriteLineCentered("\x1b[1;38;5;015m" + "ERROR DETAILS" + Color.RESET);
+        Console.WriteLine("ERROR TYPE    : " + Color.FORE_WHITE + ex.GetType() + Color.RESET);
+        Console.WriteLine("ERROR MESSAGE : " + Color.FORE_WHITE + ex.Message + Color.RESET + '\n');
+
+        Boxing.WriteLineCentered("\x1b[1;38;5;015m" + "STACK TRACE" + Color.RESET);
+        Console.WriteLine(ex.StackTrace);
+
+        Console.WriteLine("\n\n");
+        Console.WriteLine("To automatically report this error, please press 'Y', or any other key to continue without reporting.");
+        var key = Console.ReadKey().KeyChar;
+        if (key == 'y')
+        {
+            // Report error to Server
+        }
     }
 }
