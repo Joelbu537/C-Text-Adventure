@@ -1,21 +1,21 @@
 namespace TextAdventure;
 public static class Boxing
 {
-    public static string WindowCeiling(int width)
+    public static string WindowCeiling(int innerWidth)
     {
-        return $"╔{new string('═', width + 2)}╗";
+        return $"╔{new string('═', innerWidth + 2)}╗";
     }
-    public static string WindowCeiling(int width, string color)
+    public static string WindowCeiling(int innerWidth, string color)
     {
-        return color + WindowCeiling(width) + Color.RESET;
+        return color + WindowCeiling(innerWidth) + Color.RESET;
     }
-    public static string WindowFloor(int width)
+    public static string WindowFloor(int innerWidth)
     {
-        return $"╚{new string('═', width + 2)}╝";
+        return $"╚{new string('═', innerWidth + 2)}╝";
     }
-    public static string WindowFloor(int width, string color)
+    public static string WindowFloor(int innerWidth, string color)
     {
-        return color + WindowFloor(width) + Color.RESET;
+        return color + WindowFloor(innerWidth) + Color.RESET;
     }
     public static string WindowWall(string content)
     {

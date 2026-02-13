@@ -13,7 +13,7 @@ public static class HostileNPCDefinitions
             money: 20,
             damage: 4,
             health: 25,
-            dialogue: "Rrrraaaaaahhhhhhhh!!! *Bang Bang Bang Bang*",
+            dialogue: "\"Rrrraaaaaahhhhhhhh!!!\" *Bang Bang Bang Bang*",
             onDeath: () => { RoomDefinitions.Basement.IsUnlocked = true; }
         );
         Spiderman = new HostileNPC(
@@ -30,7 +30,7 @@ public static class HostileNPCDefinitions
             money: 25,
             damage: 6,
             health: 30,
-            dialogue: "Tung Tung Tung Tung Tung Tung Tung Sahur"
+            dialogue: "\"Tung Tung Tung Tung Tung Tung Tung Sahur\""
         );
     }
 }

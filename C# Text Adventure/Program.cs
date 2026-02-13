@@ -12,7 +12,7 @@ public static class Program
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.CursorVisible = false;
         Console.Write(Color.RESET);
-        Console.WriteLine("Source: https://github.com/Joelbu537/C-Text-Adventure\n");
+        Console.WriteLine("Source: https://github.com/ShitHub-Dev-Team/Text-Adventure\n");
         Console.WriteLine($"Welcome to the {Color.FORE_LIGHT_GREEN}Text Adventure{Color.RESET}!");
         Console.Write("Please enter your name: " + Color.FORE_LIGHT_CYAN);
 
@@ -318,7 +318,7 @@ public static class Program
         }
         catch (IndexOutOfRangeException)
         {
-            SyntaxError();
+            InternalError();
         }
         catch (SyntaxErrorException)
         {
@@ -335,5 +335,13 @@ public static class Program
         Console.WriteLine("Syntax Error or missing parameters!");
         Console.ResetColor();
         Console.WriteLine("To see a list of all available commands, use \"help\"");
+    }
+
+    private static void InternalError()
+    {
+        Console.WriteLine("\x1b[1;38;5;001mInternal Error!\x1b[0m");
+        Console.ResetColor();
+        Console.WriteLine("Please report a way to reproduce this error to:");
+        Console.WriteLine("\x1b[1;4;38;5;015mhttps://github.com/ShitHub-Dev-Team/Text-Adventure/issues/new\x1b[0m");
     }
 }

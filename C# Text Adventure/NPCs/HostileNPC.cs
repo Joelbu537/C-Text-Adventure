@@ -23,7 +23,8 @@ public class HostileNPC : NPC
         {
             return;
         }
-        Console.WriteLine($"{Name} perished!");
+        Console.WriteLine($"{Name} perished!    +{MoneyText}");
+        Program.Player.Money += Money;
         OnDeath();
         Program.Player.CurrentRoom.NPCs.Remove(this);
     }
