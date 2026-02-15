@@ -231,9 +231,9 @@ public static class InventoryDisplay
     }
     private static void Sell()
     {
-        if(p.CurrentRoom.NPCs == null)
+        if(p.CurrentRoom.NPCs.Count == 0)
         {
-            InfoText = $"There is no one in this {FORE_WHITE}room{RESET}";
+            InfoText = $"There is no one in this {FORE_WHITE}room{RESET} to trade with.";
             return;
         }
 

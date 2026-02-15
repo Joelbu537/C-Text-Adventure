@@ -75,22 +75,49 @@ public static class Program
             Console.Write("\n > ");
             Console.ForegroundColor = ConsoleColor.White;
             string inputRaw = String.Empty;
+            int commandIndex = CommandQueue.Commands.Count();
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
                     var key = Console.ReadKey(true);
 
-                    if (key.Key == ConsoleKey.Enter && inputRaw.Length >= 2)
+                    if (key.Key == ConsoleKey.Enter && inputRaw.Length >= 3)
                     {
                         break;
                     }
-                    if (key.Key == ConsoleKey.Backspace && inputRaw.Length > 0)
+                    else if (key.Key == ConsoleKey.Backspace && inputRaw.Length > 0)
                     {
                         inputRaw = inputRaw.Substring(0, inputRaw.Length - 1);
                         Console.Write("\b \b");
                     }
-                    if (char.IsAsciiLetterOrDigit(key.KeyChar) || key.KeyChar == ' ')
+                    else if (key.Key == ConsoleKey.UpArrow)
+                    {
+                        commandIndex = Math.Clamp(commandIndex - 1, 0, CommandQueue.Commands.Count());
+                        ClearInput(inputRaw.Length);
+                        inputRaw = string.Empty;
+
+                        if (commandIndex != CommandQueue.Commands.Count())
+                        {
+                            inputRaw = CommandQueue.Commands.ElementAt(commandIndex);
+                            Console.Write(CommandQueue.Commands.ElementAt(commandIndex));
+                        }
+
+                    }
+                    else if (key.Key == ConsoleKey.DownArrow)
+                    {
+                        commandIndex = Math.Clamp(commandIndex + 1, 0, CommandQueue.Commands.Count());
+                        ClearInput(inputRaw.Length);
+                        inputRaw = string.Empty;
+
+                        if (commandIndex != CommandQueue.Commands.Count())
+                        {
+                            inputRaw = CommandQueue.Commands.ElementAt(commandIndex);
+                            Console.Write(CommandQueue.Commands.ElementAt(commandIndex));
+                        }
+
+                    }
+                    else if (char.IsAsciiLetterOrDigit(key.KeyChar) || key.KeyChar == ' ')
                     {
                         inputRaw += key.KeyChar;
                         Console.Write(key.KeyChar);
@@ -98,6 +125,8 @@ public static class Program
                 }
             }
             Console.Write(Color.RESET);
+
+            CommandQueue.AddCommandToQueue(inputRaw);
             string[] input = inputRaw.Trim().ToLower().Split(' ');
 
             InputHandling(input);
@@ -348,7 +377,7 @@ public static class Program
         }
         catch (SyntaxErrorException)
         {
-            SyntaxError();
+            ErrorHandler.SyntaxError();
         }
         catch (ItemTooHeavyException ex)
         {
@@ -356,38 +385,23 @@ public static class Program
         }
         catch (Exception ex)
         {
-            InternalError(ex);
+            ErrorHandler.InternalError(ex);
         }
     }
-    private static void SyntaxError()
+
+    private static void ClearInput(int count)
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Syntax Error or missing parameters!");
-        Console.ResetColor();
-        Console.WriteLine("To see a list of all available commands, use \"help\"");
-    }
-
-    private static void InternalError(Exception ex)
-    {
-        Console.WriteLine("\x1b[1;38;5;001mInternal Error!\x1b[0m");
-        Console.WriteLine("The game may or may not be playable anymore, you might encounter game-breaking bugs from now on.");
-        Console.WriteLine("Please report a way to reproduce this error to:");
-        Console.WriteLine("\x1b[1;4;38;5;015mhttps://github.com/ShitHub-Dev-Team/Text-Adventure/issues/new\x1b[0m");
-        Console.WriteLine("and provide the following output:\n");
-
-        Boxing.WriteLineCentered("\x1b[1;38;5;015m" + "ERROR DETAILS" + Color.RESET);
-        Console.WriteLine("ERROR TYPE    : " + Color.FORE_WHITE + ex.GetType() + Color.RESET);
-        Console.WriteLine("ERROR MESSAGE : " + Color.FORE_WHITE + ex.Message + Color.RESET + '\n');
-
-        Boxing.WriteLineCentered("\x1b[1;38;5;015m" + "STACK TRACE" + Color.RESET);
-        Console.WriteLine(ex.StackTrace);
-
-        Console.WriteLine("\n\n");
-        Console.WriteLine("To automatically report this error, please press 'Y', or any other key to continue without reporting.");
-        var key = Console.ReadKey().KeyChar;
-        if (key == 'y')
+        for (int i = 0; i < count; i++)
         {
-            // Report error to Server
+            Console.Write('\b');
+        }
+        for (int i = 0; i < count; i++)
+        {
+            Console.Write(' ');
+        }
+        for (int i = 0; i < count; i++)
+        {
+            Console.Write('\b');
         }
     }
 }
