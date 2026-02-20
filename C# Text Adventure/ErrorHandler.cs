@@ -8,7 +8,7 @@ namespace TextAdventure;
 
 public static class ErrorHandler
 {
-    public static Version GameVersion = new Version(0, 1, 0);
+    public static Version GameVersion = new(0, 1, 1);
     private static bool _isStable = true;
     public static void SyntaxError()
     {

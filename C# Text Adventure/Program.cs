@@ -274,7 +274,7 @@ public static class Program
                     break;
                 case "describe":
                 case "look":
-                    Player?.CurrentRoom.Describe();
+                    Player!.CurrentRoom.Describe();
                     break;
                 case "kys":
                     if (input.Length > 1 && input[1] == "now")
