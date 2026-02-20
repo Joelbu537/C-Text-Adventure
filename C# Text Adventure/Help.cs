@@ -55,14 +55,14 @@ public static class Help
         ));
         Commands.Add(new HelpCommand(
             commandName: "kys",
-            description: "Either injures you or kills you instantly, depending on if you pass the \"now\" parameter.",
+            description: "Meant to be a debug command. Either injures you or kills you instantly, depending on if you pass the \"now\" parameter.",
             parameters: ["nothing / now"]
         ));
         Commands.Add(new HelpCommand(
             commandName: "trade",
             commandAlias: ["buy", "deal"],
             description: "Attempts to buy the chosen item.",
-            parameters: ["Item Number"]
+            parameters: ["Trader, Item Number"]
         ));
         Commands.Add(new HelpCommand(
             commandName: "attack",
@@ -81,50 +81,66 @@ public static class Help
 
     public static void ListHelp(int page = 0)
     {
-        Debug.WriteLine(Console.WindowWidth);
-        int sideCount = (Console.WindowWidth - Title.Length) / 2 / Deco.Length;
-        Console.ForegroundColor = ConsoleColor.White;
+        List<string> buffer = new();
 
+        int sideCount = (Console.WindowWidth - Title.Length) / 2 / Deco.Length;
+
+        string top = Color.FORE_WHITE;
         for (int i = 0; i < sideCount; i++)
         {
-            Console.Write(Deco);
+            top += Deco;
         }
-        Console.Write(Title);
+        top += Title;
         for (int i = 0; i < sideCount; i++)
         {
-            Console.Write(Deco);
+            top += Deco;
         }
-        Console.ResetColor();
-        Console.Write("\n\n");
+        top += Color.RESET + "\n";
+
+        buffer.Add(top);
 
         foreach (HelpCommand command in Commands)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"    {command.CommandName}");
-
+            buffer.Add($"{Color.FORE_WHITE}    {command.CommandName}");
+            string info = string.Empty;
             if (command.CommandAlias != null)
             {
-                Console.Write(" (");
-                Console.Write(string.Join(", ", command.CommandAlias));
-                Console.Write(")");
+                info += $" ({string.Join(", ", command.CommandAlias)})";
             }
             if(command.Parameters != null)
             {
-                Console.Write($"    <");
-                Console.Write(string.Join(" / ", command.Parameters));
-                Console.Write(">");
+                info += $"    <{string.Join(" / ", command.Parameters)}>";
             }
-            Console.ResetColor();
-            Console.WriteLine();
-            Console.WriteLine(command.Description);
-            Console.WriteLine();
+            info += Color.RESET;
+            buffer.Add(info);
+            buffer.Add(command.Description);
+            buffer.Add(string.Empty);
         }
-        Console.WriteLine();
+
+        string bottom = Color.FORE_WHITE;
         for (int i = 0; i < Console.WindowWidth / Deco.Length; i++)
         {
-            Console.Write(Deco);
+            bottom += Deco;
         }
-        Console.WriteLine();
+        buffer.Add(bottom);
+
+        int length = buffer.Count;
+        foreach (string s in buffer)
+        {
+            length += s.Count(c => c == '\n');
+        }
+
+        if (length > Console.WindowHeight)
+        {
+            Console.WriteLine("Console is too short to display help page properly.");
+        }
+        else
+        {
+            foreach (string s in buffer)
+            {
+                Console.WriteLine(s);
+            }
+        }
     }
 }
 

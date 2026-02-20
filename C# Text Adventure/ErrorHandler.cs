@@ -21,10 +21,7 @@ public static class ErrorHandler
     public static void InternalError(Exception ex)
     {
         Console.WriteLine("\x1b[1;38;5;001mInternal Error!\x1b[0m");
-        Console.WriteLine("The game may or may not be playable anymore, you might encounter game-breaking bugs from now on.");
-        Console.WriteLine("Please report a way to reproduce this error to:");
-        Console.WriteLine("\x1b[1;4;38;5;015mhttps://github.com/ShitHub-Dev-Team/Text-Adventure/issues/new\x1b[0m");
-        Console.WriteLine("and provide the following output:\n");
+        Console.WriteLine("The game may or may not be playable anymore, you might encounter game-breaking bugs from now on.\n");
 
         Boxing.WriteLineCentered("\x1b[1;38;5;015m" + "ERROR DETAILS" + Color.RESET);
         Console.WriteLine("GAME VERSION  : " + Color.FORE_WHITE + GameVersion + Color.RESET);

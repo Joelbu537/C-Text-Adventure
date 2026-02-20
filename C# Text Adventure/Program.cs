@@ -134,7 +134,7 @@ public static class Program
             if(Player.CurrentRoom.NPCs != null)
             {
                 Console.WriteLine();
-                foreach(NPC npc in Player.CurrentRoom.NPCs)
+                foreach(var npc in Player.CurrentRoom.NPCs)
                 {
                     if(npc is HostileNPC enemy)
                         Console.WriteLine($"{Color.FORE_RED}{enemy.Name}{Color.RESET} attacked {Player.Name}...    -{Color.FORE_LIGHT_RED}{Player.Damage(enemy.AttackDamage)}{Color.RESET}HP");
@@ -174,7 +174,7 @@ public static class Program
                     Help.ListHelp();
                     break;
                 case "search":
-                    Player?.CurrentRoom.Search();
+                    Player!.CurrentRoom.Search();
                     break;
                 case "pick":
                 case "grab":
@@ -217,25 +217,26 @@ public static class Program
 
                     for (int i = 0; i < Player!.CurrentRoom.Inventory.Count; i++)
                     {
-                        if (Player!.CurrentRoom.Inventory[i].Name.Clean().ToLower() ==
-                            String.Join(' ', input[1..]).ToLower())
+                        if (Player!.CurrentRoom.Inventory[i].Name.Clean().ToLower() == String.Join(' ', input[1..]).ToLower())
                         {
-                            try
-                            {
-                                Thread.Sleep(800);
-
-                                Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
-                                Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name +
-                                                  Color.RESET);
-                                Player!.CurrentRoom.Inventory.RemoveAt(i);
-                            }
-                            catch (ItemTooHeavyException ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
-
-                            return;
+                            continue;
                         }
+
+                        try
+                        {
+                            Thread.Sleep(800);
+
+                            Player!.Inventory.Add(Player!.CurrentRoom.Inventory[i]);
+                            Console.WriteLine(Player!.Name + " picked up " + Player!.CurrentRoom.Inventory[i].Name +
+                                              Color.RESET);
+                            Player!.CurrentRoom.Inventory.RemoveAt(i);
+                        }
+                        catch (ItemTooHeavyException ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
+                        return;
                     }
 
                     Console.WriteLine(Player!.Name + " could not find anything named \"" + Color.FORE_CYAN +
@@ -293,7 +294,7 @@ public static class Program
                         return;
                     }
 
-                    foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
+                    foreach (NPC npc in Player!.CurrentRoom.NPCs!)
                     {
                         if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower())
                         {
@@ -358,8 +359,7 @@ public static class Program
 
                     foreach (NPC? npc in Player!.CurrentRoom.NPCs!)
                     {
-                        if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower() ||
-                            npc is not HostileNPC)
+                        if (npc.Name.Clean().ToLower() != string.Join(' ', input[1..]).ToLower() || npc is not HostileNPC)
                         {
                             continue;
                         }
