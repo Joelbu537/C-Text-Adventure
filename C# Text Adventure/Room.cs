@@ -79,11 +79,11 @@ public class Room
             return;
         }
 
-        Console.WriteLine("They found the following " + Color.FORE_CYAN + "items" + Color.RESET + ":");
+        Console.WriteLine("They found the following " + Color.FORE_CYAN + "items" + Color.RESET + ":\n");
         for (int i = 0; i < Inventory.Count; i++)
         {
             if(!Searched) Thread.Sleep(1500);
-            Console.WriteLine(Inventory[i].Name);
+            Console.WriteLine($" {Color.FORE_WHITE}-{Color.RESET}  {Inventory[i].Name}");
         }
 
         Searched = true;

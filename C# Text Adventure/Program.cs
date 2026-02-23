@@ -184,8 +184,8 @@ public static class Program
                     if (input.Length < 2) throw new SyntaxErrorException();
                     if (!Player.CurrentRoom.Searched)
                     {
-                        Console.WriteLine($"{Player.Name} is not aware of their surroundings!");
-                        break;
+                        Console.WriteLine($"{Player.Name} has not {Color.FORE_WHITE}searched{Color.RESET} their surroundings yet!");
+                        return;
                     }
 
                     if (input.Length > 1 && input[1].ToLower() == "all")
@@ -260,9 +260,8 @@ public static class Program
                     {
                         if (!targetRoom.IsUnlocked)
                         {
-                            Console.WriteLine("The path is blocked, and " + Player?.Name +
-                                              " can't seem to find a different way around.");
-                            break;
+                            Console.WriteLine($"The path is blocked, and {Player?.Name} can't seem to find a different way around.");
+                            return;
                         }
 
                         Player?.CurrentRoom = Player.CurrentRoom.ConnectedRooms[(int)direction]!;
