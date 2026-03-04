@@ -16,6 +16,16 @@ public static class Program
 
         PluginManager.LoadPlugins();
 
+        Console.WriteLine("\n\tStart Game     [Any Key]");
+        Console.WriteLine("\b\tPlugin Manager [P]");
+
+        var menuKey = Console.ReadKey();
+        if(menuKey.Key == ConsoleKey.P)
+        {
+            Console.Clear();
+            // Plugin Menu
+        }
+
         Console.WriteLine($"Welcome to the {Color.FORE_LIGHT_GREEN}Text Adventure{Color.RESET}!");
         Console.Write("Please enter your name: " + Color.FORE_LIGHT_CYAN);
 

@@ -1,14 +1,14 @@
-﻿namespace TextAdventure;
+﻿using System.ComponentModel;
+
+namespace TextAdventure;
 
 using System.Reflection;
 using TextAdventure.PluginContract;
 public static class PluginManager
 {
-    public static List<IPlugin> Plugins { get; private set; } = new();
+    public static List<IPlugin> Plugins { get; } = new();
     public static void LoadPlugins()
     {
-        List<IPlugin> plugins = new();
-
         foreach(string dll in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Plugins"), "*.dll"))
         {
             try
@@ -22,17 +22,20 @@ public static class PluginManager
 
                     if (Activator.CreateInstance(t) is IPlugin plugin)
                     {
-                        plugins.Add(plugin);
-                        Console.WriteLine($"Loaded plugin {plugin.Name} {plugin.Version}");
+                        if (Plugins.Any(other => other.Name.ToLower() == plugin.Name.ToLower()))
+                        {
+                            Console.WriteLine($"{Color.FORE_RED}Failed to load{Color.RESET} plugin {plugin.Name} ({Path.GetFileName(dll)}) because another plugin with the same name is already loaded.");
+                            continue;
+                        }
+                        Plugins.Add(plugin);
+                        Console.WriteLine($"Loaded plugin {Color.FORE_WHITE}{plugin.Name}{Color.RESET} ({Path.GetFileName(dll)}) {plugin.Version}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{Color.FORE_RED}Failed to load{Color.RESET} plugin {dll}\n{ex.Message}");
+                Console.WriteLine($"{Color.FORE_RED}Failed to load{Color.RESET} plugin {Path.GetFileName(dll)}\n{ex.Message}\n{ex.StackTrace}");
             }
         }
-
-        return plugins;
     }
 }
