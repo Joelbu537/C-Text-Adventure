@@ -27,9 +27,13 @@ public static class Program
                 if (Console.ReadKey(true).Key == ConsoleKey.P)
                 {
                     Console.Clear();
-                    // Plugin Menu
+                    PluginManager.PluginManagerDisplay();
+                    Console.WriteLine(
+                        $"\n\t{Color.FORE_WHITE}Start Game     {Color.FORE_LIGHT_CYAN}[{Color.FORE_WHITE}Any Key{Color.FORE_LIGHT_CYAN}]{Color.RESET}");
+                    Console.WriteLine(
+                        $"\b\t{Color.FORE_WHITE}Plugin Manager {Color.FORE_LIGHT_CYAN}[{Color.FORE_WHITE}   P   {Color.FORE_LIGHT_CYAN}]{Color.RESET}");
                 }
-                break;
+                else break;
             }
         }
 
