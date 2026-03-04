@@ -1,15 +1,14 @@
-﻿using System.ComponentModel;
-
-namespace TextAdventure;
-
-using System.Reflection;
+﻿using System.Reflection;
 using TextAdventure.PluginContract;
+namespace TextAdventure;
 public static class PluginManager
 {
     public static List<IPlugin> Plugins { get; } = new();
     public static void LoadPlugins()
     {
-        foreach(string dll in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Plugins"), "*.dll"))
+        string pluginDir = Path.Combine(AppContext.BaseDirectory, "Plugins");
+        Directory.CreateDirectory(pluginDir);
+        foreach(string dll in Directory.EnumerateFiles(pluginDir, "*.dll"))
         {
             try
             {
@@ -17,8 +16,7 @@ public static class PluginManager
 
                 foreach (var t in asm.GetTypes())
                 {
-                    if (t.IsAbstract) continue;
-                    if (!typeof(IPlugin).IsAssignableFrom(t)) continue;
+                    if (t.IsAbstract || !typeof(IPlugin).IsAssignableFrom(t)) continue;
 
                     if (Activator.CreateInstance(t) is IPlugin plugin)
                     {
@@ -36,6 +34,34 @@ public static class PluginManager
             {
                 Console.WriteLine($"{Color.FORE_RED}Failed to load{Color.RESET} plugin {Path.GetFileName(dll)}\n{ex.Message}\n{ex.StackTrace}");
             }
+        }
+    }
+    public static void PluginManagerDisplay()
+    {
+        int selectedIndex = 0;
+        while (true)
+        {
+            // Draw
+            for(int i = 0; i < Plugins.Count; i++)
+            {
+                if(i == selectedIndex)
+                {
+                    Console.Write(Color.BACK_WHITE + Color.FORE_BLACK);
+                }
+
+                Console.Write(Color.RESET);
+            }
+            // Read
+            while (true)
+            {
+                if(Console.KeyAvailable)
+                {
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Escape) return;
+                }
+            }
+            // Clear
+            Console.Clear();
         }
     }
 }
