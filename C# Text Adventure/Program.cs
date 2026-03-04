@@ -13,6 +13,9 @@ public static class Program
         Console.CursorVisible = false;
         Console.Write(Color.RESET);
         Console.WriteLine("Source: https://github.com/ShitHub-Dev-Team/Text-Adventure\n");
+
+        PluginManager.LoadPlugins();
+
         Console.WriteLine($"Welcome to the {Color.FORE_LIGHT_GREEN}Text Adventure{Color.RESET}!");
         Console.Write("Please enter your name: " + Color.FORE_LIGHT_CYAN);
 
