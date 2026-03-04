@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using TextAdventure.PluginContract;
+
 namespace TextAdventure;
 public static class PluginManager
 {

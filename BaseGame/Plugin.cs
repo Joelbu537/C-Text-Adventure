@@ -1,7 +1,7 @@
 ﻿namespace BaseGame;
 
 using TextAdventure.PluginContract;
-public class BaseGame : IPlugin
+public partial class BaseGame : IPlugin
 {
     public string Name => "Base Game";
     public string Author => "Joelbu";
@@ -14,8 +14,8 @@ public class BaseGame : IPlugin
         throw new NotImplementedException();
     }
 
-    public void Initialize(IHostContext host)
+    public void Initialize(IHostContext h)
     {
-        throw new NotImplementedException();
+        h.RegisterCommand();
     }
 }
