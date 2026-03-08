@@ -64,6 +64,9 @@ public static class Program
         Console.Clear();
 
         Player = new(playerName.Trim(), 100, 10, RoomDefinitions.StartingField);
+
+        PluginManager.Initialize();
+
         RoomDefinitions.InitRooms();
         Player.CurrentRoom = RoomDefinitions.StartingField;
     }

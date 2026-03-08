@@ -14,4 +14,14 @@ public sealed class HostContext : IHostContext
     {
         Program.Commands[commandName] = action;
     }
+
+    public void RegisterAlias(string aliasName, string commandName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OverwriteAlias(string aliasName, string commandName)
+    {
+        throw new NotImplementedException();
+    }
 }

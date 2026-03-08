@@ -7,5 +7,9 @@ public interface IPlugin
     public Version Version { get; }
     public bool Enabled { get; set; }
     void Initialize(IHostContext host);
-    void Execute();
+
+    void ExecuteTurn()
+    {
+
+    }
 }

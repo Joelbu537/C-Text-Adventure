@@ -5,6 +5,6 @@ public partial class BaseGame
 {
     public void Status()
     {
-        Player.Status();
+        //Player.Status();
     }
 }

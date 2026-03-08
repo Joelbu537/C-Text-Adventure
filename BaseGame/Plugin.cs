@@ -9,13 +9,13 @@ public partial class BaseGame : IPlugin
     public string SourceRepo => "https://github.com/ShitHub-Dev-Team/Text-Adventure";
     public bool Enabled { get; set; }
 
-    public void Execute()
+    public void ExecuteTurn()
     {
         throw new NotImplementedException();
     }
 
     public void Initialize(IHostContext h)
     {
-        h.RegisterCommand();
+        //h.RegisterCommand();
     }
 }

@@ -14,12 +14,12 @@ public static class PluginManager
     private static string pluginConfigPath = Path.Combine(pluginDir, "plugins.cfg");
     public static void LoadPlugins()
     {
-        
-
         Directory.CreateDirectory(pluginDir);
 
         List<PluginConfig>? pluginConfig = new();
         if(File.Exists(pluginConfigPath)) pluginConfig = JsonSerializer.Deserialize<List<PluginConfig>?>(File.ReadAllText(pluginConfigPath));
+
+        HostContext ctx = new();
 
         foreach (string dll in Directory.EnumerateFiles(pluginDir, "*.dll"))
         {
@@ -59,6 +59,7 @@ public static class PluginManager
                         Plugins.Add(plugin);
                         pluginDLLs.Add(dll);
                         Console.WriteLine($"Loaded plugin {Color.FORE_WHITE}{plugin.Name}{Color.RESET} ({Path.GetFileName(dll)}) {plugin.Version}");
+                        plugin.Initialize(ctx);
                     }
                 }
             }
