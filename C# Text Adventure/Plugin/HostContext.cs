@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using TextAdventure.PluginContract;
 
-namespace TextAdventure;
+namespace TextAdventure.Plugin;
 public sealed class HostContext : IHostContext
 {
     public void RegisterCommand(string commandName, Action<string[]> action)

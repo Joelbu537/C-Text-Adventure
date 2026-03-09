@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using TextAdventure.PluginContract;
 
-namespace TextAdventure;
+namespace TextAdventure.Plugin;
 public static class PluginManager
 {
     public static List<IPlugin> Plugins { get; } = new();

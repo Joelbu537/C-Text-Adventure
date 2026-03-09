@@ -1,7 +1,8 @@
 ﻿using System.Data;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
 using TextAdventure.NPCs;
+using TextAdventure.Plugin;
+using TextAdventure.PluginContract;
 
 namespace TextAdventure;
 
@@ -65,8 +66,6 @@ public static class Program
 
         Player = new(playerName.Trim(), 100, 10, RoomDefinitions.StartingField);
 
-        PluginManager.Initialize();
-
         RoomDefinitions.InitRooms();
         Player.CurrentRoom = RoomDefinitions.StartingField;
     }
@@ -87,8 +86,16 @@ public static class Program
                 foreach (var npc in Player.CurrentRoom.NPCs)
                 {
                     if (npc is HostileNPC enemy)
+                    {
                         Console.WriteLine($"{Color.FORE_RED}{enemy.Name}{Color.RESET} attacked {Player.Name}...    -{Color.FORE_LIGHT_RED}{Player.Damage(enemy.AttackDamage)}{Color.RESET}HP");
+
+                    }
                 }
+            }
+
+            foreach (IPlugin p in PluginManager.Plugins)
+            {
+                p.ExecuteTurn();
             }
         }
     }
