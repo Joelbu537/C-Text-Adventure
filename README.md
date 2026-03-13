@@ -37,6 +37,6 @@ Since I most likeley won't be able to finish this game before Flavortown ends, I
 <h3 align="center">
   <span>Planned Features</span>
 </h2>
-- Randomized Map, difficutly scales with distance. Map is either infinite or has a fixed size, allowing a endless game mode and one where you can win the game.
-- Plugin support. This should allow for new weapons, rooms, interactions, NPC's, basically anything should be expandable, and it should even be possible to add new game mechanics.
+- Randomized Map, difficutly scales with distance. Map is either infinite or has a fixed size, allowing a endless game mode and one where you can win the game.\
+- Plugin support. This should allow for new weapons, rooms, interactions, NPC's, basically anything should be expandable, and it should even be possible to add new game mechanics.\
 - Leaving the native console behind and using something else supported on all Desktop Environments like Avalonia, since the behaviour of the default console is pissing me off. No, I want to CLEAR the console, not just scroll to the part without text.
